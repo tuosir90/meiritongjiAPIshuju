@@ -24,23 +24,6 @@ function getDefaultData(): AppData {
 }
 
 /**
- * 从预设JSON文件加载初始数据
- */
-async function loadInitialData(): Promise<AppData | null> {
-  try {
-    const response = await fetch('/meiritongjiAPIshuju/initial-data.json');
-    if (response.ok) {
-      const data = await response.json() as AppData;
-      console.log('✅ 成功加载预设数据');
-      return data;
-    }
-  } catch (error) {
-    console.log('ℹ️ 未找到预设数据文件');
-  }
-  return null;
-}
-
-/**
  * 从localStorage加载数据
  */
 export function loadData(): AppData {
@@ -60,15 +43,6 @@ export function loadData(): AppData {
         data.records = [];
       }
       return data;
-    } else {
-      // 如果localStorage为空，尝试异步加载初始数据
-      loadInitialData().then(initialData => {
-        if (initialData) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
-          // 触发页面刷新以应用新数据
-          window.location.reload();
-        }
-      });
     }
   } catch (error) {
     console.error("加载数据失败:", error);

@@ -17,8 +17,43 @@ export function useAppData() {
 
   // 初始化时加载数据
   useEffect(() => {
-    setData(loadData());
-    setIsLoading(false);
+    const initData = async () => {
+      const localData = loadData();
+
+      // 如果localStorage为空，尝试加载预设数据
+      if (localData.records.length === 0) {
+        try {
+          const paths = [
+            '/meiritongjiAPIshuju/initial-data.json',
+            './initial-data.json',
+            '/initial-data.json'
+          ];
+
+          for (const path of paths) {
+            try {
+              const response = await fetch(path);
+              if (response.ok) {
+                const initialData = await response.json() as AppData;
+                console.log('✅ 成功从', path, '加载预设数据');
+                setData(initialData);
+                saveData(initialData);
+                setIsLoading(false);
+                return;
+              }
+            } catch (e) {
+              // 继续尝试下一个路径
+            }
+          }
+        } catch (error) {
+          console.log('加载预设数据失败', error);
+        }
+      }
+
+      setData(localData);
+      setIsLoading(false);
+    };
+
+    initData();
   }, []);
 
   // 数据变化时自动保存

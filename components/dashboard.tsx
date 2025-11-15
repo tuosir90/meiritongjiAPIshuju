@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, FileSpreadsheet, Plus, Sparkles } from "lucide-react";
+import { Download, FileSpreadsheet, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,7 +22,7 @@ import { loadTestDataToBrowser } from "@/lib/generate-test-data";
 import { DailyRecord } from "@/lib/types";
 
 export function Dashboard() {
-  const { data, isLoading, saveRecord, deleteRecord } = useAppData();
+  const { data, isLoading, saveRecord, deleteRecord, clearAllRecords } = useAppData();
   const [editingRecord, setEditingRecord] = useState<DailyRecord | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -43,6 +43,12 @@ export function Dashboard() {
 
   const handleExportCSV = () => {
     exportToCSV(data.records, data.apis);
+  };
+
+  const handleClearAllRecords = () => {
+    if (confirm("⚠️ 确定要清除所有记录吗？\n\n此操作不可恢复！建议先导出数据备份。")) {
+      clearAllRecords();
+    }
   };
 
   if (isLoading) {
@@ -79,6 +85,15 @@ export function Dashboard() {
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 生成测试数据
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearAllRecords}
+                disabled={data.records.length === 0}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                清除所有数据
               </Button>
               <Button
                 variant="outline"

@@ -9,6 +9,7 @@ import {
   removeApi as removeApiFromData,
   saveRecord as saveRecordToData,
   deleteRecord as deleteRecordFromData,
+  clearAllRecords as clearAllRecordsFromData,
 } from "@/lib/storage";
 
 export function useAppData() {
@@ -48,6 +49,11 @@ export function useAppData() {
     setData((prev) => deleteRecordFromData(prev, recordId));
   };
 
+  // 清除所有记录
+  const clearAllRecords = () => {
+    setData((prev) => clearAllRecordsFromData(prev));
+  };
+
   return {
     data,
     isLoading,
@@ -55,5 +61,6 @@ export function useAppData() {
     removeApi,
     saveRecord,
     deleteRecord,
+    clearAllRecords,
   };
 }

@@ -3,6 +3,7 @@
 import { AppData, ApiConfig, DailyRecord } from "./types";
 
 const STORAGE_KEY = "api-cost-tracker-data-v2"; // 更新版本，使用新的API配置
+const VERSION_KEY = "api-cost-tracker-version"; // 存储当前数据版本号
 
 /**
  * 默认API配置
@@ -137,4 +138,33 @@ export function calculateTotalCost(records: DailyRecord[]): number {
  */
 export function calculateTotalImages(records: DailyRecord[]): number {
   return records.reduce((sum, record) => sum + record.imageCount, 0);
+}
+
+/**
+ * 获取本地存储的数据版本
+ */
+export function getLocalVersion(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return localStorage.getItem(VERSION_KEY);
+}
+
+/**
+ * 保存数据版本到本地
+ */
+export function saveVersion(version: string): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.setItem(VERSION_KEY, version);
+}
+
+/**
+ * 比较版本号（简单的字符串比较）
+ * 返回 true 表示 newVersion 更新
+ */
+export function isNewerVersion(currentVersion: string | null, newVersion: string): boolean {
+  if (!currentVersion) return true;
+  return newVersion > currentVersion;
 }

@@ -1,4 +1,6 @@
 {
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-15T09:00:00Z",
   "apis": [
     { "id": "volcengine", "name": "火山引擎（字节跳动）", "color": "#0052D9" },
     { "id": "yunwu", "name": "云雾API", "color": "#00b96b" },

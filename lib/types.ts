@@ -31,6 +31,8 @@ export interface DailyRecord {
  * 应用数据结构
  */
 export interface AppData {
+  version?: string; // 数据版本号（可选，用于版本控制）
+  lastUpdated?: string; // 最后更新时间（可选）
   apis: ApiConfig[]; // API配置列表
   records: DailyRecord[]; // 每日记录
 }

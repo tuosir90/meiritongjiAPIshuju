@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Download, FileSpreadsheet, Plus } from "lucide-react";
+import { Download, FileSpreadsheet, Plus, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,9 +22,10 @@ import { exportToExcel, exportToCSV } from "@/lib/export";
 import { DailyRecord } from "@/lib/types";
 
 export function Dashboard() {
-  const { data, isLoading, saveRecord, deleteRecord } = useAppData();
+  const { data, isLoading, isRefreshing, saveRecord, deleteRecord, refreshData } = useAppData();
   const [editingRecord, setEditingRecord] = useState<DailyRecord | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [refreshMessage, setRefreshMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
     startDate: null,
     endDate: null,
@@ -65,6 +66,15 @@ export function Dashboard() {
     exportToCSV(filteredRecords, data.apis);
   };
 
+  const handleRefreshData = async () => {
+    const result = await refreshData();
+    setRefreshMessage({
+      type: result.success ? 'success' : 'error',
+      text: result.message
+    });
+    // 3秒后自动隐藏消息
+    setTimeout(() => setRefreshMessage(null), 3000);
+  };
 
   if (isLoading) {
     return (
@@ -98,6 +108,16 @@ export function Dashboard() {
               <Button
                 variant="outline"
                 size="sm"
+                className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 dark:hover:bg-blue-950 dark:hover:text-blue-400 transition-all"
+                onClick={handleRefreshData}
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {isRefreshing ? '刷新中...' : '刷新数据'}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 className="hover:bg-green-50 hover:text-green-600 hover:border-green-300 dark:hover:bg-green-950 dark:hover:text-green-400 transition-all"
                 onClick={handleExportCSV}
                 disabled={filteredRecords.length === 0}
@@ -120,6 +140,20 @@ export function Dashboard() {
           </div>
         </div>
       </header>
+
+      {/* 刷新消息提示 */}
+      {refreshMessage && (
+        <div className={`fixed top-20 right-4 z-50 p-4 rounded-lg shadow-lg animate-in slide-in-from-top-5 ${
+          refreshMessage.type === 'success'
+            ? 'bg-green-50 text-green-900 border border-green-200 dark:bg-green-950 dark:text-green-100'
+            : 'bg-red-50 text-red-900 border border-red-200 dark:bg-red-950 dark:text-red-100'
+        }`}>
+          <div className="flex items-center gap-2">
+            {refreshMessage.type === 'success' ? '✅' : '❌'}
+            <span className="font-medium">{refreshMessage.text}</span>
+          </div>
+        </div>
+      )}
 
       {/* 主体内容 */}
       <main className="container mx-auto px-4 py-8">

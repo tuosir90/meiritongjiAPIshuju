@@ -9,43 +9,78 @@ import {
   removeApi as removeApiFromData,
   saveRecord as saveRecordToData,
   deleteRecord as deleteRecordFromData,
+  getLocalVersion,
+  saveVersion,
+  isNewerVersion,
 } from "@/lib/storage";
 
 export function useAppData() {
   const [data, setData] = useState<AppData>(() => loadData());
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // 从服务器加载数据的通用函数
+  const loadFromServer = async (forceUpdate = false): Promise<AppData | null> => {
+    try {
+      const paths = [
+        '/meiritongjiAPIshuju/initial-data.json',
+        './initial-data.json',
+        '/initial-data.json'
+      ];
+
+      for (const path of paths) {
+        try {
+          const response = await fetch(path, { cache: 'no-store' }); // 禁用缓存
+          if (response.ok) {
+            const serverData = await response.json() as AppData;
+            const localVersion = getLocalVersion();
+            const serverVersion = serverData.version || '0.0.0';
+
+            console.log('本地版本:', localVersion);
+            console.log('服务器版本:', serverVersion);
+
+            // 检查是否需要更新
+            if (forceUpdate || isNewerVersion(localVersion, serverVersion)) {
+              console.log('✅ 检测到新版本，从', path, '加载数据');
+              saveVersion(serverVersion);
+              return serverData;
+            } else {
+              console.log('ℹ️ 本地数据已是最新版本');
+              return null;
+            }
+          }
+        } catch (e) {
+          // 继续尝试下一个路径
+        }
+      }
+    } catch (error) {
+      console.log('加载服务器数据失败', error);
+    }
+    return null;
+  };
 
   // 初始化时加载数据
   useEffect(() => {
     const initData = async () => {
       const localData = loadData();
 
-      // 如果localStorage为空，尝试加载预设数据
+      // 如果localStorage为空，或者检测到新版本，加载服务器数据
       if (localData.records.length === 0) {
-        try {
-          const paths = [
-            '/meiritongjiAPIshuju/initial-data.json',
-            './initial-data.json',
-            '/initial-data.json'
-          ];
-
-          for (const path of paths) {
-            try {
-              const response = await fetch(path);
-              if (response.ok) {
-                const initialData = await response.json() as AppData;
-                console.log('✅ 成功从', path, '加载预设数据');
-                setData(initialData);
-                saveData(initialData);
-                setIsLoading(false);
-                return;
-              }
-            } catch (e) {
-              // 继续尝试下一个路径
-            }
-          }
-        } catch (error) {
-          console.log('加载预设数据失败', error);
+        const serverData = await loadFromServer(true);
+        if (serverData) {
+          setData(serverData);
+          saveData(serverData);
+          setIsLoading(false);
+          return;
+        }
+      } else {
+        // 自动检查版本更新
+        const serverData = await loadFromServer(false);
+        if (serverData) {
+          setData(serverData);
+          saveData(serverData);
+          setIsLoading(false);
+          return;
         }
       }
 
@@ -55,6 +90,26 @@ export function useAppData() {
 
     initData();
   }, []);
+
+  // 手动刷新数据
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const serverData = await loadFromServer(true);
+      if (serverData) {
+        setData(serverData);
+        saveData(serverData);
+        return { success: true, message: '数据刷新成功！' };
+      } else {
+        return { success: false, message: '无法连接到服务器' };
+      }
+    } catch (error) {
+      console.error('刷新数据失败:', error);
+      return { success: false, message: '刷新失败：' + (error as Error).message };
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   // 数据变化时自动保存
   useEffect(() => {
@@ -86,9 +141,11 @@ export function useAppData() {
   return {
     data,
     isLoading,
+    isRefreshing,
     addApi,
     removeApi,
     saveRecord,
     deleteRecord,
+    refreshData,
   };
 }

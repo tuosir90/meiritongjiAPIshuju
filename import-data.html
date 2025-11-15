@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导入数据 - API费用统计系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .data-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .data-preview h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .record-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .record-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .record-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .record-details {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc3545;
+            display: none;
+        }
+
+        .note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 导入数据</h1>
+        <p class="subtitle">API费用统计系统 - 数据快速导入工具</p>
+
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="note">
+            ⚠️ <strong>注意：</strong>此操作会将以下数据添加到你的统计系统中。如果相同日期已有记录，将会被覆盖。
+        </div>
+
+        <div class="data-preview">
+            <h3>📋 待导入的数据</h3>
+
+            <div class="record-item">
+                <div class="record-date">📅 2025-11-13</div>
+                <div class="record-details">
+                    • 火山引擎：0元<br>
+                    • 云雾API：0元<br>
+                    • 糖果姐姐API：28.56元<br>
+                    • 总费用：<strong>28.56元</strong><br>
+                    • 生图数：<strong>654张</strong>
+                </div>
+            </div>
+
+            <div class="record-item">
+                <div class="record-date">📅 2025-11-14</div>
+                <div class="record-details">
+                    • 火山引擎：3.6元<br>
+                    • 云雾API：10元<br>
+                    • 糖果姐姐API：25元<br>
+                    • 总费用：<strong>38.6元</strong><br>
+                    • 生图数：<strong>978张</strong>
+                </div>
+            </div>
+
+            <div class="record-item">
+                <div class="record-date">📅 2025-11-15</div>
+                <div class="record-details">
+                    • 火山引擎：3.6元<br>
+                    • 云雾API：10元<br>
+                    • 糖果姐姐API：25元<br>
+                    • 总费用：<strong>38.6元</strong><br>
+                    • 生图数：<strong>978张</strong>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="importData()">
+            🚀 确认导入数据
+        </button>
+    </div>
+
+    <script>
+        function importData() {
+            const btn = event.target;
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+
+            // 隐藏之前的消息
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            // 禁用按钮
+            btn.disabled = true;
+            btn.textContent = '⏳ 正在导入...';
+
+            try {
+                // 准备数据
+                const records = [
+                    {
+                        id: '2025-11-13-' + Date.now(),
+                        date: '2025-11-13',
+                        apiCosts: [
+                            { apiId: 'volcengine', cost: 0 },
+                            { apiId: 'yunwu', cost: 0 },
+                            { apiId: 'tangguo', cost: 28.56 }
+                        ],
+                        imageCount: 654,
+                        totalCost: 28.56
+                    },
+                    {
+                        id: '2025-11-14-' + (Date.now() + 1),
+                        date: '2025-11-14',
+                        apiCosts: [
+                            { apiId: 'volcengine', cost: 3.6 },
+                            { apiId: 'yunwu', cost: 10 },
+                            { apiId: 'tangguo', cost: 25 }
+                        ],
+                        imageCount: 978,
+                        totalCost: 38.6
+                    },
+                    {
+                        id: '2025-11-15-' + (Date.now() + 2),
+                        date: '2025-11-15',
+                        apiCosts: [
+                            { apiId: 'volcengine', cost: 3.6 },
+                            { apiId: 'yunwu', cost: 10 },
+                            { apiId: 'tangguo', cost: 25 }
+                        ],
+                        imageCount: 978,
+                        totalCost: 38.6
+                    }
+                ];
+
+                // 从 localStorage 加载现有数据
+                const STORAGE_KEY = 'api-cost-tracker-data-v2';
+                let existingData = null;
+
+                try {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    if (stored) {
+                        existingData = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    console.error('读取现有数据失败:', e);
+                }
+
+                // 如果没有现有数据，创建默认结构
+                if (!existingData) {
+                    existingData = {
+                        apis: [
+                            { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
+                            { id: "yunwu", name: "云雾API", color: "#00b96b" },
+                            { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" }
+                        ],
+                        records: []
+                    };
+                }
+
+                // 合并记录（如果日期相同则覆盖）
+                records.forEach(newRecord => {
+                    const existingIndex = existingData.records.findIndex(r => r.date === newRecord.date);
+                    if (existingIndex >= 0) {
+                        // 覆盖现有记录
+                        existingData.records[existingIndex] = newRecord;
+                    } else {
+                        // 添加新记录
+                        existingData.records.push(newRecord);
+                    }
+                });
+
+                // 按日期降序排序
+                existingData.records.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+                // 保存到 localStorage
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(existingData));
+
+                // 显示成功消息
+                successMsg.textContent = '✅ 数据导入成功！共导入 3 条记录。页面将在 2 秒后自动刷新...';
+                successMsg.style.display = 'block';
+
+                btn.textContent = '✅ 导入成功';
+                btn.style.background = '#28a745';
+
+                // 2秒后跳转到主页面
+                setTimeout(() => {
+                    window.location.href = './index.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('导入失败:', error);
+                errorMsg.textContent = '❌ 导入失败：' + error.message;
+                errorMsg.style.display = 'block';
+
+                btn.disabled = false;
+                btn.textContent = '🚀 重试导入';
+            }
+        }
+    </script>
+</body>
+</html>

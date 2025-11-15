@@ -1,0 +1,42 @@
+{
+  "apis": [
+    { "id": "volcengine", "name": "火山引擎（字节跳动）", "color": "#0052D9" },
+    { "id": "yunwu", "name": "云雾API", "color": "#00b96b" },
+    { "id": "tangguo", "name": "糖果姐姐API", "color": "#ff5c93" }
+  ],
+  "records": [
+    {
+      "id": "2025-11-15-1",
+      "date": "2025-11-15",
+      "apiCosts": [
+        { "apiId": "volcengine", "cost": 3.6 },
+        { "apiId": "yunwu", "cost": 10 },
+        { "apiId": "tangguo", "cost": 25 }
+      ],
+      "imageCount": 978,
+      "totalCost": 38.6
+    },
+    {
+      "id": "2025-11-14-1",
+      "date": "2025-11-14",
+      "apiCosts": [
+        { "apiId": "volcengine", "cost": 3.6 },
+        { "apiId": "yunwu", "cost": 10 },
+        { "apiId": "tangguo", "cost": 25 }
+      ],
+      "imageCount": 978,
+      "totalCost": 38.6
+    },
+    {
+      "id": "2025-11-13-1",
+      "date": "2025-11-13",
+      "apiCosts": [
+        { "apiId": "volcengine", "cost": 0 },
+        { "apiId": "yunwu", "cost": 0 },
+        { "apiId": "tangguo", "cost": 28.56 }
+      ],
+      "imageCount": 654,
+      "totalCost": 28.56
+    }
+  ]
+}

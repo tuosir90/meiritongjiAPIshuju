@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Download, FileSpreadsheet, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Download, FileSpreadsheet, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,11 +19,10 @@ import { CostChart } from "@/components/cost-chart";
 import { DateFilterComponent, DateFilter } from "@/components/date-filter";
 import { useAppData } from "@/hooks/use-app-data";
 import { exportToExcel, exportToCSV } from "@/lib/export";
-import { loadTestDataToBrowser } from "@/lib/generate-test-data";
 import { DailyRecord } from "@/lib/types";
 
 export function Dashboard() {
-  const { data, isLoading, saveRecord, deleteRecord, clearAllRecords } = useAppData();
+  const { data, isLoading, saveRecord, deleteRecord } = useAppData();
   const [editingRecord, setEditingRecord] = useState<DailyRecord | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
@@ -66,11 +65,6 @@ export function Dashboard() {
     exportToCSV(filteredRecords, data.apis);
   };
 
-  const handleClearAllRecords = () => {
-    if (confirm("⚠️ 确定要清除所有记录吗？\n\n此操作不可恢复！建议先导出数据备份。")) {
-      clearAllRecords();
-    }
-  };
 
   if (isLoading) {
     return (
@@ -101,29 +95,6 @@ export function Dashboard() {
                 onFilterChange={setDateFilter}
                 currentFilter={dateFilter}
               />
-              <Button
-                variant="outline"
-                size="sm"
-                className="hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300 dark:hover:bg-purple-950 dark:hover:text-purple-400 transition-all"
-                onClick={() => {
-                  if (confirm("确定要生成测试数据吗？\n这将覆盖现有数据，生成30天的模拟记录。")) {
-                    loadTestDataToBrowser();
-                  }
-                }}
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                生成测试数据
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="hover:bg-red-50 hover:text-red-600 hover:border-red-300 dark:hover:bg-red-950 dark:hover:text-red-400 transition-all"
-                onClick={handleClearAllRecords}
-                disabled={data.records.length === 0}
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                清除所有数据
-              </Button>
               <Button
                 variant="outline"
                 size="sm"

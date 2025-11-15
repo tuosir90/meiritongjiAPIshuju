@@ -138,13 +138,3 @@ export function calculateTotalCost(records: DailyRecord[]): number {
 export function calculateTotalImages(records: DailyRecord[]): number {
   return records.reduce((sum, record) => sum + record.imageCount, 0);
 }
-
-/**
- * 清除所有记录（保留API配置）
- */
-export function clearAllRecords(data: AppData): AppData {
-  return {
-    ...data,
-    records: [],
-  };
-}

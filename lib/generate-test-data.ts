@@ -19,13 +19,17 @@ export function generateTestData(): AppData {
     date.setDate(date.getDate() - i);
     const dateStr = date.toISOString().split("T")[0];
 
-    // 随机生成各API的费用（模拟真实波动）
-    const volcengineCost = Math.random() * 50 + 20; // 20-70元
-    const yunwuCost = Math.random() * 30 + 10; // 10-40元
-    const tangguoCost = Math.random() * 40 + 15; // 15-55元
+    // 总费用目标：50-60元
+    const targetTotal = 50 + Math.random() * 10;
+    const ratio1 = 0.3 + Math.random() * 0.1;
+    const ratio2 = 0.25 + Math.random() * 0.1;
+    const ratio3 = 1 - ratio1 - ratio2;
+    const volcengineCost = targetTotal * ratio1;
+    const yunwuCost = targetTotal * ratio2;
+    const tangguoCost = targetTotal * ratio3;
 
-    // 随机生成图片数量
-    const imageCount = Math.floor(Math.random() * 100) + 50; // 50-150张
+    // 随机生成图片数量：1000-1500张
+    const imageCount = Math.floor(Math.random() * 501) + 1000;
 
     const totalCost = volcengineCost + yunwuCost + tangguoCost;
 

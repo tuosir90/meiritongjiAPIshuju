@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Download, FileSpreadsheet, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import { RecordForm } from "@/components/record-form";
 import { RecordsTable } from "@/components/records-table";
 import { StatsCards } from "@/components/stats-cards";
 import { CostChart } from "@/components/cost-chart";
+import { DateFilterComponent, DateFilter } from "@/components/date-filter";
 import { useAppData } from "@/hooks/use-app-data";
 import { exportToExcel, exportToCSV } from "@/lib/export";
 import { loadTestDataToBrowser } from "@/lib/generate-test-data";
@@ -25,6 +26,26 @@ export function Dashboard() {
   const { data, isLoading, saveRecord, deleteRecord, clearAllRecords } = useAppData();
   const [editingRecord, setEditingRecord] = useState<DailyRecord | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dateFilter, setDateFilter] = useState<DateFilter>({
+    startDate: null,
+    endDate: null,
+    label: "全部"
+  });
+
+  // 根据日期筛选过滤数据
+  const filteredRecords = useMemo(() => {
+    if (!dateFilter.startDate || !dateFilter.endDate) {
+      return data.records;
+    }
+
+    return data.records.filter(record => {
+      const recordDate = new Date(record.date);
+      const startDate = new Date(dateFilter.startDate!);
+      const endDate = new Date(dateFilter.endDate!);
+
+      return recordDate >= startDate && recordDate <= endDate;
+    });
+  }, [data.records, dateFilter]);
 
   const handleSaveRecord = (record: DailyRecord) => {
     saveRecord(record);
@@ -38,11 +59,11 @@ export function Dashboard() {
   };
 
   const handleExportExcel = () => {
-    exportToExcel(data.records, data.apis);
+    exportToExcel(filteredRecords, data.apis);
   };
 
   const handleExportCSV = () => {
-    exportToCSV(data.records, data.apis);
+    exportToCSV(filteredRecords, data.apis);
   };
 
   const handleClearAllRecords = () => {
@@ -76,6 +97,10 @@ export function Dashboard() {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              <DateFilterComponent
+                onFilterChange={setDateFilter}
+                currentFilter={dateFilter}
+              />
               <Button
                 variant="outline"
                 size="sm"
@@ -104,7 +129,7 @@ export function Dashboard() {
                 size="sm"
                 className="hover:bg-green-50 hover:text-green-600 hover:border-green-300 dark:hover:bg-green-950 dark:hover:text-green-400 transition-all"
                 onClick={handleExportCSV}
-                disabled={data.records.length === 0}
+                disabled={filteredRecords.length === 0}
               >
                 <Download className="mr-2 h-4 w-4" />
                 导出CSV
@@ -114,7 +139,7 @@ export function Dashboard() {
                 size="sm"
                 className="hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 dark:hover:bg-emerald-950 dark:hover:text-emerald-400 transition-all"
                 onClick={handleExportExcel}
-                disabled={data.records.length === 0}
+                disabled={filteredRecords.length === 0}
               >
                 <FileSpreadsheet className="mr-2 h-4 w-4" />
                 导出Excel
@@ -129,11 +154,11 @@ export function Dashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-8">
           {/* 统计卡片 */}
-          <StatsCards records={data.records} />
+          <StatsCards records={filteredRecords} />
 
           {/* 图表 */}
-          {data.records.length > 0 && (
-            <CostChart records={data.records} apis={data.apis} />
+          {filteredRecords.length > 0 && (
+            <CostChart records={filteredRecords} apis={data.apis} />
           )}
 
           {/* 数据表格 */}
@@ -142,7 +167,11 @@ export function Dashboard() {
               <div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">费用记录</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  共 {data.records.length} 条记录
+                  {dateFilter.startDate ? (
+                    <>显示 {filteredRecords.length} 条记录（共 {data.records.length} 条）</>
+                  ) : (
+                    <>共 {data.records.length} 条记录</>
+                  )}
                 </p>
               </div>
               <Dialog
@@ -177,7 +206,7 @@ export function Dashboard() {
               </Dialog>
             </div>
             <RecordsTable
-              records={data.records}
+              records={filteredRecords}
               apis={data.apis}
               onEdit={handleEditRecord}
               onDelete={deleteRecord}

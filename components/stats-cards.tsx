@@ -15,6 +15,7 @@ export function StatsCards({ records }: StatsCardsProps) {
   const totalImages = calculateTotalImages(records);
   const recordCount = records.length;
   const avgDailyCost = recordCount > 0 ? totalCost / recordCount : 0;
+  const avgDailyImages = recordCount > 0 ? totalImages / recordCount : 0;
 
   const stats = [
     {
@@ -36,6 +37,12 @@ export function StatsCards({ records }: StatsCardsProps) {
       description: "日均费用统计",
     },
     {
+      title: "平均每日生图",
+      value: Math.round(avgDailyImages).toLocaleString(),
+      icon: Image,
+      description: "日均生成图片数",
+    },
+    {
       title: "记录天数",
       value: recordCount,
       icon: Calendar,
@@ -44,7 +51,7 @@ export function StatsCards({ records }: StatsCardsProps) {
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (

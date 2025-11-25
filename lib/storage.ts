@@ -161,10 +161,34 @@ export function saveVersion(version: string): void {
 }
 
 /**
- * 比较版本号（简单的字符串比较）
+ * 比较版本号（逐段比较数值）
  * 返回 true 表示 newVersion 更新
  */
 export function isNewerVersion(currentVersion: string | null, newVersion: string): boolean {
-  if (!currentVersion) return true;
-  return newVersion > currentVersion;
+  if (!newVersion) {
+    return false;
+  }
+  if (!currentVersion) {
+    return true;
+  }
+
+  const parseVersion = (version: string) =>
+    version.split(".").map((part) => Number.parseInt(part, 10) || 0);
+
+  const currentParts = parseVersion(currentVersion);
+  const newParts = parseVersion(newVersion);
+  const maxLength = Math.max(currentParts.length, newParts.length);
+
+  for (let i = 0; i < maxLength; i++) {
+    const currentPart = currentParts[i] ?? 0;
+    const newPart = newParts[i] ?? 0;
+    if (newPart > currentPart) {
+      return true;
+    }
+    if (newPart < currentPart) {
+      return false;
+    }
+  }
+
+  return false;
 }

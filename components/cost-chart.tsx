@@ -26,64 +26,67 @@ interface CostChartProps {
 
 type ViewMode = "daily" | "monthly";
 
+function formatMonth(monthStr: string) {
+  const [year, month] = monthStr.split("-");
+  return `${year}年${month}月`;
+}
+
+// 按月汇总数据
+function aggregateByMonth(records: DailyRecord[], apis: ApiConfig[]) {
+  const monthlyData: { [key: string]: any } = {};
+
+  records.forEach((record) => {
+    const date = new Date(record.date);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+    if (!monthlyData[monthKey]) {
+      monthlyData[monthKey] = {
+        month: monthKey,
+        总费用: 0,
+        图片数: 0,
+      };
+
+      // 初始化各API费用
+      apis.forEach((api) => {
+        monthlyData[monthKey][api.name] = 0;
+      });
+    }
+
+    // 累加费用和图片数
+    monthlyData[monthKey].总费用 += record.totalCost;
+    monthlyData[monthKey].图片数 += record.imageCount;
+
+    // 累加各API费用
+    record.apiCosts.forEach((apiCost) => {
+      const api = apis.find((a) => a.id === apiCost.apiId);
+      if (api) {
+        monthlyData[monthKey][api.name] += apiCost.cost;
+      }
+    });
+  });
+
+  // 转换为数组并排序
+  return Object.values(monthlyData)
+    .sort((a: any, b: any) => a.month.localeCompare(b.month))
+    .map((item: any) => ({
+      ...item,
+      // 格式化月份显示
+      displayMonth: formatMonth(item.month),
+      // 保留两位小数
+      总费用: Math.round(item.总费用 * 100) / 100,
+      ...apis.reduce(
+        (acc, api) => ({
+          ...acc,
+          [api.name]: Math.round(item[api.name] * 100) / 100,
+        }),
+        {}
+      ),
+    }));
+}
+
 export function CostChart({ records, apis }: CostChartProps) {
   const [costViewMode, setCostViewMode] = useState<ViewMode>("daily");
   const [imageViewMode, setImageViewMode] = useState<ViewMode>("daily");
-
-  // 按月汇总数据
-  const aggregateByMonth = (records: DailyRecord[]) => {
-    const monthlyData: { [key: string]: any } = {};
-
-    records.forEach((record) => {
-      const date = new Date(record.date);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-
-      if (!monthlyData[monthKey]) {
-        monthlyData[monthKey] = {
-          month: monthKey,
-          总费用: 0,
-          图片数: 0,
-        };
-
-        // 初始化各API费用
-        apis.forEach((api) => {
-          monthlyData[monthKey][api.name] = 0;
-        });
-      }
-
-      // 累加费用和图片数
-      monthlyData[monthKey].总费用 += record.totalCost;
-      monthlyData[monthKey].图片数 += record.imageCount;
-
-      // 累加各API费用
-      record.apiCosts.forEach((apiCost) => {
-        const api = apis.find((a) => a.id === apiCost.apiId);
-        if (api) {
-          monthlyData[monthKey][api.name] += apiCost.cost;
-        }
-      });
-    });
-
-    // 转换为数组并排序
-    return Object.values(monthlyData)
-      .sort((a: any, b: any) => a.month.localeCompare(b.month))
-      .map((item: any) => ({
-        ...item,
-        // 格式化月份显示
-        displayMonth: formatMonth(item.month),
-        // 保留两位小数
-        总费用: Math.round(item.总费用 * 100) / 100,
-        ...apis.reduce((acc, api) => ({
-          ...acc,
-          [api.name]: Math.round(item[api.name] * 100) / 100
-        }), {})
-      }));
-  };
-
-  const formatMonth = (monthStr: string) => {
-    const [year, month] = monthStr.split("-");
-    return `${year}年${month}月`;
-  };
 
   // 准备每日图表数据
   const dailyChartData = useMemo(() => {
@@ -111,7 +114,7 @@ export function CostChart({ records, apis }: CostChartProps) {
 
   // 准备每月图表数据
   const monthlyChartData = useMemo(() => {
-    return aggregateByMonth(records);
+    return aggregateByMonth(records, apis);
   }, [records, apis]);
 
   if (records.length === 0) {

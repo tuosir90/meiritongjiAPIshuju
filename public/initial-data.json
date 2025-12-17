@@ -1,12 +1,23 @@
 {
-  "version": "1.0.31",
-  "lastUpdated": "2025-12-15T10:00:00Z",
+  "version": "1.0.32",
+  "lastUpdated": "2025-12-16T10:00:00Z",
   "apis": [
     { "id": "volcengine", "name": "火山引擎（字节跳动）", "color": "#0052D9" },
     { "id": "yunwu", "name": "云雾API", "color": "#00b96b" },
     { "id": "tangguo", "name": "糖果姐姐API", "color": "#ff5c93" }
   ],
   "records": [
+    {
+      "id": "2025-12-16-1",
+      "date": "2025-12-16",
+      "apiCosts": [
+        { "apiId": "volcengine", "cost": 3.4 },
+        { "apiId": "yunwu", "cost": 36.64 },
+        { "apiId": "tangguo", "cost": 32.92 }
+      ],
+      "imageCount": 1472,
+      "totalCost": 72.96
+    },
     {
       "id": "2025-12-15-1",
       "date": "2025-12-15",

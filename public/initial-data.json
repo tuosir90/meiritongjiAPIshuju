@@ -1,5 +1,5 @@
 {
-  "version": "1.0.33",
+  "version": "1.0.34",
   "lastUpdated": "2025-12-18T10:00:00Z",
   "apis": [
     { "id": "volcengine", "name": "火山引擎（字节跳动）", "color": "#0052D9" },
@@ -8,8 +8,8 @@
   ],
   "records": [
     {
-      "id": "2025-12-16-1",
-      "date": "2025-12-16",
+      "id": "2025-12-17-1",
+      "date": "2025-12-17",
       "apiCosts": [
         { "apiId": "volcengine", "cost": 5 },
         { "apiId": "yunwu", "cost": 20.78 },
@@ -17,6 +17,17 @@
       ],
       "imageCount": 920,
       "totalCost": 42.7
+    },
+    {
+      "id": "2025-12-16-1",
+      "date": "2025-12-16",
+      "apiCosts": [
+        { "apiId": "volcengine", "cost": 3.4 },
+        { "apiId": "yunwu", "cost": 36.64 },
+        { "apiId": "tangguo", "cost": 32.92 }
+      ],
+      "imageCount": 1472,
+      "totalCost": 72.96
     },
     {
       "id": "2025-12-15-1",

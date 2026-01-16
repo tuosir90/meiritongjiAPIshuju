@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## 项目结构与模块组织
-本项目使用 Next.js App Router，界面入口位于 `app/`（`layout.tsx`、`page.tsx` 及 `globals.css`）。复用 UI 组件放在 `components/`，其中 `components/ui/` 内的 shadcn/ui 封装负责基础交互，`dashboard.tsx`、`cost-chart.tsx` 等业务模块以 200 行为上限拆分。`hooks/use-app-data.ts` 负责状态管理与本地存储同步，`lib/` 内的 `types.ts`、`storage.ts`、`export.ts` 封装类型、持久化与导出逻辑；静态资源放 `public/`。新增功能请优先在对应目录中新建文件，保持顶层目录 <8 个子项、单文件 <200 行。
+本项目使用 Next.js App Router，界面入口位于 `app/`（`layout.tsx`、`page.tsx` 及 `globals.css`）。复用 UI 组件放在 `components/`，其中 `components/ui/` 内的 shadcn/ui 封装负责基础交互，`components/dashboard/`、`components/cost-chart/` 等业务模块以 200 行为上限拆分。`hooks/use-app-data.ts` 负责状态管理与本地存储同步，`lib/` 内的 `types.ts`、`storage.ts`、`export.ts` 封装类型、持久化与导出逻辑；静态资源放 `public/`。新增功能请优先在对应目录中新建文件，保持顶层目录 <8 个子项、单文件 <200 行。
 
 ## 构建、测试与开发命令
 - `npm install`：安装依赖，也可双击 `start.bat` 选择 [4]。

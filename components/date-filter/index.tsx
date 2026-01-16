@@ -13,12 +13,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-export interface DateFilter {
-  startDate: string | null;
-  endDate: string | null;
-  label: string;
-}
+import { DateFilter } from "./types";
+import { createEmptyFilter, getMonthOptions, getMonthRange, getQuickDateRange } from "./utils";
 
 interface DateFilterProps {
   onFilterChange: (filter: DateFilter) => void;
@@ -30,58 +26,8 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  const getDateRange = (type: string): DateFilter => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    switch (type) {
-      case "last7days":
-        const last7 = new Date(today);
-        last7.setDate(last7.getDate() - 6);
-        return {
-          startDate: last7.toISOString().split("T")[0],
-          endDate: today.toISOString().split("T")[0],
-          label: "最近7天"
-        };
-
-      case "last30days":
-        const last30 = new Date(today);
-        last30.setDate(last30.getDate() - 29);
-        return {
-          startDate: last30.toISOString().split("T")[0],
-          endDate: today.toISOString().split("T")[0],
-          label: "最近30天"
-        };
-
-      case "thisMonth":
-        const monthStart = new Date(year, month, 1);
-        return {
-          startDate: monthStart.toISOString().split("T")[0],
-          endDate: today.toISOString().split("T")[0],
-          label: "本月"
-        };
-
-      case "lastMonth":
-        const lastMonthStart = new Date(year, month - 1, 1);
-        const lastMonthEnd = new Date(year, month, 0);
-        return {
-          startDate: lastMonthStart.toISOString().split("T")[0],
-          endDate: lastMonthEnd.toISOString().split("T")[0],
-          label: "上月"
-        };
-
-      default:
-        return {
-          startDate: null,
-          endDate: null,
-          label: "全部"
-        };
-    }
-  };
-
   const handleQuickSelect = (type: string) => {
-    const filter = getDateRange(type);
+    const filter = getQuickDateRange(type);
     onFilterChange(filter);
     setIsOpen(false);
   };
@@ -91,52 +37,25 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
       onFilterChange({
         startDate,
         endDate,
-        label: `自定义 (${startDate} ~ ${endDate})`
+        label: `自定义 (${startDate} ~ ${endDate})`,
       });
       setIsOpen(false);
     }
   };
 
   const handleClear = () => {
-    onFilterChange({
-      startDate: null,
-      endDate: null,
-      label: "全部"
-    });
+    onFilterChange(createEmptyFilter());
     setStartDate("");
     setEndDate("");
     setIsOpen(false);
   };
 
-  // 生成最近12个月的选项
-  const getMonthOptions = () => {
-    const months = [];
-    const today = new Date();
-    for (let i = 0; i < 12; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const monthStr = `${year}-${month.toString().padStart(2, "0")}`;
-      months.push({
-        value: monthStr,
-        label: `${year}年${month}月`
-      });
-    }
-    return months;
-  };
-
   const handleMonthSelect = (monthStr: string) => {
-    const [year, month] = monthStr.split("-").map(Number);
-    const monthStart = new Date(year, month - 1, 1);
-    const monthEnd = new Date(year, month, 0);
-
-    onFilterChange({
-      startDate: monthStart.toISOString().split("T")[0],
-      endDate: monthEnd.toISOString().split("T")[0],
-      label: `${year}年${month}月`
-    });
+    onFilterChange(getMonthRange(monthStr));
     setIsOpen(false);
   };
+
+  const monthOptions = getMonthOptions();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -166,7 +85,6 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* 快速选择 */}
           <div>
             <Label className="text-sm font-semibold mb-3 block">快速选择</Label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -205,11 +123,10 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
             </div>
           </div>
 
-          {/* 按月选择 */}
           <div>
             <Label className="text-sm font-semibold mb-3 block">按月选择</Label>
             <div className="grid grid-cols-3 md:grid-cols-4 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
-              {getMonthOptions().map((month) => (
+              {monthOptions.map((month) => (
                 <Button
                   key={month.value}
                   variant="outline"
@@ -223,7 +140,6 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
             </div>
           </div>
 
-          {/* 自定义日期范围 */}
           <div>
             <Label className="text-sm font-semibold mb-3 block">自定义日期范围</Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -260,11 +176,7 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
               >
                 应用自定义范围
               </Button>
-              <Button
-                onClick={handleClear}
-                variant="outline"
-                className="flex-1"
-              >
+              <Button onClick={handleClear} variant="outline" className="flex-1">
                 清除筛选
               </Button>
             </div>
@@ -274,3 +186,5 @@ export function DateFilterComponent({ onFilterChange, currentFilter }: DateFilte
     </Dialog>
   );
 }
+
+export type { DateFilter } from "./types";

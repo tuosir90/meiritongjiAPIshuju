@@ -46,11 +46,11 @@ api-cost-tracker/
 │   │   ├── input.tsx
 │   │   ├── label.tsx
 │   │   └── table.tsx
-│   ├── dashboard.tsx          # 主仪表板组件
+│   ├── dashboard/          # 主仪表板组件
 │   ├── record-form.tsx        # 数据录入表单
 │   ├── records-table.tsx      # 数据表格（含排序、编辑、删除）
 │   ├── stats-cards.tsx        # 统计卡片
-│   ├── cost-chart.tsx         # 图表组件（Recharts）
+│   ├── cost-chart/         # 图表组件（Recharts）
 │   ├── theme-provider.tsx     # 主题提供者
 │   └── theme-toggle.tsx       # 主题切换按钮
 ├── hooks/                      # 自定义React Hooks
@@ -150,7 +150,7 @@ const DEFAULT_APIS: ApiConfig[] = [
 1. 在 `lib/types.ts` 中添加类型定义
 2. 在 `lib/storage.ts` 中添加数据处理逻辑
 3. 在 `components/` 中创建相应组件
-4. 在 `components/dashboard.tsx` 中集成新功能
+4. 在 `components/dashboard/` 中集成新功能
 
 ## 💡 使用技巧
 

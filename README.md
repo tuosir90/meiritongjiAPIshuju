@@ -516,12 +516,12 @@ git push
 │   └── globals.css        # 全局样式（自定义滚动条、渐变）
 ├── components/            # React组件
 │   ├── ui/               # shadcn/ui基础组件
-│   ├── dashboard.tsx     # 主仪表板（集成筛选）
+│   ├── dashboard/        # 主仪表板（集成筛选）
 │   ├── record-form.tsx   # 数据录入表单
 │   ├── records-table.tsx # 数据表格
 │   ├── stats-cards.tsx   # 统计卡片（渐变美化）
-│   ├── cost-chart.tsx    # 图表组件（按日/按月切换）
-│   ├── date-filter.tsx   # 日期筛选组件（新增）
+│   ├── cost-chart/       # 图表组件（按日/按月切换）
+│   ├── date-filter/      # 日期筛选组件（新增）
 │   └── theme-toggle.tsx  # 主题切换
 ├── hooks/                 # 自定义Hooks
 │   └── use-app-data.ts   # 数据管理Hook

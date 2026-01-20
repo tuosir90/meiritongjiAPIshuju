@@ -1,19 +1,40 @@
 {
-  "version": "1.0.65",
-  "lastUpdated": "2026-01-19T01:41:34Z",
+  "version": "1.0.66",
+  "lastUpdated": "2026-01-20T01:10:53Z",
   "apis": [
-    { "id": "volcengine", "name": "火山引擎（字节跳动）", "color": "#0052D9" },
-    { "id": "yunwu", "name": "云雾API", "color": "#00b96b" },
-    { "id": "tangguo", "name": "糖果姐姐API", "color": "#ff5c93" }
+    {
+      "id": "volcengine",
+      "name": "火山引擎（字节跳动）",
+      "color": "#0052D9"
+    },
+    {
+      "id": "yunwu",
+      "name": "云雾API",
+      "color": "#00b96b"
+    },
+    {
+      "id": "tangguo",
+      "name": "糖果姐姐API",
+      "color": "#ff5c93"
+    }
   ],
   "records": [
     {
       "id": "2026-01-18-1",
       "date": "2026-01-18",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.6 },
-        { "apiId": "yunwu", "cost": 0.32 },
-        { "apiId": "tangguo", "cost": 4.6 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 0.32
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 4.6
+        }
       ],
       "imageCount": 111,
       "totalCost": 6.52
@@ -22,9 +43,18 @@
       "id": "2026-01-17-1",
       "date": "2026-01-17",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.4 },
-        { "apiId": "yunwu", "cost": 9.35 },
-        { "apiId": "tangguo", "cost": 5.68 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 9.35
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 5.68
+        }
       ],
       "imageCount": 266,
       "totalCost": 16.43
@@ -33,9 +63,18 @@
       "id": "2026-01-16-1",
       "date": "2026-01-16",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.6 },
-        { "apiId": "yunwu", "cost": 20.16 },
-        { "apiId": "tangguo", "cost": 0.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 20.16
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0.92
+        }
       ],
       "imageCount": 207,
       "totalCost": 21.68
@@ -44,9 +83,18 @@
       "id": "2026-01-14-1",
       "date": "2026-01-14",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.8 },
-        { "apiId": "yunwu", "cost": 19.81 },
-        { "apiId": "tangguo", "cost": 1.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.81
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 1.92
+        }
       ],
       "imageCount": 382,
       "totalCost": 22.53
@@ -55,9 +103,18 @@
       "id": "2026-01-13-1",
       "date": "2026-01-13",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2 },
-        { "apiId": "yunwu", "cost": 19.36 },
-        { "apiId": "tangguo", "cost": 6.44 }
+        {
+          "apiId": "volcengine",
+          "cost": 2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.36
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 6.44
+        }
       ],
       "imageCount": 167,
       "totalCost": 27.8
@@ -66,9 +123,18 @@
       "id": "2026-01-12-1",
       "date": "2026-01-12",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3 },
-        { "apiId": "yunwu", "cost": 10.51 },
-        { "apiId": "tangguo", "cost": 9.08 }
+        {
+          "apiId": "volcengine",
+          "cost": 3
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10.51
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.08
+        }
       ],
       "imageCount": 381,
       "totalCost": 22.59
@@ -77,9 +143,18 @@
       "id": "2026-01-11-1",
       "date": "2026-01-11",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.4 },
-        { "apiId": "yunwu", "cost": 18.72 },
-        { "apiId": "tangguo", "cost": 8 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 18.72
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 8
+        }
       ],
       "imageCount": 574,
       "totalCost": 28.12
@@ -88,9 +163,18 @@
       "id": "2026-01-10-1",
       "date": "2026-01-10",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.4 },
-        { "apiId": "yunwu", "cost": 13.54 },
-        { "apiId": "tangguo", "cost": 6.84 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 13.54
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 6.84
+        }
       ],
       "imageCount": 341,
       "totalCost": 21.78
@@ -99,9 +183,18 @@
       "id": "2026-01-09-1",
       "date": "2026-01-09",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4 },
-        { "apiId": "yunwu", "cost": 7.76 },
-        { "apiId": "tangguo", "cost": 6.88 }
+        {
+          "apiId": "volcengine",
+          "cost": 4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 7.76
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 6.88
+        }
       ],
       "imageCount": 305,
       "totalCost": 18.64
@@ -110,9 +203,18 @@
       "id": "2026-01-08-1",
       "date": "2026-01-08",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.8 },
-        { "apiId": "yunwu", "cost": 23.49 },
-        { "apiId": "tangguo", "cost": 9.44 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 23.49
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.44
+        }
       ],
       "imageCount": 701,
       "totalCost": 36.73
@@ -121,9 +223,18 @@
       "id": "2026-01-07-1",
       "date": "2026-01-07",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4.2 },
-        { "apiId": "yunwu", "cost": 27.76 },
-        { "apiId": "tangguo", "cost": 8.12 }
+        {
+          "apiId": "volcengine",
+          "cost": 4.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 27.76
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 8.12
+        }
       ],
       "imageCount": 753,
       "totalCost": 40.08
@@ -132,9 +243,18 @@
       "id": "2026-01-06-1",
       "date": "2026-01-06",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.8 },
-        { "apiId": "yunwu", "cost": 17.98 },
-        { "apiId": "tangguo", "cost": 16.48 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 17.98
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.48
+        }
       ],
       "imageCount": 687,
       "totalCost": 37.26
@@ -143,9 +263,18 @@
       "id": "2026-01-05-1",
       "date": "2026-01-05",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.6 },
-        { "apiId": "yunwu", "cost": 11.71 },
-        { "apiId": "tangguo", "cost": 8 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 11.71
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 8
+        }
       ],
       "imageCount": 201,
       "totalCost": 20.31
@@ -154,9 +283,18 @@
       "id": "2026-01-04-1",
       "date": "2026-01-04",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.2 },
-        { "apiId": "yunwu", "cost": 8.98 },
-        { "apiId": "tangguo", "cost": 13.64 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 8.98
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 13.64
+        }
       ],
       "imageCount": 426,
       "totalCost": 22.82
@@ -165,9 +303,18 @@
       "id": "2026-01-03-1",
       "date": "2026-01-03",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.8 },
-        { "apiId": "yunwu", "cost": 10.89 },
-        { "apiId": "tangguo", "cost": 6.36 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10.89
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 6.36
+        }
       ],
       "imageCount": 358,
       "totalCost": 19.05
@@ -176,9 +323,18 @@
       "id": "2026-01-02-1",
       "date": "2026-01-02",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1 },
-        { "apiId": "yunwu", "cost": 31.4 },
-        { "apiId": "tangguo", "cost": 6.36 }
+        {
+          "apiId": "volcengine",
+          "cost": 1
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 31.4
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 6.36
+        }
       ],
       "imageCount": 704,
       "totalCost": 38.76
@@ -187,9 +343,18 @@
       "id": "2026-01-01-1",
       "date": "2026-01-01",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3 },
-        { "apiId": "yunwu", "cost": 17.83 },
-        { "apiId": "tangguo", "cost": 2.72 }
+        {
+          "apiId": "volcengine",
+          "cost": 3
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 17.83
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 2.72
+        }
       ],
       "imageCount": 225,
       "totalCost": 23.55
@@ -198,9 +363,18 @@
       "id": "2025-12-31-1",
       "date": "2025-12-31",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2 },
-        { "apiId": "yunwu", "cost": 24.97 },
-        { "apiId": "tangguo", "cost": 1.4 }
+        {
+          "apiId": "volcengine",
+          "cost": 2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 24.97
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 1.4
+        }
       ],
       "imageCount": 424,
       "totalCost": 28.37
@@ -209,9 +383,18 @@
       "id": "2025-12-30-1",
       "date": "2025-12-30",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.8 },
-        { "apiId": "yunwu", "cost": 25.62 },
-        { "apiId": "tangguo", "cost": 16.88 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 25.62
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.88
+        }
       ],
       "imageCount": 675,
       "totalCost": 43.3
@@ -220,9 +403,18 @@
       "id": "2025-12-29-1",
       "date": "2025-12-29",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4.4 },
-        { "apiId": "yunwu", "cost": 20.55 },
-        { "apiId": "tangguo", "cost": 14.72 }
+        {
+          "apiId": "volcengine",
+          "cost": 4.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 20.55
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 14.72
+        }
       ],
       "imageCount": 781,
       "totalCost": 39.67
@@ -231,9 +423,18 @@
       "id": "2025-12-28-1",
       "date": "2025-12-28",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1 },
-        { "apiId": "yunwu", "cost": 7.4 },
-        { "apiId": "tangguo", "cost": 9.56 }
+        {
+          "apiId": "volcengine",
+          "cost": 1
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 7.4
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.56
+        }
       ],
       "imageCount": 337,
       "totalCost": 17.96
@@ -242,9 +443,18 @@
       "id": "2025-12-27-1",
       "date": "2025-12-27",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0.4 },
-        { "apiId": "yunwu", "cost": 10.06 },
-        { "apiId": "tangguo", "cost": 8.12 }
+        {
+          "apiId": "volcengine",
+          "cost": 0.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10.06
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 8.12
+        }
       ],
       "imageCount": 363,
       "totalCost": 18.58
@@ -253,9 +463,18 @@
       "id": "2025-12-26-1",
       "date": "2025-12-26",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4 },
-        { "apiId": "yunwu", "cost": 24.47 },
-        { "apiId": "tangguo", "cost": 26 }
+        {
+          "apiId": "volcengine",
+          "cost": 4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 24.47
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 26
+        }
       ],
       "imageCount": 1000,
       "totalCost": 54.47
@@ -264,9 +483,18 @@
       "id": "2025-12-25-1",
       "date": "2025-12-25",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.2 },
-        { "apiId": "yunwu", "cost": 17.88 },
-        { "apiId": "tangguo", "cost": 9.48 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 17.88
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.48
+        }
       ],
       "imageCount": 444,
       "totalCost": 29.56
@@ -275,9 +503,18 @@
       "id": "2025-12-24-1",
       "date": "2025-12-24",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.4 },
-        { "apiId": "yunwu", "cost": 29.6 },
-        { "apiId": "tangguo", "cost": 17.96 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 29.6
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 17.96
+        }
       ],
       "imageCount": 974,
       "totalCost": 48.96
@@ -286,9 +523,18 @@
       "id": "2025-12-23-1",
       "date": "2025-12-23",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.4 },
-        { "apiId": "yunwu", "cost": 26.87 },
-        { "apiId": "tangguo", "cost": 20.28 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 26.87
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 20.28
+        }
       ],
       "imageCount": 877,
       "totalCost": 49.55
@@ -297,9 +543,18 @@
       "id": "2025-12-22-1",
       "date": "2025-12-22",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.8 },
-        { "apiId": "yunwu", "cost": 35.49 },
-        { "apiId": "tangguo", "cost": 8.68 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 35.49
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 8.68
+        }
       ],
       "imageCount": 926,
       "totalCost": 46.97
@@ -308,9 +563,18 @@
       "id": "2025-12-21-1",
       "date": "2025-12-21",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3 },
-        { "apiId": "yunwu", "cost": 10.22 },
-        { "apiId": "tangguo", "cost": 1 }
+        {
+          "apiId": "volcengine",
+          "cost": 3
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10.22
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 1
+        }
       ],
       "imageCount": 255,
       "totalCost": 14.22
@@ -319,9 +583,18 @@
       "id": "2025-12-20-1",
       "date": "2025-12-20",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5.8 },
-        { "apiId": "yunwu", "cost": 22.48 },
-        { "apiId": "tangguo", "cost": 15.4 }
+        {
+          "apiId": "volcengine",
+          "cost": 5.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 22.48
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 15.4
+        }
       ],
       "imageCount": 814,
       "totalCost": 43.68
@@ -330,9 +603,18 @@
       "id": "2025-12-19-1",
       "date": "2025-12-19",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9 },
-        { "apiId": "yunwu", "cost": 26.84 },
-        { "apiId": "tangguo", "cost": 23.84 }
+        {
+          "apiId": "volcengine",
+          "cost": 9
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 26.84
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 23.84
+        }
       ],
       "imageCount": 1091,
       "totalCost": 59.68
@@ -341,9 +623,18 @@
       "id": "2025-12-18-1",
       "date": "2025-12-18",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4.4 },
-        { "apiId": "yunwu", "cost": 37.02 },
-        { "apiId": "tangguo", "cost": 17.64 }
+        {
+          "apiId": "volcengine",
+          "cost": 4.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 37.02
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 17.64
+        }
       ],
       "imageCount": 990,
       "totalCost": 59.06
@@ -352,9 +643,18 @@
       "id": "2025-12-17-1",
       "date": "2025-12-17",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5 },
-        { "apiId": "yunwu", "cost": 20.78 },
-        { "apiId": "tangguo", "cost": 16.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 5
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 20.78
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.92
+        }
       ],
       "imageCount": 920,
       "totalCost": 42.7
@@ -363,9 +663,18 @@
       "id": "2025-12-16-1",
       "date": "2025-12-16",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.4 },
-        { "apiId": "yunwu", "cost": 36.64 },
-        { "apiId": "tangguo", "cost": 32.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 36.64
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 32.92
+        }
       ],
       "imageCount": 1472,
       "totalCost": 72.96
@@ -374,9 +683,18 @@
       "id": "2025-12-15-1",
       "date": "2025-12-15",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5.2 },
-        { "apiId": "yunwu", "cost": 19.46 },
-        { "apiId": "tangguo", "cost": 18.4 }
+        {
+          "apiId": "volcengine",
+          "cost": 5.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.46
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 18.4
+        }
       ],
       "imageCount": 815,
       "totalCost": 43.06
@@ -385,9 +703,18 @@
       "id": "2025-12-14-1",
       "date": "2025-12-14",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2 },
-        { "apiId": "yunwu", "cost": 6.01 },
-        { "apiId": "tangguo", "cost": 9.82 }
+        {
+          "apiId": "volcengine",
+          "cost": 2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 6.01
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.82
+        }
       ],
       "imageCount": 285,
       "totalCost": 17.83
@@ -396,9 +723,18 @@
       "id": "2025-12-13-1",
       "date": "2025-12-13",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.2 },
-        { "apiId": "yunwu", "cost": 17.04 },
-        { "apiId": "tangguo", "cost": 10.72 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 17.04
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 10.72
+        }
       ],
       "imageCount": 601,
       "totalCost": 30.96
@@ -407,9 +743,18 @@
       "id": "2025-12-12-1",
       "date": "2025-12-12",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 6.8 },
-        { "apiId": "yunwu", "cost": 25.22 },
-        { "apiId": "tangguo", "cost": 16.8 }
+        {
+          "apiId": "volcengine",
+          "cost": 6.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 25.22
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.8
+        }
       ],
       "imageCount": 802,
       "totalCost": 48.82
@@ -418,9 +763,18 @@
       "id": "2025-12-11-1",
       "date": "2025-12-11",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5.6 },
-        { "apiId": "yunwu", "cost": 15.71 },
-        { "apiId": "tangguo", "cost": 17.4 }
+        {
+          "apiId": "volcengine",
+          "cost": 5.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 15.71
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 17.4
+        }
       ],
       "imageCount": 716,
       "totalCost": 38.71
@@ -429,9 +783,18 @@
       "id": "2025-12-10-1",
       "date": "2025-12-10",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9.8 },
-        { "apiId": "yunwu", "cost": 15.41 },
-        { "apiId": "tangguo", "cost": 20.72 }
+        {
+          "apiId": "volcengine",
+          "cost": 9.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 15.41
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 20.72
+        }
       ],
       "imageCount": 784,
       "totalCost": 45.93
@@ -440,9 +803,18 @@
       "id": "2025-12-09-1",
       "date": "2025-12-09",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 10 },
-        { "apiId": "yunwu", "cost": 14.29 },
-        { "apiId": "tangguo", "cost": 35.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 10
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 14.29
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 35.92
+        }
       ],
       "imageCount": 1153,
       "totalCost": 60.21
@@ -451,9 +823,18 @@
       "id": "2025-12-08-1",
       "date": "2025-12-08",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9.6 },
-        { "apiId": "yunwu", "cost": 14.44 },
-        { "apiId": "tangguo", "cost": 39.28 }
+        {
+          "apiId": "volcengine",
+          "cost": 9.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 14.44
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 39.28
+        }
       ],
       "imageCount": 1198,
       "totalCost": 63.32
@@ -462,9 +843,18 @@
       "id": "2025-12-07-1",
       "date": "2025-12-07",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.2 },
-        { "apiId": "yunwu", "cost": 22.88 },
-        { "apiId": "tangguo", "cost": 5 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 22.88
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 5
+        }
       ],
       "imageCount": 398,
       "totalCost": 31.08
@@ -473,9 +863,18 @@
       "id": "2025-12-06-1",
       "date": "2025-12-06",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5 },
-        { "apiId": "yunwu", "cost": 1.66 },
-        { "apiId": "tangguo", "cost": 13.16 }
+        {
+          "apiId": "volcengine",
+          "cost": 5
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 1.66
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 13.16
+        }
       ],
       "imageCount": 330,
       "totalCost": 19.82
@@ -484,9 +883,18 @@
       "id": "2025-12-05-1",
       "date": "2025-12-05",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 4.8 },
-        { "apiId": "yunwu", "cost": 22.88 },
-        { "apiId": "tangguo", "cost": 13.16 }
+        {
+          "apiId": "volcengine",
+          "cost": 4.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 22.88
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 13.16
+        }
       ],
       "imageCount": 762,
       "totalCost": 40.84
@@ -495,9 +903,18 @@
       "id": "2025-12-04-1",
       "date": "2025-12-04",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.2 },
-        { "apiId": "yunwu", "cost": 19.84 },
-        { "apiId": "tangguo", "cost": 18.8 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.84
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 18.8
+        }
       ],
       "imageCount": 844,
       "totalCost": 41.84
@@ -506,9 +923,18 @@
       "id": "2025-12-03-1",
       "date": "2025-12-03",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9.6 },
-        { "apiId": "yunwu", "cost": 20.15 },
-        { "apiId": "tangguo", "cost": 20 }
+        {
+          "apiId": "volcengine",
+          "cost": 9.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 20.15
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 20
+        }
       ],
       "imageCount": 944,
       "totalCost": 49.75
@@ -517,9 +943,18 @@
       "id": "2025-12-02-1",
       "date": "2025-12-02",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 8.6 },
-        { "apiId": "yunwu", "cost": 19.75 },
-        { "apiId": "tangguo", "cost": 31.6 }
+        {
+          "apiId": "volcengine",
+          "cost": 8.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.75
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 31.6
+        }
       ],
       "imageCount": 1138,
       "totalCost": 59.95
@@ -528,9 +963,18 @@
       "id": "2025-12-01-1",
       "date": "2025-12-01",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 10 },
-        { "apiId": "yunwu", "cost": 15.05 },
-        { "apiId": "tangguo", "cost": 18 }
+        {
+          "apiId": "volcengine",
+          "cost": 10
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 15.05
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 18
+        }
       ],
       "imageCount": 672,
       "totalCost": 43.05
@@ -539,9 +983,18 @@
       "id": "2025-11-30-1",
       "date": "2025-11-30",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.6 },
-        { "apiId": "yunwu", "cost": 4.17 },
-        { "apiId": "tangguo", "cost": 23.4 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 4.17
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 23.4
+        }
       ],
       "imageCount": 569,
       "totalCost": 29.17
@@ -550,9 +1003,18 @@
       "id": "2025-11-29-1",
       "date": "2025-11-29",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5.4 },
-        { "apiId": "yunwu", "cost": 5.44 },
-        { "apiId": "tangguo", "cost": 2.72 }
+        {
+          "apiId": "volcengine",
+          "cost": 5.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 5.44
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 2.72
+        }
       ],
       "imageCount": 183,
       "totalCost": 13.56
@@ -561,9 +1023,18 @@
       "id": "2025-11-28-1",
       "date": "2025-11-28",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 7.2 },
-        { "apiId": "yunwu", "cost": 14.54 },
-        { "apiId": "tangguo", "cost": 28.43 }
+        {
+          "apiId": "volcengine",
+          "cost": 7.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 14.54
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 28.43
+        }
       ],
       "imageCount": 967,
       "totalCost": 50.17
@@ -572,9 +1043,18 @@
       "id": "2025-11-27-1",
       "date": "2025-11-27",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 13.8 },
-        { "apiId": "yunwu", "cost": 15.75 },
-        { "apiId": "tangguo", "cost": 30.48 }
+        {
+          "apiId": "volcengine",
+          "cost": 13.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 15.75
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 30.48
+        }
       ],
       "imageCount": 1082,
       "totalCost": 60.03
@@ -583,9 +1063,18 @@
       "id": "2025-11-26-1",
       "date": "2025-11-26",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 7.2 },
-        { "apiId": "yunwu", "cost": 14.83 },
-        { "apiId": "tangguo", "cost": 20.44 }
+        {
+          "apiId": "volcengine",
+          "cost": 7.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 14.83
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 20.44
+        }
       ],
       "imageCount": 835,
       "totalCost": 42.47
@@ -594,9 +1083,18 @@
       "id": "2025-11-25-1",
       "date": "2025-11-25",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.6 },
-        { "apiId": "yunwu", "cost": 4.63 },
-        { "apiId": "tangguo", "cost": 16.84 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 4.63
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.84
+        }
       ],
       "imageCount": 530,
       "totalCost": 24.07
@@ -605,9 +1103,18 @@
       "id": "2025-11-24-1",
       "date": "2025-11-24",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 12.78 },
-        { "apiId": "yunwu", "cost": 0.39 },
-        { "apiId": "tangguo", "cost": 24.12 }
+        {
+          "apiId": "volcengine",
+          "cost": 12.78
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 0.39
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 24.12
+        }
       ],
       "imageCount": 875,
       "totalCost": 37.29
@@ -616,9 +1123,18 @@
       "id": "2025-11-23-1",
       "date": "2025-11-23",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 1.4 },
-        { "apiId": "yunwu", "cost": 0.39 },
-        { "apiId": "tangguo", "cost": 4.95 }
+        {
+          "apiId": "volcengine",
+          "cost": 1.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 0.39
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 4.95
+        }
       ],
       "imageCount": 119,
       "totalCost": 6.74
@@ -627,9 +1143,18 @@
       "id": "2025-11-22-1",
       "date": "2025-11-22",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 5.2 },
-        { "apiId": "yunwu", "cost": 8.63 },
-        { "apiId": "tangguo", "cost": 9.96 }
+        {
+          "apiId": "volcengine",
+          "cost": 5.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 8.63
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 9.96
+        }
       ],
       "imageCount": 436,
       "totalCost": 23.79
@@ -638,9 +1163,18 @@
       "id": "2025-11-21-1",
       "date": "2025-11-21",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9.8 },
-        { "apiId": "yunwu", "cost": 10.74 },
-        { "apiId": "tangguo", "cost": 25.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 9.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10.74
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 25.92
+        }
       ],
       "imageCount": 825,
       "totalCost": 46.46
@@ -649,9 +1183,18 @@
       "id": "2025-11-20-1",
       "date": "2025-11-20",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 8 },
-        { "apiId": "yunwu", "cost": 11.82 },
-        { "apiId": "tangguo", "cost": 24.6 }
+        {
+          "apiId": "volcengine",
+          "cost": 8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 11.82
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 24.6
+        }
       ],
       "imageCount": 820,
       "totalCost": 44.42
@@ -660,9 +1203,18 @@
       "id": "2025-11-19-1",
       "date": "2025-11-19",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 7.4 },
-        { "apiId": "yunwu", "cost": 11.7 },
-        { "apiId": "tangguo", "cost": 23 }
+        {
+          "apiId": "volcengine",
+          "cost": 7.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 11.7
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 23
+        }
       ],
       "imageCount": 838,
       "totalCost": 42.1
@@ -671,9 +1223,18 @@
       "id": "2025-11-18-1",
       "date": "2025-11-18",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 8.6 },
-        { "apiId": "yunwu", "cost": 35.1 },
-        { "apiId": "tangguo", "cost": 46.28 }
+        {
+          "apiId": "volcengine",
+          "cost": 8.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 35.1
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 46.28
+        }
       ],
       "imageCount": 1874,
       "totalCost": 89.98
@@ -682,9 +1243,18 @@
       "id": "2025-11-17-1",
       "date": "2025-11-17",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 9.8 },
-        { "apiId": "yunwu", "cost": 29.11 },
-        { "apiId": "tangguo", "cost": 32.92 }
+        {
+          "apiId": "volcengine",
+          "cost": 9.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 29.11
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 32.92
+        }
       ],
       "imageCount": 1484,
       "totalCost": 71.83
@@ -693,9 +1263,18 @@
       "id": "2025-11-16-1",
       "date": "2025-11-16",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 2.8 },
-        { "apiId": "yunwu", "cost": 8.91 },
-        { "apiId": "tangguo", "cost": 7.84 }
+        {
+          "apiId": "volcengine",
+          "cost": 2.8
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 8.91
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 7.84
+        }
       ],
       "imageCount": 396,
       "totalCost": 19.55
@@ -704,9 +1283,18 @@
       "id": "2025-11-15-1",
       "date": "2025-11-15",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.4 },
-        { "apiId": "yunwu", "cost": 5.8 },
-        { "apiId": "tangguo", "cost": 16.08 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.4
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 5.8
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 16.08
+        }
       ],
       "imageCount": 687,
       "totalCost": 25.28
@@ -715,9 +1303,18 @@
       "id": "2025-11-14-1",
       "date": "2025-11-14",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 3.6 },
-        { "apiId": "yunwu", "cost": 10 },
-        { "apiId": "tangguo", "cost": 25 }
+        {
+          "apiId": "volcengine",
+          "cost": 3.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 10
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 25
+        }
       ],
       "imageCount": 978,
       "totalCost": 38.6
@@ -726,12 +1323,41 @@
       "id": "2025-11-13-1",
       "date": "2025-11-13",
       "apiCosts": [
-        { "apiId": "volcengine", "cost": 0 },
-        { "apiId": "yunwu", "cost": 0 },
-        { "apiId": "tangguo", "cost": 28.56 }
+        {
+          "apiId": "volcengine",
+          "cost": 0
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 0
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 28.56
+        }
       ],
       "imageCount": 654,
       "totalCost": 28.56
+    },
+    {
+      "id": "2026-01-19-1",
+      "date": "2026-01-19",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 26.59
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 10.32
+        }
+      ],
+      "imageCount": 594,
+      "totalCost": 37.51
     }
   ]
 }

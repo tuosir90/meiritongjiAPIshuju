@@ -141,8 +141,8 @@ if ($missing.Count -eq 0) {
     exit 0
 }
 
-$missing = $missing | Sort-Object date -Descending
-$data.records = @($missing + $data.records) | Sort-Object date -Descending
+$missing = @($missing | Sort-Object date -Descending)
+$data.records = @(@($missing) + @($data.records) | Sort-Object date -Descending)
 $data.version = Increment-Version $data.version
 $data.lastUpdated = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 

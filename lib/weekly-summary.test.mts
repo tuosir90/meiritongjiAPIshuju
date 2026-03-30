@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildWeeklySummaries } from "./weekly-summary.ts";
+import {
+  buildWeeklySummaries,
+  DEFAULT_VISIBLE_WEEKS,
+  getVisibleWeeklySummaries,
+} from "./weekly-summary.ts";
 import type { ApiConfig, DailyRecord } from "./types.ts";
 
 const apis: ApiConfig[] = [
@@ -83,4 +87,17 @@ test("should group daily records into natural weeks and compute weekly totals", 
       { apiId: "tangguo", apiName: "糖果姐姐API", totalCost: 8, color: "#db2777" },
     ],
   });
+});
+
+test("should return only the latest week when visible range is 1", () => {
+  const summaries = buildWeeklySummaries(records, apis);
+
+  const visible = getVisibleWeeklySummaries(summaries, 1);
+
+  assert.equal(visible.length, 1);
+  assert.equal(visible[0]?.weekKey, "2026-03-30");
+});
+
+test("should use 1 week as the default visible range", () => {
+  assert.equal(DEFAULT_VISIBLE_WEEKS, 1);
 });

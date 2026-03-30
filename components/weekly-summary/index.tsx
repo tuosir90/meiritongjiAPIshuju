@@ -9,13 +9,18 @@ import { RefreshToast } from "@/components/dashboard/refresh-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAppData } from "@/hooks/use-app-data";
-import { buildWeeklySummaries } from "@/lib/weekly-summary";
+import {
+  buildWeeklySummaries,
+  DEFAULT_VISIBLE_WEEKS,
+  getVisibleWeeklySummaries,
+} from "@/lib/weekly-summary";
 import { RefreshMessage } from "@/components/dashboard/types";
 import { WeeklySummaryHero } from "./summary-hero";
 import { WeeklyTrendChart } from "./trend-chart";
 import { WeeklySummaryTable } from "./summary-table";
 
 const RANGE_OPTIONS = [
+  { label: "1周", value: 1 },
   { label: "4周", value: 4 },
   { label: "8周", value: 8 },
   { label: "12周", value: 12 },
@@ -25,7 +30,7 @@ const RANGE_OPTIONS = [
 export function WeeklySummaryPage() {
   const { data, isLoading, isRefreshing, refreshData } = useAppData();
   const [refreshMessage, setRefreshMessage] = useState<RefreshMessage | null>(null);
-  const [visibleWeeks, setVisibleWeeks] = useState(8);
+  const [visibleWeeks, setVisibleWeeks] = useState(DEFAULT_VISIBLE_WEEKS);
   const [isPending, startTransition] = useTransition();
 
   const weeklySummaries = useMemo(
@@ -34,10 +39,7 @@ export function WeeklySummaryPage() {
   );
 
   const displayedSummaries = useMemo(() => {
-    if (visibleWeeks === -1) {
-      return weeklySummaries;
-    }
-    return weeklySummaries.slice(0, visibleWeeks);
+    return getVisibleWeeklySummaries(weeklySummaries, visibleWeeks);
   }, [visibleWeeks, weeklySummaries]);
 
   const latestWeek = displayedSummaries[0];

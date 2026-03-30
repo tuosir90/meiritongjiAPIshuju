@@ -1,5 +1,7 @@
 import type { ApiConfig, DailyRecord, WeeklySummary } from "./types.ts";
 
+export const DEFAULT_VISIBLE_WEEKS = 1;
+
 function toIsoDate(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -88,4 +90,15 @@ export function buildWeeklySummaries(
       averageDailyImages: roundToTwo(summary.totalImages / summary.recordCount),
     }))
     .sort((a, b) => b.startDate.localeCompare(a.startDate));
+}
+
+export function getVisibleWeeklySummaries(
+  summaries: WeeklySummary[],
+  visibleWeeks: number
+): WeeklySummary[] {
+  if (visibleWeeks === -1) {
+    return summaries;
+  }
+
+  return summaries.slice(0, visibleWeeks);
 }

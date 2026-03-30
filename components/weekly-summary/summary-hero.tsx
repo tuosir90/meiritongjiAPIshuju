@@ -1,28 +1,15 @@
-import { ArrowUpRight, BarChart3, CalendarDays, Package, Sparkles } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Package, Sparkles, TrendingUp } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 import { WeeklySummary } from "@/lib/types";
+import { getWeeklyHeroStats } from "@/lib/weekly-summary-hero";
 
 interface WeeklySummaryHeroProps {
   latestWeek?: WeeklySummary;
   previousWeek?: WeeklySummary;
   totalWeeks: number;
   version?: string;
-}
-
-function formatDelta(current: number, previous?: number) {
-  if (previous === undefined) {
-    return "暂无上周数据可对比";
-  }
-
-  const delta = current - previous;
-  if (delta === 0) {
-    return "与上一周持平";
-  }
-
-  const prefix = delta > 0 ? "+" : "";
-  return `${prefix}${formatCurrency(delta)} 较上一周`;
 }
 
 export function WeeklySummaryHero({
@@ -45,32 +32,14 @@ export function WeeklySummaryHero({
     .slice()
     .sort((a, b) => b.totalCost - a.totalCost)[0];
 
-  const statCards = [
-    {
-      label: "周总费用",
-      value: formatCurrency(latestWeek.totalCost),
-      note: formatDelta(latestWeek.totalCost, previousWeek?.totalCost),
-      icon: Sparkles,
-    },
-    {
-      label: "周图片数",
-      value: latestWeek.totalImages.toLocaleString(),
-      note: `日均 ${Math.round(latestWeek.averageDailyImages).toLocaleString()} 张`,
-      icon: Package,
-    },
-    {
-      label: "单日峰值",
-      value: formatCurrency(latestWeek.maxDailyCost),
-      note: `${latestWeek.recordCount} 天有记录`,
-      icon: BarChart3,
-    },
-    {
-      label: "统计周数",
-      value: totalWeeks.toString(),
-      note: version ? `数据版本 ${version}` : "已按自然周聚合",
-      icon: CalendarDays,
-    },
-  ];
+  const statCards = getWeeklyHeroStats(latestWeek, previousWeek, totalWeeks, version);
+
+  const iconMap = {
+    totalCost: Sparkles,
+    totalImages: Package,
+    averageCost: TrendingUp,
+    weekCount: CalendarDays,
+  } as const;
 
   return (
     <section className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
@@ -100,7 +69,7 @@ export function WeeklySummaryHero({
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {statCards.map((item) => {
-              const Icon = item.icon;
+              const Icon = iconMap[item.iconName];
               return (
                 <div
                   key={item.label}

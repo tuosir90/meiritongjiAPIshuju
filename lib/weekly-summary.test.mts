@@ -8,6 +8,7 @@ import {
   getVisibleWeekCount,
   getVisibleWeeklySummaries,
 } from "./weekly-summary.ts";
+import { getWeeklyHeroStats } from "./weekly-summary-hero.ts";
 import type { ApiConfig, DailyRecord } from "./types.ts";
 
 const apis: ApiConfig[] = [
@@ -131,4 +132,19 @@ test("should return selected week count based on current visible range", () => {
   const visibleCount = getVisibleWeekCount(summaries, 1);
 
   assert.equal(visibleCount, 1);
+});
+
+test("should show average cost instead of max daily cost in weekly hero stats", () => {
+  const summaries = buildWeeklySummaries(records, apis);
+
+  const stats = getWeeklyHeroStats(summaries[1], summaries[0], 1, "1.0.0");
+  const averageCostStat = stats.find((item) => item.label === "平均费用");
+
+  assert.equal(stats.some((item) => item.label === "单日峰值"), false);
+  assert.deepEqual(averageCostStat, {
+    label: "平均费用",
+    value: "¥22.50",
+    note: "基于 2 天记录",
+    iconName: "averageCost",
+  });
 });

@@ -1,5 +1,7 @@
 "use client";
 
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+
 import { RefreshMessage } from "./types";
 
 interface RefreshToastProps {
@@ -20,7 +22,11 @@ export function RefreshToast({ message }: RefreshToastProps) {
       }`}
     >
       <div className="flex items-center gap-2">
-        {message.type === "success" ? "?" : "?"}
+        {message.type === "success" ? (
+          <CheckCircle2 className="h-4 w-4" />
+        ) : (
+          <AlertCircle className="h-4 w-4" />
+        )}
         <span className="font-medium">{message.text}</span>
       </div>
     </div>

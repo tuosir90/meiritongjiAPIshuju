@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Download, FileSpreadsheet, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -32,9 +33,17 @@ export function DashboardHeader({
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
               API费用统计系统
             </h1>
-            <p className="text-sm text-muted-foreground">?? 每日API接口费用和图片生成统计管理</p>
+            <p className="text-sm text-muted-foreground">每日 API 接口费用和图片生成统计管理</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 dark:hover:bg-emerald-950 dark:hover:text-emerald-400 transition-all"
+            >
+              <Link href="/weekly">周汇总</Link>
+            </Button>
             <DateFilterComponent onFilterChange={onDateFilterChange} currentFilter={dateFilter} />
             <Button
               variant="outline"

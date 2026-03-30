@@ -36,3 +36,30 @@ export interface AppData {
   apis: ApiConfig[]; // API配置列表
   records: DailyRecord[]; // 每日记录
 }
+
+/**
+ * 周汇总中的 API 费用拆分
+ */
+export interface WeeklyApiBreakdown {
+  apiId: string;
+  apiName: string;
+  totalCost: number;
+  color?: string;
+}
+
+/**
+ * 周汇总数据
+ */
+export interface WeeklySummary {
+  weekKey: string;
+  weekLabel: string;
+  startDate: string;
+  endDate: string;
+  recordCount: number;
+  totalCost: number;
+  totalImages: number;
+  averageDailyCost: number;
+  averageDailyImages: number;
+  maxDailyCost: number;
+  apiBreakdown: WeeklyApiBreakdown[];
+}

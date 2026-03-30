@@ -12,6 +12,7 @@ import { useAppData } from "@/hooks/use-app-data";
 import {
   buildWeeklySummaries,
   DEFAULT_VISIBLE_WEEKS,
+  getVisibleWeekCount,
   getVisibleWeeklySummaries,
 } from "@/lib/weekly-summary";
 import { RefreshMessage } from "@/components/dashboard/types";
@@ -40,6 +41,10 @@ export function WeeklySummaryPage() {
 
   const displayedSummaries = useMemo(() => {
     return getVisibleWeeklySummaries(weeklySummaries, visibleWeeks);
+  }, [visibleWeeks, weeklySummaries]);
+
+  const selectedWeekCount = useMemo(() => {
+    return getVisibleWeekCount(weeklySummaries, visibleWeeks);
   }, [visibleWeeks, weeklySummaries]);
 
   const latestWeek = displayedSummaries[0];
@@ -124,10 +129,10 @@ export function WeeklySummaryPage() {
         <WeeklySummaryHero
           latestWeek={latestWeek}
           previousWeek={previousWeek}
-          totalWeeks={weeklySummaries.length}
+          totalWeeks={selectedWeekCount}
           version={data.version}
         />
-        <WeeklyTrendChart summaries={displayedSummaries} />
+        <WeeklyTrendChart records={data.records} summaries={displayedSummaries} />
         <WeeklySummaryTable summaries={displayedSummaries} />
       </main>
 

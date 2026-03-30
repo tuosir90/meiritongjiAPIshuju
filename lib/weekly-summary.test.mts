@@ -3,7 +3,9 @@ import test from "node:test";
 
 import {
   buildWeeklySummaries,
+  buildWeeklyTrendDailyData,
   DEFAULT_VISIBLE_WEEKS,
+  getVisibleWeekCount,
   getVisibleWeeklySummaries,
 } from "./weekly-summary.ts";
 import type { ApiConfig, DailyRecord } from "./types.ts";
@@ -100,4 +102,33 @@ test("should return only the latest week when visible range is 1", () => {
 
 test("should use 1 week as the default visible range", () => {
   assert.equal(DEFAULT_VISIBLE_WEEKS, 1);
+});
+
+test("should build daily trend data for each day in the selected week", () => {
+  const summaries = buildWeeklySummaries(records, apis);
+  const visible = getVisibleWeeklySummaries(summaries, 1);
+
+  const trendData = buildWeeklyTrendDailyData(records, visible);
+
+  assert.equal(trendData.length, 7);
+  assert.deepEqual(trendData[0], {
+    date: "2026-03-30",
+    label: "03/30",
+    当日费用: 10,
+    图片数: 40,
+  });
+  assert.deepEqual(trendData[6], {
+    date: "2026-04-05",
+    label: "04/05",
+    当日费用: 0,
+    图片数: 0,
+  });
+});
+
+test("should return selected week count based on current visible range", () => {
+  const summaries = buildWeeklySummaries(records, apis);
+
+  const visibleCount = getVisibleWeekCount(summaries, 1);
+
+  assert.equal(visibleCount, 1);
 });

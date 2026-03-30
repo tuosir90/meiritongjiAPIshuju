@@ -2,6 +2,13 @@ import type { ApiConfig, DailyRecord, WeeklySummary } from "./types.ts";
 
 export const DEFAULT_VISIBLE_WEEKS = 1;
 
+interface WeeklyTrendDailyPoint {
+  date: string;
+  label: string;
+  当日费用: number;
+  图片数: number;
+}
+
 function toIsoDate(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -35,6 +42,18 @@ function getWeekRange(dateString: string) {
 
 function roundToTwo(value: number): number {
   return Math.round(value * 100) / 100;
+}
+
+function addDays(date: Date, days: number) {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+}
+
+function formatMonthDay(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${month}/${day}`;
 }
 
 export function buildWeeklySummaries(
@@ -101,4 +120,41 @@ export function getVisibleWeeklySummaries(
   }
 
   return summaries.slice(0, visibleWeeks);
+}
+
+export function getVisibleWeekCount(
+  summaries: WeeklySummary[],
+  visibleWeeks: number
+): number {
+  return getVisibleWeeklySummaries(summaries, visibleWeeks).length;
+}
+
+export function buildWeeklyTrendDailyData(
+  records: DailyRecord[],
+  summaries: WeeklySummary[]
+): WeeklyTrendDailyPoint[] {
+  const recordMap = new Map(records.map((record) => [record.date, record]));
+
+  return summaries
+    .slice()
+    .reverse()
+    .flatMap((summary) => {
+      const points: WeeklyTrendDailyPoint[] = [];
+      let currentDate = new Date(`${summary.startDate}T00:00:00`);
+      const endDate = new Date(`${summary.endDate}T00:00:00`);
+
+      while (currentDate <= endDate) {
+        const isoDate = toIsoDate(currentDate);
+        const record = recordMap.get(isoDate);
+        points.push({
+          date: isoDate,
+          label: formatMonthDay(currentDate),
+          当日费用: roundToTwo(record?.totalCost ?? 0),
+          图片数: record?.imageCount ?? 0,
+        });
+        currentDate = addDays(currentDate, 1);
+      }
+
+      return points;
+    });
 }

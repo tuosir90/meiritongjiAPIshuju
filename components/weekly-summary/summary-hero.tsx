@@ -54,7 +54,7 @@ export function WeeklySummaryHero({
               <div className="space-y-2">
                 <h2 className="text-3xl font-semibold tracking-tight">{latestWeek.weekLabel}</h2>
                 <p className="max-w-2xl text-sm leading-6 text-slate-200">
-                  这里集中展示最近一周的费用产出、峰值与 API 构成，方便单独做周度复盘。
+                  这里集中展示当前选中周期的费用产出、峰值与 API 构成，方便做周度复盘。
                 </p>
               </div>
             </div>
@@ -95,11 +95,11 @@ export function WeeklySummaryHero({
         <CardContent className="space-y-5 p-6">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-300">
-              最新一周 API 构成
+              当前选中周期 API 构成
             </p>
             <h3 className="text-2xl font-semibold text-slate-950 dark:text-white">费用分布</h3>
             <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
-              按最新一周聚合各 API 的费用，快速判断本周成本主要集中在哪个渠道。
+              按当前选中周期聚合各 API 的费用，快速判断当前成本主要集中在哪个渠道。
             </p>
           </div>
 

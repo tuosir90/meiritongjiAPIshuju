@@ -10,9 +10,10 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAppData } from "@/hooks/use-app-data";
 import {
+  buildCombinedWeeklySummary,
+  buildPreviousCombinedWeeklySummary,
   buildWeeklySummaries,
   DEFAULT_VISIBLE_WEEKS,
-  getVisibleWeekCount,
   getVisibleWeeklySummaries,
 } from "@/lib/weekly-summary";
 import { RefreshMessage } from "@/components/dashboard/types";
@@ -43,12 +44,14 @@ export function WeeklySummaryPage() {
     return getVisibleWeeklySummaries(weeklySummaries, visibleWeeks);
   }, [visibleWeeks, weeklySummaries]);
 
-  const selectedWeekCount = useMemo(() => {
-    return getVisibleWeekCount(weeklySummaries, visibleWeeks);
-  }, [visibleWeeks, weeklySummaries]);
+  const selectedWeekCount = displayedSummaries.length;
 
-  const latestWeek = displayedSummaries[0];
-  const previousWeek = weeklySummaries[1];
+  const latestWeek = useMemo(() => {
+    return buildCombinedWeeklySummary(displayedSummaries);
+  }, [displayedSummaries]);
+  const previousWeek = useMemo(() => {
+    return buildPreviousCombinedWeeklySummary(weeklySummaries, selectedWeekCount);
+  }, [selectedWeekCount, weeklySummaries]);
 
   const handleRefresh = async () => {
     const result = await refreshData();

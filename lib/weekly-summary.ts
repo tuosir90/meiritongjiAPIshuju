@@ -129,6 +129,70 @@ export function getVisibleWeekCount(
   return getVisibleWeeklySummaries(summaries, visibleWeeks).length;
 }
 
+export function buildCombinedWeeklySummary(
+  summaries: WeeklySummary[]
+): WeeklySummary | undefined {
+  if (summaries.length === 0) {
+    return undefined;
+  }
+
+  const orderedSummaries = summaries
+    .slice()
+    .sort((a, b) => b.startDate.localeCompare(a.startDate));
+  const newestSummary = orderedSummaries[0];
+  const oldestSummary = orderedSummaries[orderedSummaries.length - 1];
+  const apiBreakdownMap = new Map<string, WeeklySummary["apiBreakdown"][number]>();
+
+  let totalCost = 0;
+  let totalImages = 0;
+  let recordCount = 0;
+  let maxDailyCost = 0;
+
+  orderedSummaries.forEach((summary) => {
+    totalCost += summary.totalCost;
+    totalImages += summary.totalImages;
+    recordCount += summary.recordCount;
+    maxDailyCost = Math.max(maxDailyCost, summary.maxDailyCost);
+
+    summary.apiBreakdown.forEach((api) => {
+      const existing = apiBreakdownMap.get(api.apiId);
+      if (existing) {
+        existing.totalCost = roundToTwo(existing.totalCost + api.totalCost);
+        return;
+      }
+
+      apiBreakdownMap.set(api.apiId, { ...api });
+    });
+  });
+
+  return {
+    weekKey: `${oldestSummary.startDate}_${newestSummary.endDate}`,
+    weekLabel: `${formatSlashDate(new Date(`${oldestSummary.startDate}T00:00:00`))} - ${formatSlashDate(new Date(`${newestSummary.endDate}T00:00:00`))}`,
+    startDate: oldestSummary.startDate,
+    endDate: newestSummary.endDate,
+    recordCount,
+    totalCost: roundToTwo(totalCost),
+    totalImages,
+    averageDailyCost: recordCount > 0 ? roundToTwo(totalCost / recordCount) : 0,
+    averageDailyImages: recordCount > 0 ? roundToTwo(totalImages / recordCount) : 0,
+    maxDailyCost,
+    apiBreakdown: Array.from(apiBreakdownMap.values()),
+  };
+}
+
+export function buildPreviousCombinedWeeklySummary(
+  summaries: WeeklySummary[],
+  selectedWeekCount: number
+): WeeklySummary | undefined {
+  if (selectedWeekCount <= 0) {
+    return undefined;
+  }
+
+  return buildCombinedWeeklySummary(
+    summaries.slice(selectedWeekCount, selectedWeekCount * 2)
+  );
+}
+
 export function buildWeeklyTrendDailyData(
   records: DailyRecord[],
   summaries: WeeklySummary[]

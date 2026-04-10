@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildCombinedWeeklySummary,
+  buildPreviousCombinedWeeklySummary,
   buildWeeklySummaries,
   buildWeeklyTrendDailyData,
   DEFAULT_VISIBLE_WEEKS,
@@ -132,6 +134,118 @@ test("should return selected week count based on current visible range", () => {
   const visibleCount = getVisibleWeekCount(summaries, 1);
 
   assert.equal(visibleCount, 1);
+});
+
+test("should combine selected weeks into one hero summary for multi-week view", () => {
+  const summaries = buildWeeklySummaries(records, apis);
+
+  const combined = buildCombinedWeeklySummary(summaries);
+
+  assert.deepEqual(combined, {
+    weekKey: "2026-03-23_2026-04-05",
+    weekLabel: "2026/03/23 - 2026/04/05",
+    startDate: "2026-03-23",
+    endDate: "2026-04-05",
+    recordCount: 3,
+    totalCost: 55,
+    totalImages: 200,
+    averageDailyCost: 18.33,
+    averageDailyImages: 66.67,
+    maxDailyCost: 25,
+    apiBreakdown: [
+      { apiId: "volcengine", apiName: "火山引擎", totalCost: 12.5, color: "#1d4ed8" },
+      { apiId: "yunwu", apiName: "云雾API", totalCost: 32, color: "#16a34a" },
+      { apiId: "tangguo", apiName: "糖果姐姐API", totalCost: 10.5, color: "#db2777" },
+    ],
+  });
+});
+
+test("should build the previous comparison range using the same selected week count", () => {
+  const summaries: WeeklySummary[] = [
+    {
+      weekKey: "2026-04-14",
+      weekLabel: "2026/04/14 - 2026/04/20",
+      startDate: "2026-04-14",
+      endDate: "2026-04-20",
+      recordCount: 3,
+      totalCost: 30,
+      totalImages: 300,
+      averageDailyCost: 10,
+      averageDailyImages: 100,
+      maxDailyCost: 16,
+      apiBreakdown: [
+        { apiId: "volcengine", apiName: "火山引擎", totalCost: 12, color: "#1d4ed8" },
+        { apiId: "yunwu", apiName: "云雾API", totalCost: 18, color: "#16a34a" },
+      ],
+    },
+    {
+      weekKey: "2026-04-07",
+      weekLabel: "2026/04/07 - 2026/04/13",
+      startDate: "2026-04-07",
+      endDate: "2026-04-13",
+      recordCount: 2,
+      totalCost: 20,
+      totalImages: 200,
+      averageDailyCost: 10,
+      averageDailyImages: 100,
+      maxDailyCost: 12,
+      apiBreakdown: [
+        { apiId: "volcengine", apiName: "火山引擎", totalCost: 8, color: "#1d4ed8" },
+        { apiId: "yunwu", apiName: "云雾API", totalCost: 12, color: "#16a34a" },
+      ],
+    },
+    {
+      weekKey: "2026-03-31",
+      weekLabel: "2026/03/31 - 2026/04/06",
+      startDate: "2026-03-31",
+      endDate: "2026-04-06",
+      recordCount: 2,
+      totalCost: 15,
+      totalImages: 150,
+      averageDailyCost: 7.5,
+      averageDailyImages: 75,
+      maxDailyCost: 9,
+      apiBreakdown: [
+        { apiId: "volcengine", apiName: "火山引擎", totalCost: 6, color: "#1d4ed8" },
+        { apiId: "yunwu", apiName: "云雾API", totalCost: 9, color: "#16a34a" },
+      ],
+    },
+    {
+      weekKey: "2026-03-24",
+      weekLabel: "2026/03/24 - 2026/03/30",
+      startDate: "2026-03-24",
+      endDate: "2026-03-30",
+      recordCount: 2,
+      totalCost: 10,
+      totalImages: 120,
+      averageDailyCost: 5,
+      averageDailyImages: 60,
+      maxDailyCost: 8,
+      apiBreakdown: [
+        { apiId: "volcengine", apiName: "火山引擎", totalCost: 4, color: "#1d4ed8" },
+        { apiId: "yunwu", apiName: "云雾API", totalCost: 6, color: "#16a34a" },
+      ],
+    },
+  ];
+
+  const previous = buildPreviousCombinedWeeklySummary(summaries, 2);
+
+  assert.deepEqual(previous, {
+    weekKey: "2026-03-24_2026-04-06",
+    weekLabel: "2026/03/24 - 2026/04/06",
+    startDate: "2026-03-24",
+    endDate: "2026-04-06",
+    recordCount: 4,
+    totalCost: 25,
+    totalImages: 270,
+    averageDailyCost: 6.25,
+    averageDailyImages: 67.5,
+    maxDailyCost: 9,
+    apiBreakdown: [
+      { apiId: "volcengine", apiName: "火山引擎", totalCost: 10, color: "#1d4ed8" },
+      { apiId: "yunwu", apiName: "云雾API", totalCost: 15, color: "#16a34a" },
+    ],
+  });
 });
 
 test("should show average cost instead of max daily cost in weekly hero stats", () => {

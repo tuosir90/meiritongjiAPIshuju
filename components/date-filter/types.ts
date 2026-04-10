@@ -1,8 +1,4 @@
-export interface DateFilter {
-  startDate: string | null;
-  endDate: string | null;
-  label: string;
-}
+export type { DateFilter } from "@/lib/date-filter";
 
 export interface MonthOption {
   value: string;

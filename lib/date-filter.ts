@@ -1,7 +1,15 @@
-import { DateFilter } from "@/components/date-filter/types";
-import { DailyRecord } from "@/lib/types";
+import type { DailyRecord } from "./types.ts";
 
-export function filterRecordsByDate(records: DailyRecord[], filter: DateFilter): DailyRecord[] {
+export interface DateFilter {
+  startDate: string | null;
+  endDate: string | null;
+  label: string;
+}
+
+export function filterRecordsByDate(
+  records: DailyRecord[],
+  filter: DateFilter
+): DailyRecord[] {
   if (!filter.startDate || !filter.endDate) {
     return records;
   }

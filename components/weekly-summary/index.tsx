@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { ArrowLeft, CalendarRange, RefreshCw } from "lucide-react";
 
+import { DateFilterComponent } from "@/components/date-filter";
 import { DashboardFooter } from "@/components/dashboard/footer";
 import { RefreshToast } from "@/components/dashboard/refresh-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAppData } from "@/hooks/use-app-data";
+import { DateFilter, filterRecordsByDate } from "@/lib/date-filter";
 import {
   buildCombinedWeeklySummary,
   buildPreviousCombinedWeeklySummary,
@@ -32,12 +34,21 @@ const RANGE_OPTIONS = [
 export function WeeklySummaryPage() {
   const { data, isLoading, isRefreshing, refreshData } = useAppData();
   const [refreshMessage, setRefreshMessage] = useState<RefreshMessage | null>(null);
+  const [dateFilter, setDateFilter] = useState<DateFilter>({
+    startDate: null,
+    endDate: null,
+    label: "全部",
+  });
   const [visibleWeeks, setVisibleWeeks] = useState(DEFAULT_VISIBLE_WEEKS);
   const [isPending, startTransition] = useTransition();
 
+  const filteredRecords = useMemo(() => {
+    return filterRecordsByDate(data.records, dateFilter);
+  }, [data.records, dateFilter]);
+
   const weeklySummaries = useMemo(
-    () => buildWeeklySummaries(data.records, data.apis),
-    [data.records, data.apis]
+    () => buildWeeklySummaries(filteredRecords, data.apis),
+    [filteredRecords, data.apis]
   );
 
   const displayedSummaries = useMemo(() => {
@@ -113,6 +124,10 @@ export function WeeklySummaryPage() {
                 {isPending && visibleWeeks === option.value ? "切换中..." : option.label}
               </Button>
             ))}
+            <DateFilterComponent
+              currentFilter={dateFilter}
+              onFilterChange={setDateFilter}
+            />
             <Button
               variant="outline"
               size="sm"
@@ -135,7 +150,7 @@ export function WeeklySummaryPage() {
           totalWeeks={selectedWeekCount}
           version={data.version}
         />
-        <WeeklyTrendChart records={data.records} summaries={displayedSummaries} />
+        <WeeklyTrendChart records={filteredRecords} summaries={displayedSummaries} />
         <WeeklySummaryTable summaries={displayedSummaries} />
       </main>
 

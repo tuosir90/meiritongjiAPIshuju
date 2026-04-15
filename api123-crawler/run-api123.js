@@ -4,7 +4,13 @@
  */
 
 const { chromium } = require('playwright');
-const { CONFIG, getMissingDates, hasStoredAuth, writeToExcel } = require('./api123-crawler');
+const {
+  CONFIG,
+  convertQuotaToDailyCost,
+  getMissingDates,
+  hasStoredAuth,
+  writeToExcel,
+} = require('./api123-crawler');
 
 async function checkLogin(page) {
   const url = page.url();
@@ -157,8 +163,12 @@ async function main() {
       const dateInfo = missingDates[i];
       console.log(`\n[${i + 1}/${missingDates.length}] 采集日期: ${dateInfo.formatted}`);
       console.log(`查询范围: ${dateInfo.startTime} ~ ${dateInfo.endTime}`);
-      const amount = await searchAndExtract(page, dateInfo);
-      writeToExcel(dateInfo.formatted, amount);
+      const quotaAmount = await searchAndExtract(page, dateInfo);
+      const dailyCost = convertQuotaToDailyCost(quotaAmount);
+      console.log(
+        `123api 页面额度: ${quotaAmount}，按 ${CONFIG.quotaDivisor} 换算后的真实费用: ${dailyCost}`
+      );
+      writeToExcel(dateInfo.formatted, dailyCost);
       if (i < missingDates.length - 1) {
         console.log('等待2秒后继续下一个日期...');
         await page.waitForTimeout(2000);

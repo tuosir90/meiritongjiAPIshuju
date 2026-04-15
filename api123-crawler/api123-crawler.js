@@ -12,6 +12,7 @@ const CONFIG = {
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   usernameEnv: 'API123_USERNAME',
   passwordEnv: 'API123_PASSWORD',
+  quotaDivisor: 6.6,
   headless: false,
   timeout: 30000,
 };
@@ -84,6 +85,15 @@ function formatExcelDate(serial) {
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 }
 
+function convertQuotaToDailyCost(amount) {
+  const numericAmount = Number(amount);
+  if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
+    return '0.00';
+  }
+
+  return (numericAmount / CONFIG.quotaDivisor).toFixed(2);
+}
+
 function writeToExcel(date, amount) {
   const workbook = XLSX.readFile(CONFIG.outputFile);
   const sheetName = workbook.SheetNames[0];
@@ -112,4 +122,4 @@ function writeToExcel(date, amount) {
   console.log(`  日期: ${date}, 123api: ${amount}`);
 }
 
-module.exports = { CONFIG, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = { CONFIG, convertQuotaToDailyCost, getMissingDates, hasStoredAuth, writeToExcel };

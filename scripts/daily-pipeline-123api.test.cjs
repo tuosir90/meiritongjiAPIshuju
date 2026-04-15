@@ -34,6 +34,18 @@ function copyScript(source, targetDir) {
   return target;
 }
 
+test('api123-crawler should convert quota amount to daily cost by dividing by 6.6', () => {
+  const { convertQuotaToDailyCost } = require(path.join(
+    repoRoot,
+    'api123-crawler',
+    'api123-crawler.js'
+  ));
+
+  assert.equal(convertQuotaToDailyCost('6.6'), '1.00');
+  assert.equal(convertQuotaToDailyCost('5'), '0.76');
+  assert.equal(convertQuotaToDailyCost('0'), '0.00');
+});
+
 test('sync-daily-data should parse 6-column rows and include 123api in total cost', () => {
   const tempDir = makeTempDir('sync-123api');
   fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });

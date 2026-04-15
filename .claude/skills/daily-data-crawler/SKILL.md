@@ -66,7 +66,7 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\v
 |------|----------|----------|--------|
 | 1 | `run-yunwu.js` | yunwu.ai | 第3列（云雾api消费） |
 | 2 | `run-tangguo.js` | pockgo.com | 第4列（糖果姐姐api） |
-| 3 | `run-api123.js` | 128api.cn | 第5列（123api） |
+| 3 | `run-api123.js` | 128api.cn | 第5列（123api，页面统计额度先除以6.6再写入） |
 | 4 | `run-oss.js` | aliyun.com | 第6列（总生图数） |
 | 5 | `run-vector.js` | vectorengine.ai | 第2列（向量引擎消费） |
 
@@ -74,11 +74,12 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\v
 
 1. **执行顺序**：必须先运行云雾脚本（步骤1），它负责创建新日期行
 2. **首次运行**：需要手动登录，登录状态会自动保存到 `*-auth.json`
-3. **123api自动登录**：优先使用已保存的 `api123-auth.json`，也可通过环境变量 `API123_USERNAME` 和 `API123_PASSWORD` 自动登录
-4. **超时处理**：登录超时4分钟自动退出
-5. **零消费**：向量引擎和123api未提取到数据时自动填写0
-6. **阿里云OSS无文件夹**：如果步骤4报错"未找到日期文件夹"，说明当天无生图，需手动写入0
-7. **数据已最新**：如果显示"没有需要采集的日期，数据已是最新！"，说明无需采集
+3. **123api金额换算**：页面展示的是统计额度，抓取后必须先除以 `6.6`，再作为真实每日费用写入 Excel
+4. **123api自动登录**：优先使用已保存的 `api123-auth.json`，也可通过环境变量 `API123_USERNAME` 和 `API123_PASSWORD` 自动登录
+5. **超时处理**：登录超时4分钟自动退出
+6. **零消费**：向量引擎和123api未提取到数据时自动填写0
+7. **阿里云OSS无文件夹**：如果步骤4报错"未找到日期文件夹"，说明当天无生图，需手动写入0
+8. **数据已最新**：如果显示"没有需要采集的日期，数据已是最新！"，说明无需采集
 
 ## 补救命令
 
@@ -93,8 +94,8 @@ cd "F:\tuosir90-claude-code\meiritongjiAPIshuju\aliyun-oss-crawler" && node -e "
 
 `F:\tuosir90-claude-code\meiritongjiAPIshuju\每日数据整理.xlsx`
 
-| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | 123api | 总生图数 |
-|------|-------------|------------|------------|--------|---------|
+| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | 123api（真实费用） | 总生图数 |
+|------|-------------|------------|------------|-------------------|---------|
 
 ## 运行输出示例
 

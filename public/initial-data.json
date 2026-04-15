@@ -1,6 +1,6 @@
 {
-  "version": "1.0.138",
-  "lastUpdated": "2026-04-15T02:35:05Z",
+  "version": "1.0.139",
+  "lastUpdated": "2026-04-15T03:57:04Z",
   "apis": [
     {
       "id": "volcengine",
@@ -16,6 +16,11 @@
       "id": "tangguo",
       "name": "糖果姐姐API",
       "color": "#ff5c93"
+    },
+    {
+      "id": "123api",
+      "name": "123api",
+      "color": "#f59e0b"
     }
   ],
   "records": [
@@ -34,10 +39,14 @@
         {
           "apiId": "tangguo",
           "cost": 31.33
+        },
+        {
+          "apiId": "123api",
+          "cost": 5
         }
       ],
       "imageCount": 271,
-      "totalCost": 46.71
+      "totalCost": 51.71
     },
     {
       "id": "2026-04-13-1",
@@ -54,6 +63,10 @@
         {
           "apiId": "tangguo",
           "cost": 38.74
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 1015,
@@ -74,6 +87,10 @@
         {
           "apiId": "tangguo",
           "cost": 17.5
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 346,
@@ -94,6 +111,10 @@
         {
           "apiId": "tangguo",
           "cost": 32.48
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 572,
@@ -113,6 +134,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -134,6 +159,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 1009,
@@ -153,6 +182,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -174,6 +207,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 686,
@@ -194,6 +231,10 @@
         {
           "apiId": "tangguo",
           "cost": 7.77
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 281,
@@ -214,6 +255,10 @@
         {
           "apiId": "tangguo",
           "cost": 30.87
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 101,
@@ -234,6 +279,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.21
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 101,
@@ -254,6 +303,10 @@
         {
           "apiId": "tangguo",
           "cost": 7.63
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 369,
@@ -274,6 +327,10 @@
         {
           "apiId": "tangguo",
           "cost": 3.5
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 400,
@@ -294,6 +351,10 @@
         {
           "apiId": "tangguo",
           "cost": 6.09
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 515,
@@ -314,6 +375,10 @@
         {
           "apiId": "tangguo",
           "cost": 81.27
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 1118,
@@ -334,6 +399,10 @@
         {
           "apiId": "tangguo",
           "cost": 17.92
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 400,
@@ -354,6 +423,10 @@
         {
           "apiId": "tangguo",
           "cost": 11.97
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 197,
@@ -374,6 +447,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.66
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 197,
@@ -394,6 +471,10 @@
         {
           "apiId": "tangguo",
           "cost": 4.27
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 266,
@@ -414,6 +495,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.59
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 495,
@@ -434,6 +519,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.54
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 391,
@@ -454,6 +543,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.31
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 924,
@@ -474,6 +567,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.17
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 820,
@@ -493,6 +590,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -514,6 +615,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 864,
@@ -534,6 +639,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.87
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 864,
@@ -554,6 +663,10 @@
         {
           "apiId": "tangguo",
           "cost": 5.67
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 658,
@@ -574,6 +687,10 @@
         {
           "apiId": "tangguo",
           "cost": 2.59
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 491,
@@ -594,6 +711,10 @@
         {
           "apiId": "tangguo",
           "cost": 6.09
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 636,
@@ -614,6 +735,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.96
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 549,
@@ -634,6 +759,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.47
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 609,
@@ -654,6 +783,10 @@
         {
           "apiId": "tangguo",
           "cost": 6.02
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 609,
@@ -674,6 +807,10 @@
         {
           "apiId": "tangguo",
           "cost": 6.44
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 662,
@@ -694,6 +831,10 @@
         {
           "apiId": "tangguo",
           "cost": 7
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 759,
@@ -714,6 +855,10 @@
         {
           "apiId": "tangguo",
           "cost": 27.13
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 368,
@@ -734,6 +879,10 @@
         {
           "apiId": "tangguo",
           "cost": 15.89
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 381,
@@ -754,6 +903,10 @@
         {
           "apiId": "tangguo",
           "cost": 34.09
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 465,
@@ -773,6 +926,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -794,6 +951,10 @@
         {
           "apiId": "tangguo",
           "cost": 11.48
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 567,
@@ -814,6 +975,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.33
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 145,
@@ -834,6 +999,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.35
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 96,
@@ -853,6 +1022,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -874,6 +1047,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 24,
@@ -893,6 +1070,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -914,6 +1095,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.08
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 195,
@@ -934,6 +1119,10 @@
         {
           "apiId": "tangguo",
           "cost": 3.88
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 113,
@@ -954,6 +1143,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.12
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 96,
@@ -974,6 +1167,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.36
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 13,
@@ -993,6 +1190,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1014,6 +1215,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.6
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 28,
@@ -1033,6 +1238,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1054,6 +1263,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1073,6 +1286,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1094,6 +1311,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1113,6 +1334,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1134,6 +1359,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1153,6 +1382,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1174,6 +1407,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.39
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1193,6 +1430,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1214,6 +1455,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1233,6 +1478,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1254,6 +1503,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.07
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 3,
@@ -1273,6 +1526,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1294,6 +1551,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1313,6 +1574,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1334,6 +1599,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1353,6 +1622,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1374,6 +1647,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1394,6 +1671,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.04
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 3,
@@ -1413,6 +1694,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1434,6 +1719,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1454,6 +1743,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.04
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1473,6 +1766,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1494,6 +1791,10 @@
         {
           "apiId": "tangguo",
           "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -1513,6 +1814,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1534,6 +1839,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.36
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 102,
@@ -1554,6 +1863,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.16
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 266,
@@ -1574,6 +1887,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.36
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 81,
@@ -1594,6 +1911,10 @@
         {
           "apiId": "tangguo",
           "cost": 1.72
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 113,
@@ -1614,6 +1935,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.16
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 383,
@@ -1634,6 +1959,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.16
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 292,
@@ -1653,6 +1982,10 @@
         },
         {
           "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
           "cost": 0
         }
       ],
@@ -1674,6 +2007,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.08
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 422,
@@ -1694,6 +2031,10 @@
         {
           "apiId": "tangguo",
           "cost": 0.4
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 392,
@@ -1714,6 +2055,10 @@
         {
           "apiId": "tangguo",
           "cost": 23.15
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
         }
       ],
       "imageCount": 382,

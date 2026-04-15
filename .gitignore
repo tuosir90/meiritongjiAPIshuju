@@ -46,3 +46,9 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# crawler artifacts
+*-auth.json
+debug-*.png
+error-screenshot.png
+output/playwright/

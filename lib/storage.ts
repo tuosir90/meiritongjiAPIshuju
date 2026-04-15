@@ -12,6 +12,7 @@ const DEFAULT_APIS: ApiConfig[] = [
   { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
   { id: "yunwu", name: "云雾API", color: "#00b96b" },
   { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" },
+  { id: "123api", name: "123api", color: "#f59e0b" },
 ];
 
 /**

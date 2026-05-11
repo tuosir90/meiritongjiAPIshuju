@@ -1,6 +1,6 @@
 {
-  "version": "1.0.163",
-  "lastUpdated": "2026-05-08T01:17:15Z",
+  "version": "1.0.165",
+  "lastUpdated": "2026-05-11T02:08:31Z",
   "apis": [
     {
       "id": "volcengine",
@@ -19,11 +19,83 @@
     },
     {
       "id": "123api",
-      "name": "123api",
+      "name": "APIMart",
       "color": "#f59e0b"
     }
   ],
   "records": [
+    {
+      "id": "2026-05-10-1",
+      "date": "2026-05-10",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 34.51
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0.71
+        }
+      ],
+      "imageCount": 716,
+      "totalCost": 35.22
+    },
+    {
+      "id": "2026-05-09-1",
+      "date": "2026-05-09",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 19.93
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0.21
+        },
+        {
+          "apiId": "123api",
+          "cost": 6.17
+        }
+      ],
+      "imageCount": 716,
+      "totalCost": 26.31
+    },
+    {
+      "id": "2026-05-08-1",
+      "date": "2026-05-08",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.12
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 50.11
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0.83
+        },
+        {
+          "apiId": "123api",
+          "cost": 3.36
+        }
+      ],
+      "imageCount": 716,
+      "totalCost": 54.42
+    },
     {
       "id": "2026-05-07-1",
       "date": "2026-05-07",
@@ -42,11 +114,11 @@
         },
         {
           "apiId": "123api",
-          "cost": 0
+          "cost": 0.13
         }
       ],
       "imageCount": 656,
-      "totalCost": 86.38
+      "totalCost": 86.51
     },
     {
       "id": "2026-05-06-1",

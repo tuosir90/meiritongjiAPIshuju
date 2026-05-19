@@ -1,12 +1,12 @@
 ---
 name: daily-data-crawler
 description: |
-  每日数据自动抓取工具。按顺序执行五个浏览器自动化脚本（云雾API、糖果姐姐API、123api、阿里云OSS、向量引擎），
+  每日数据自动抓取工具。按顺序执行六个浏览器自动化脚本（云雾API、糖果姐姐API、APIMart、阿里云OSS、向量引擎、馒小白），
   从各平台抓取消费数据和统计信息，自动写入Excel表格。
   **支持批量补采**：自动检测所有缺失日期（从Excel最新日期+1天到昨天），一次性采集所有缺失数据。
   触发场景：用户需要抓取每日API消费数据、运行数据统计脚本、更新每日数据表格。
   This skill should be used when user mentions "每日数据", "抓取数据", "运行爬虫", "数据统计",
-  "云雾", "糖果", "阿里云OSS", "向量引擎" or needs to crawl daily API consumption data.
+  "云雾", "糖果", "APIMart", "阿里云OSS", "向量引擎", "馒小白" or needs to crawl daily API consumption data.
 
 ---
 
@@ -29,9 +29,11 @@ description: |
 
 **必须严格按照下方的命令执行，禁止猜测或修改脚本名称！**
 
-- 脚本名称固定为 `run-yunwu.js`、`run-tangguo.js`、`run-api123.js`、`run-oss.js`、`run-vector.js`
+- 脚本名称固定为 `run-yunwu.js`、`run-tangguo.js`、`run-api123.js`、`run-oss.js`、`run-vector.js`、`run-manxiaobai.js`
 - 不要使用 `*-crawler.js`，那些是模块文件，不是入口脚本
 - 每个步骤必须等待上一步完成后再执行
+- `run-api123.js` 是历史文件名，当前实际平台是 **APIMart**；执行、汇报和同步口径必须写 APIMart，金额按页面统计额度乘以 `7` 写入第5列。
+- `run-manxiaobai.js` 抓取馒小白（同向量引擎页面结构）；金额按页面统计额度乘以 `1.1` 写入第6列（充值 11 元到账 10 元的倍率换算）。
 
 ## 执行命令（直接复制执行）
 
@@ -45,7 +47,7 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\s
 powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\tangguo-api-crawler'; node run-tangguo.js"
 ```
 
-### 步骤3：123api
+### 步骤3：APIMart
 ```bash
 powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\api123-crawler'; node run-api123.js"
 ```
@@ -60,24 +62,30 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\a
 powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\vectorengine-crawler'; node run-vector.js"
 ```
 
+### 步骤6：馒小白
+```bash
+powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\manxiaobai-crawler'; node run-manxiaobai.js"
+```
+
 ## 脚本说明
 
 | 顺序 | 入口脚本 | 数据来源 | 写入列 |
 |------|----------|----------|--------|
 | 1 | `run-yunwu.js` | yunwu.ai | 第3列（云雾api消费） |
 | 2 | `run-tangguo.js` | pockgo.com | 第4列（糖果姐姐api） |
-| 3 | `run-api123.js` | 128api.cn | 第5列（123api，页面统计额度先除以6.6再写入） |
-| 4 | `run-oss.js` | aliyun.com | 第6列（总生图数） |
+| 3 | `run-api123.js` | apimart.ai | 第5列（APIMart，统计额度美元乘以7再写入） |
+| 4 | `run-oss.js` | aliyun.com | 第7列（总生图数） |
 | 5 | `run-vector.js` | vectorengine.ai | 第2列（向量引擎消费） |
+| 6 | `run-manxiaobai.js` | api.manxiaobai.online | 第6列（馒小白，统计额度乘以1.1） |
 
 ## 注意事项
 
 1. **执行顺序**：必须先运行云雾脚本（步骤1），它负责创建新日期行
 2. **首次运行**：需要手动登录，登录状态会自动保存到 `*-auth.json`
-3. **123api金额换算**：页面展示的是统计额度，抓取后必须先除以 `6.6`，再作为真实每日费用写入 Excel
-4. **123api自动登录**：优先使用已保存的 `api123-auth.json`，也可通过环境变量 `API123_USERNAME` 和 `API123_PASSWORD` 自动登录
+3. **APIMart金额换算**：页面展示的是统计额度，抓取后必须乘以 `7`，再作为真实每日费用写入 Excel
+4. **APIMart自动登录**：优先使用已保存的 `api123-auth.json`，也可通过环境变量 `API123_USERNAME` 和 `API123_PASSWORD` 自动登录
 5. **超时处理**：登录超时4分钟自动退出
-6. **零消费**：向量引擎和123api未提取到数据时自动填写0
+6. **零消费**：向量引擎和APIMart未提取到数据时自动填写0
 7. **阿里云OSS弹窗校验**：步骤4必须校验目录统计弹窗的"当前目录"等于目标日期（如 `generated/2026-05-09/`）后才能写入"对象总数"，每个日期完成后必须关闭"取消/关闭"弹窗，禁止读取残留弹窗数据
 8. **阿里云OSS无文件夹**：如果步骤4报错"未找到日期文件夹"，说明当天无生图，需手动写入0
 9. **数据已最新**：如果显示"没有需要采集的日期，数据已是最新！"，说明无需采集
@@ -95,8 +103,8 @@ cd "F:\tuosir90-claude-code\meiritongjiAPIshuju\aliyun-oss-crawler" && node -e "
 
 `F:\tuosir90-claude-code\meiritongjiAPIshuju\每日数据整理.xlsx`
 
-| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | 123api（真实费用） | 总生图数 |
-|------|-------------|------------|------------|-------------------|---------|
+| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | APIMart（真实费用） | 馒小白 | 总生图数 |
+|------|-------------|------------|------------|-------------------|--------|---------|
 
 ## 运行输出示例
 

@@ -21,7 +21,8 @@ const DEFAULT_APIS = [
   { id: 'volcengine', name: '火山引擎（字节跳动）', color: '#0052D9' },
   { id: 'yunwu', name: '云雾API', color: '#00b96b' },
   { id: 'tangguo', name: '糖果姐姐API', color: '#ff5c93' },
-  { id: '123api', name: '123api', color: '#f59e0b' },
+  { id: '123api', name: 'APIMart', color: '#f59e0b' },
+  { id: 'manxiaobai', name: '馒小白', color: '#8b5cf6' },
 ];
 
 function convertDateToIso(dateValue) {
@@ -55,6 +56,17 @@ function incrementVersion(version) {
 }
 
 function normalizeRow(row) {
+  if (row.length >= 7) {
+    return {
+      dateVal: row[0],
+      volcVal: row[1],
+      yunwuVal: row[2],
+      tangguoVal: row[3],
+      api123Val: row[4],
+      manxiaobaiVal: row[5],
+      countVal: row[6],
+    };
+  }
   if (row.length >= 6) {
     return {
       dateVal: row[0],
@@ -62,6 +74,7 @@ function normalizeRow(row) {
       yunwuVal: row[2],
       tangguoVal: row[3],
       api123Val: row[4],
+      manxiaobaiVal: null,
       countVal: row[5],
     };
   }
@@ -71,12 +84,13 @@ function normalizeRow(row) {
     yunwuVal: row[2],
     tangguoVal: row[3],
     api123Val: null,
+    manxiaobaiVal: null,
     countVal: row[4],
   };
 }
 
 function buildRecord(row, rowNumber) {
-  const { dateVal, volcVal, yunwuVal, tangguoVal, api123Val, countVal } = normalizeRow(row);
+  const { dateVal, volcVal, yunwuVal, tangguoVal, api123Val, manxiaobaiVal, countVal } = normalizeRow(row);
   const date = convertDateToIso(dateVal);
   if (!date) {
     return { warning: `行 ${rowNumber}: 日期格式无效，已跳过` };
@@ -87,11 +101,12 @@ function buildRecord(row, rowNumber) {
   const tangguo = parseNumber(tangguoVal);
   const count = parseNumber(countVal);
   const api123 = parseNumber(api123Val) ?? 0;
+  const manxiaobai = parseNumber(manxiaobaiVal) ?? 0;
   if ([volc, yunwu, tangguo, count].some((value) => value === null)) {
     return { warning: `日期 ${date} 数据不完整，已跳过` };
   }
 
-  const totalCost = Math.round((volc + yunwu + tangguo + api123) * 100) / 100;
+  const totalCost = Math.round((volc + yunwu + tangguo + api123 + manxiaobai) * 100) / 100;
   return {
     record: {
       id: `${date}-1`,
@@ -101,6 +116,7 @@ function buildRecord(row, rowNumber) {
         { apiId: 'yunwu', cost: yunwu },
         { apiId: 'tangguo', cost: tangguo },
         { apiId: '123api', cost: api123 },
+        { apiId: 'manxiaobai', cost: manxiaobai },
       ],
       imageCount: Math.floor(count),
       totalCost,

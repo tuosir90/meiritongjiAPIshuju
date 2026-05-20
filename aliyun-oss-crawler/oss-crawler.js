@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
+const TARGET_COL = 6; // 总生图数列索引（第7列）
 
 // 配置
 const CONFIG = {
@@ -103,7 +104,7 @@ function getMissingDates() {
     dateObj.setHours(0, 0, 0, 0);
     if (dateObj > yesterday) continue;
 
-    const value = data[i][5];
+    const value = data[i][TARGET_COL];
     if (value !== undefined && value !== null && String(value).trim() !== '') {
       continue;
     }
@@ -143,7 +144,7 @@ function formatExcelDate(serial) {
 }
 
 /**
- * 将数据写入 Excel 第六列（总生图数）
+ * 将数据写入 Excel 第七列（总生图数）
  * 只写入对应日期行的数据，不新增行
  */
 function writeToExcel(date, count) {
@@ -167,8 +168,8 @@ function writeToExcel(date, count) {
     return;
   }
 
-  // 只写入第六列（索引5），不修改日期列
-  data[rowIndex][5] = count;
+  // 只写入第七列（索引6），不修改日期列
+  data[rowIndex][TARGET_COL] = count;
 
   const newWorksheet = XLSX.utils.aoa_to_sheet(data);
   workbook.Sheets[sheetName] = newWorksheet;

@@ -1,12 +1,12 @@
 ---
 name: daily-data-crawler
 description: |
-  每日数据自动抓取工具。按顺序执行六个浏览器自动化脚本（云雾API、糖果姐姐API、APIMart、阿里云OSS、向量引擎、馒小白），
+  每日数据自动抓取工具。按顺序执行七个浏览器自动化脚本（云雾API、糖果姐姐API、APIMart、阿里云OSS、向量引擎、馒小白、章鱼哥AI），
   从各平台抓取消费数据和统计信息，自动写入Excel表格。
   **支持批量补采**：自动检测所有缺失日期（从Excel最新日期+1天到昨天），一次性采集所有缺失数据。
   触发场景：用户需要抓取每日API消费数据、运行数据统计脚本、更新每日数据表格。
   This skill should be used when user mentions "每日数据", "抓取数据", "运行爬虫", "数据统计",
-  "云雾", "糖果", "APIMart", "阿里云OSS", "向量引擎", "馒小白" or needs to crawl daily API consumption data.
+  "云雾", "糖果", "APIMart", "阿里云OSS", "向量引擎", "馒小白", "章鱼哥AI" or needs to crawl daily API consumption data.
 
 ---
 
@@ -29,11 +29,12 @@ description: |
 
 **必须严格按照下方的命令执行，禁止猜测或修改脚本名称！**
 
-- 脚本名称固定为 `run-yunwu.js`、`run-tangguo.js`、`run-api123.js`、`run-oss.js`、`run-vector.js`、`run-manxiaobai.js`
+- 脚本名称固定为 `run-yunwu.js`、`run-tangguo.js`、`run-api123.js`、`run-oss.js`、`run-vector.js`、`run-manxiaobai.js`、`run-otuai.js`
 - 不要使用 `*-crawler.js`，那些是模块文件，不是入口脚本
 - 每个步骤必须等待上一步完成后再执行
 - `run-api123.js` 是历史文件名，当前实际平台是 **APIMart**；执行、汇报和同步口径必须写 APIMart，金额按页面统计额度乘以 `7` 写入第5列。
 - `run-manxiaobai.js` 抓取馒小白（同向量引擎页面结构）；金额按页面统计额度乘以 `1.1` 写入第6列（充值 11 元到账 10 元的倍率换算）。
+- `run-otuai.js` 抓取章鱼哥AI（同向量引擎页面结构）；金额按 `1:1` 倍率写入第7列（页面显示即真实消费）。
 
 ## 执行命令（直接复制执行）
 
@@ -67,6 +68,11 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\v
 powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\manxiaobai-crawler'; node run-manxiaobai.js"
 ```
 
+### 步骤7：章鱼哥AI
+```bash
+powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\otuai-crawler'; node run-otuai.js"
+```
+
 ## 脚本说明
 
 | 顺序 | 入口脚本 | 数据来源 | 写入列 |
@@ -74,9 +80,10 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\m
 | 1 | `run-yunwu.js` | yunwu.ai | 第3列（云雾api消费） |
 | 2 | `run-tangguo.js` | pockgo.com | 第4列（糖果姐姐api） |
 | 3 | `run-api123.js` | apimart.ai | 第5列（APIMart，统计额度美元乘以7再写入） |
-| 4 | `run-oss.js` | aliyun.com | 第7列（总生图数） |
+| 4 | `run-oss.js` | aliyun.com | 第8列（总生图数） |
 | 5 | `run-vector.js` | vectorengine.ai | 第2列（向量引擎消费） |
 | 6 | `run-manxiaobai.js` | api.manxiaobai.online | 第6列（馒小白，统计额度乘以1.1） |
+| 7 | `run-otuai.js` | otuapi.com | 第7列（章鱼哥AI，1:1 倍率） |
 
 ## 注意事项
 
@@ -103,8 +110,8 @@ cd "F:\tuosir90-claude-code\meiritongjiAPIshuju\aliyun-oss-crawler" && node -e "
 
 `F:\tuosir90-claude-code\meiritongjiAPIshuju\每日数据整理.xlsx`
 
-| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | APIMart（真实费用） | 馒小白 | 总生图数 |
-|------|-------------|------------|------------|-------------------|--------|---------|
+| 日期 | 向量引擎消费 | 云雾api消费 | 糖果姐姐api | APIMart（真实费用） | 馒小白 | 章鱼哥AI | 总生图数 |
+|------|-------------|------------|------------|-------------------|--------|---------|---------|
 
 ## 运行输出示例
 

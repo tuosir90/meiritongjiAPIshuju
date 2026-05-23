@@ -14,6 +14,7 @@ const DEFAULT_APIS: ApiConfig[] = [
   { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" },
   { id: "123api", name: "APIMart", color: "#f59e0b" },
   { id: "manxiaobai", name: "馒小白", color: "#8b5cf6" },
+  { id: "otuai", name: "章鱼哥AI", color: "#06b6d4" },
 ];
 
 /**

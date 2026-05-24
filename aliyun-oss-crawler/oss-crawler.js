@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
-const TARGET_COL = 6; // 总生图数列索引（第7列）
+const FALLBACK_TARGET_COL = 7; // 新表结构中“总生图数”列索引（第8列）
 
 // 配置
 const CONFIG = {
@@ -104,7 +104,8 @@ function getMissingDates() {
     dateObj.setHours(0, 0, 0, 0);
     if (dateObj > yesterday) continue;
 
-    const value = data[i][TARGET_COL];
+    const targetCol = getTargetColumnIndex(data);
+    const value = data[i][targetCol];
     if (value !== undefined && value !== null && String(value).trim() !== '') {
       continue;
     }
@@ -117,6 +118,12 @@ function getMissingDates() {
   }
 
   return missingDates;
+}
+
+function getTargetColumnIndex(data) {
+  const header = data[0] || [];
+  const headerIndex = header.findIndex((cell) => String(cell).trim() === '总生图数');
+  return headerIndex >= 0 ? headerIndex : FALLBACK_TARGET_COL;
 }
 
 /**
@@ -144,7 +151,7 @@ function formatExcelDate(serial) {
 }
 
 /**
- * 将数据写入 Excel 第七列（总生图数）
+ * 将数据写入 Excel 的“总生图数”列
  * 只写入对应日期行的数据，不新增行
  */
 function writeToExcel(date, count) {
@@ -168,8 +175,9 @@ function writeToExcel(date, count) {
     return;
   }
 
-  // 只写入第七列（索引6），不修改日期列
-  data[rowIndex][TARGET_COL] = count;
+  // 只写入“总生图数”列，不修改日期列或 API 费用列
+  const targetCol = getTargetColumnIndex(data);
+  data[rowIndex][targetCol] = count;
 
   const newWorksheet = XLSX.utils.aoa_to_sheet(data);
   workbook.Sheets[sheetName] = newWorksheet;

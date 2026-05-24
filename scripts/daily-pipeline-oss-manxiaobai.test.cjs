@@ -57,3 +57,25 @@ test('oss-crawler writes image count to column 7 without filling manxiaobai colu
   assert.equal(rows[1][5], '');
   assert.equal(rows[1][6], 1276);
 });
+
+test('oss-crawler writes image count to total image column after otuai column exists', () => {
+  const tempDir = makeTempDir('oss-otuai');
+  const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
+  copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
+
+  const workbookPath = path.join(tempDir, '每日数据整理.xlsx');
+  writeWorkbook(workbookPath, [
+    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', 'APIMart', '馒小白', '章鱼哥AI', '总生图数'],
+    ['2026/5/23', '4.01', '8.58', '10.85', '7.69', '3.33', '', ''],
+  ]);
+
+  const { getMissingDates, writeToExcel } = require(path.join(scriptDir, 'oss-crawler.js'));
+
+  assert.deepEqual(getMissingDates().map((date) => date.formatted), ['2026/5/23']);
+
+  writeToExcel('2026/5/23', 1030);
+
+  const rows = readWorkbook(workbookPath);
+  assert.equal(rows[1][6], '');
+  assert.equal(rows[1][7], 1030);
+});

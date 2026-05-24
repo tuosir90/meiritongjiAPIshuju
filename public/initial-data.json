@@ -1,6 +1,6 @@
 {
-  "version": "1.0.179",
-  "lastUpdated": "2026-05-24T00:45:07Z",
+  "version": "1.0.180",
+  "lastUpdated": "2026-05-24T01:10:21Z",
   "apis": [
     {
       "id": "volcengine",
@@ -60,11 +60,11 @@
         },
         {
           "apiId": "otuai",
-          "cost": 0
+          "cost": 11.25
         }
       ],
       "imageCount": 1030,
-      "totalCost": 34.46
+      "totalCost": 45.71
     },
     {
       "id": "2026-05-22-1",

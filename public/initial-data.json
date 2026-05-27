@@ -1,6 +1,6 @@
 {
-  "version": "1.0.182",
-  "lastUpdated": "2026-05-26T01:14:14Z",
+  "version": "1.0.183",
+  "lastUpdated": "2026-05-27T01:03:39Z",
   "apis": [
     {
       "id": "volcengine",
@@ -34,6 +34,38 @@
     }
   ],
   "records": [
+    {
+      "id": "2026-05-26-1",
+      "date": "2026-05-26",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 9.2
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 15.4
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 29.8
+        },
+        {
+          "apiId": "123api",
+          "cost": 13.61
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 14.7
+        },
+        {
+          "apiId": "otuai",
+          "cost": 0
+        }
+      ],
+      "imageCount": 1118,
+      "totalCost": 82.71
+    },
     {
       "id": "2026-05-25-1",
       "date": "2026-05-25",

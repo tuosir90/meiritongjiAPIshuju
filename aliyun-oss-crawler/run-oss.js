@@ -3,7 +3,13 @@
  */
 
 const { chromium } = require('playwright');
-const { CONFIG, getMissingDates, hasStoredAuth, writeToExcel } = require('./oss-crawler');
+const {
+  CONFIG,
+  getMissingDates,
+  hasStoredAuth,
+  shouldAutoWriteZeroForMissingFolder,
+  writeToExcel,
+} = require('./oss-crawler');
 
 /**
  * 等待用户登录成功
@@ -267,8 +273,13 @@ async function main() {
         const message = err && err.message ? err.message : String(err);
         console.log(`日期 ${dateInfo.formatted} 采集失败: ${message}`);
         if (message.includes('未找到日期文件夹')) {
-          writeToExcel(dateInfo.formatted, 0);
-          console.log(`已自动写入0: ${dateInfo.formatted}`);
+          const pageText = await page.locator('body').innerText().catch(() => '');
+          if (shouldAutoWriteZeroForMissingFolder(pageText, dateInfo.folderName)) {
+            writeToExcel(dateInfo.formatted, 0);
+            console.log(`已确认列表加载完成且目标文件夹不存在，自动写入0: ${dateInfo.formatted}`);
+          } else {
+            throw new Error(`页面未完成加载或目标文件夹可能存在，禁止自动写入0: ${dateInfo.folderName}`);
+          }
         }
       }
 
@@ -279,10 +290,11 @@ async function main() {
     }
   } catch (error) {
     console.error('\n出错:', error.message);
+    process.exitCode = 1;
     await page.screenshot({ path: 'error-screenshot.png' });
   } finally {
     await browser.close();
-    console.log('\n全部完成');
+    console.log(process.exitCode ? '\n采集失败' : '\n全部完成');
   }
 }
 

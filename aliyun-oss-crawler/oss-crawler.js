@@ -126,6 +126,14 @@ function getTargetColumnIndex(data) {
   return headerIndex >= 0 ? headerIndex : FALLBACK_TARGET_COL;
 }
 
+function shouldAutoWriteZeroForMissingFolder(pageText, folderName) {
+  const text = String(pageText || '');
+  const hasLoadedObjectList = text.includes('generated/');
+  const isStillLoading = text.includes('正在加载') || text.includes('加载中');
+  if (!hasLoadedObjectList || isStillLoading) return false;
+  return !text.includes(`${folderName}/`) && !text.includes(folderName);
+}
+
 /**
  * 获取目标日期（保留兼容性）
  */
@@ -187,4 +195,11 @@ function writeToExcel(date, count) {
   console.log(`  日期: ${date}, 总生图数: ${count}`);
 }
 
-module.exports = { CONFIG, getTargetDate, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = {
+  CONFIG,
+  getTargetDate,
+  getMissingDates,
+  hasStoredAuth,
+  writeToExcel,
+  shouldAutoWriteZeroForMissingFolder,
+};

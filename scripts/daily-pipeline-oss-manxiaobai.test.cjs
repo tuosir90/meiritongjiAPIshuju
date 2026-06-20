@@ -79,3 +79,28 @@ test('oss-crawler writes image count to total image column after otuai column ex
   assert.equal(rows[1][6], '');
   assert.equal(rows[1][7], 1030);
 });
+
+test('oss-crawler only allows auto-zero after OSS list is loaded and target folder is absent', () => {
+  const tempDir = makeTempDir('oss-missing-folder');
+  const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
+  copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
+
+  const { shouldAutoWriteZeroForMissingFolder } = require(path.join(scriptDir, 'oss-crawler.js'));
+
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder('对象存储 OSS\nBucket 列表\n正在加载', '2026-06-19'),
+    false
+  );
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder('对象存储 OSS\n文件列表\n正在加载', '2026-06-19'),
+    false
+  );
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder('generated/\n2026-06-18/\n未统计\n2026-06-19/\n未统计', '2026-06-19'),
+    false
+  );
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder('generated/\n2026-06-17/\n未统计\n2026-06-18/\n未统计', '2026-06-19'),
+    true
+  );
+});

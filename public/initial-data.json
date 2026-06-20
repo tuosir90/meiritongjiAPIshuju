@@ -1,6 +1,6 @@
 {
-  "version": "1.0.204",
-  "lastUpdated": "2026-06-20T01:18:06Z",
+  "version": "1.0.205",
+  "lastUpdated": "2026-06-20T02:02:17Z",
   "apis": [
     {
       "id": "volcengine",
@@ -63,7 +63,7 @@
           "cost": 0
         }
       ],
-      "imageCount": 0,
+      "imageCount": 460,
       "totalCost": 32.89
     },
     {
@@ -95,7 +95,7 @@
           "cost": 0
         }
       ],
-      "imageCount": 0,
+      "imageCount": 1041,
       "totalCost": 34.07
     },
     {

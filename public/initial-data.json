@@ -1,6 +1,6 @@
 {
-  "version": "1.0.210",
-  "lastUpdated": "2026-06-26T01:29:09Z",
+  "version": "1.0.212",
+  "lastUpdated": "2026-06-27T01:15:28Z",
   "apis": [
     {
       "id": "volcengine",
@@ -26,14 +26,37 @@
       "id": "manxiaobai",
       "name": "馒小白",
       "color": "#8b5cf6"
-    },
-    {
-      "id": "otuai",
-      "name": "章鱼哥AI",
-      "color": "#06b6d4"
     }
   ],
   "records": [
+    {
+      "id": "2026-06-26-1",
+      "date": "2026-06-26",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 11.6
+        },
+        {
+          "apiId": "yunwu",
+          "cost": 21.77
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 24.32
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        }
+      ],
+      "imageCount": 0,
+      "totalCost": 57.69
+    },
     {
       "id": "2026-06-25-1",
       "date": "2026-06-25",

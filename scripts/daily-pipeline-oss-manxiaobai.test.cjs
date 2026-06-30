@@ -58,8 +58,8 @@ test('oss-crawler writes image count to column 7 without filling manxiaobai colu
   assert.equal(rows[1][6], 1276);
 });
 
-test('oss-crawler writes image count to total image column after otuai column exists', () => {
-  const tempDir = makeTempDir('oss-otuai');
+test('oss-crawler writes image count to total image column when legacy otuai column is retained', () => {
+  const tempDir = makeTempDir('oss-legacy-otuai');
   const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
   copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
 
@@ -101,6 +101,41 @@ test('oss-crawler only allows auto-zero after OSS list is loaded and target fold
   );
   assert.equal(
     shouldAutoWriteZeroForMissingFolder('generated/\n2026-06-17/\n未统计\n2026-06-18/\n未统计', '2026-06-19'),
+    false
+  );
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder(
+      '对象存储/Bucket 列表/meigong-design-system-v2/文件列表\n/ generated/\n文件名 文件大小 存储类型 更新时间 操作',
+      '2026-06-19',
+      { searchedPrefix: true }
+    ),
     true
   );
+});
+
+test('oss-crawler does not auto-zero from a partially rendered virtual list', () => {
+  const tempDir = makeTempDir('oss-virtual-list');
+  const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
+  copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
+
+  const { shouldAutoWriteZeroForMissingFolder } = require(path.join(scriptDir, 'oss-crawler.js'));
+
+  assert.equal(
+    shouldAutoWriteZeroForMissingFolder(
+      'generated/\n2026-05-29/\n未统计\n2026-05-30/\n未统计\n2026-05-31/\n未统计\n2026-06-01/\n未统计\n2026-06-02/\n未统计\n2026-06-03/\n未统计',
+      '2026-06-29'
+    ),
+    false
+  );
+});
+
+test('oss-crawler knows current OSS statistics refresh button selector', () => {
+  const tempDir = makeTempDir('oss-stats-selector');
+  const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
+  copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
+
+  const { STATS_BUTTON_SELECTORS } = require(path.join(scriptDir, 'oss-crawler.js'));
+
+  assert.ok(STATS_BUTTON_SELECTORS.includes('button.statistics-balloon__refresh'));
+  assert.ok(STATS_BUTTON_SELECTORS.includes('button[spm="未统计"]'));
 });

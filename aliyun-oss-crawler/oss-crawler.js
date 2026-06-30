@@ -6,6 +6,12 @@ const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
 const FALLBACK_TARGET_COL = 7; // 新表结构中“总生图数”列索引（第8列）
+const STATS_BUTTON_SELECTORS = [
+  'button.statistics-balloon__refresh',
+  'button[spm="未统计"]',
+  '.xcomponent-btn-helper:has-text("统计")',
+  'a:has-text("统计")',
+];
 
 // 配置
 const CONFIG = {
@@ -126,10 +132,11 @@ function getTargetColumnIndex(data) {
   return headerIndex >= 0 ? headerIndex : FALLBACK_TARGET_COL;
 }
 
-function shouldAutoWriteZeroForMissingFolder(pageText, folderName) {
+function shouldAutoWriteZeroForMissingFolder(pageText, folderName, options = {}) {
   const text = String(pageText || '');
   const hasLoadedObjectList = text.includes('generated/');
   const isStillLoading = text.includes('正在加载') || text.includes('加载中');
+  if (!options.searchedPrefix) return false;
   if (!hasLoadedObjectList || isStillLoading) return false;
   return !text.includes(`${folderName}/`) && !text.includes(folderName);
 }
@@ -202,4 +209,5 @@ module.exports = {
   hasStoredAuth,
   writeToExcel,
   shouldAutoWriteZeroForMissingFolder,
+  STATS_BUTTON_SELECTORS,
 };

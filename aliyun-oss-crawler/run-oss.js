@@ -8,6 +8,7 @@ const {
   getMissingDates,
   hasStoredAuth,
   shouldAutoWriteZeroForMissingFolder,
+  STATS_BUTTON_SELECTORS,
   writeToExcel,
 } = require('./oss-crawler');
 
@@ -72,16 +73,30 @@ async function navigateToFolder(page) {
 }
 
 /**
+ * 使用 OSS 文件列表的前缀匹配搜索目标日期目录。
+ * OSS 表格是虚拟列表，只看当前渲染行不能证明目标目录不存在。
+ */
+async function searchDatePrefix(page, folderName) {
+  const input = page.locator('input[placeholder*="请输入文件名前缀匹配"]').first();
+  if (!(await input.isVisible().catch(() => false))) {
+    throw new Error('未找到 OSS 文件名前缀匹配输入框');
+  }
+
+  await input.click({ force: true });
+  await input.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A');
+  await input.fill(folderName);
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(3000);
+  console.log(`已按前缀搜索: ${folderName}`);
+}
+
+/**
  * 查找目标日期行并点击该行的统计按钮
  */
 async function findDateAndClickStats(page, dateInfo) {
   console.log(`查找日期文件夹: ${dateInfo.folderName}`);
 
-  // 滚动加载更多内容，确保目标日期可见
-  for (let i = 0; i < 5; i++) {
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(1000);
-  }
+  await searchDatePrefix(page, dateInfo.folderName);
 
   // 查找包含目标日期的表格行（tr元素）
   const targetRow = page.locator(`tr:has-text("${dateInfo.folderName}")`).first();
@@ -92,18 +107,18 @@ async function findDateAndClickStats(page, dateInfo) {
 
   console.log(`找到日期行: ${dateInfo.folderName}`);
 
-  // 在目标行内查找统计按钮
-  // 之前能工作的选择器是 .xcomponent-btn-helper:has-text("统计")
-  let statsBtn = targetRow.locator('.xcomponent-btn-helper:has-text("统计")').first();
-
-  if (!(await statsBtn.isVisible().catch(() => false))) {
-    // 备用：查找行内的链接
-    statsBtn = targetRow.locator('a:has-text("统计")').first();
+  let statsBtn = null;
+  for (const selector of STATS_BUTTON_SELECTORS) {
+    const candidate = targetRow.locator(selector).first();
+    if (await candidate.isVisible().catch(() => false)) {
+      statsBtn = candidate;
+      console.log(`统计按钮选择器: ${selector}`);
+      break;
+    }
   }
 
-  if (!(await statsBtn.isVisible().catch(() => false))) {
-    // 再备用：查找行内包含"统计"文字的元素
-    statsBtn = targetRow.locator('text=统计').first();
+  if (!statsBtn) {
+    throw new Error('统计按钮不可见');
   }
 
   const isVisible = await statsBtn.isVisible().catch(() => false);
@@ -274,7 +289,7 @@ async function main() {
         console.log(`日期 ${dateInfo.formatted} 采集失败: ${message}`);
         if (message.includes('未找到日期文件夹')) {
           const pageText = await page.locator('body').innerText().catch(() => '');
-          if (shouldAutoWriteZeroForMissingFolder(pageText, dateInfo.folderName)) {
+          if (shouldAutoWriteZeroForMissingFolder(pageText, dateInfo.folderName, { searchedPrefix: true })) {
             writeToExcel(dateInfo.formatted, 0);
             console.log(`已确认列表加载完成且目标文件夹不存在，自动写入0: ${dateInfo.formatted}`);
           } else {

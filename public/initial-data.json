@@ -1,6 +1,6 @@
 {
-  "version": "1.0.217",
-  "lastUpdated": "2026-07-01T00:45:46Z",
+  "version": "1.0.218",
+  "lastUpdated": "2026-07-01T03:38:15Z",
   "apis": [
     {
       "id": "volcengine",
@@ -26,6 +26,11 @@
       "id": "manxiaobai",
       "name": "馒小白",
       "color": "#8b5cf6"
+    },
+    {
+      "id": "xinshijie",
+      "name": "新世界API",
+      "color": "#14b8a6"
     }
   ],
   "records": [
@@ -52,10 +57,14 @@
         {
           "apiId": "manxiaobai",
           "cost": 11.85
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 9.64
         }
       ],
       "imageCount": 1721,
-      "totalCost": 40.64
+      "totalCost": 50.28
     },
     {
       "id": "2026-06-29-1",
@@ -80,6 +89,10 @@
         {
           "apiId": "manxiaobai",
           "cost": 9.66
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1385,
@@ -108,6 +121,10 @@
         {
           "apiId": "manxiaobai",
           "cost": 3.37
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 430,
@@ -136,6 +153,10 @@
         {
           "apiId": "manxiaobai",
           "cost": 5.28
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1087,
@@ -163,6 +184,10 @@
         },
         {
           "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -196,6 +221,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1289,
@@ -227,6 +256,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -260,6 +293,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1066,
@@ -291,6 +328,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -324,6 +365,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 435,
@@ -355,6 +400,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -388,6 +437,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 460,
@@ -419,6 +472,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -452,6 +509,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1440,
@@ -483,6 +544,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -516,6 +581,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1191,
@@ -547,6 +616,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -580,6 +653,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 697,
@@ -611,6 +688,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -644,6 +725,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1013,
@@ -675,6 +760,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -708,6 +797,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1045,
@@ -739,6 +832,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -772,6 +869,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 573,
@@ -803,6 +904,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -836,6 +941,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1019,
@@ -867,6 +976,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -900,6 +1013,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 994,
@@ -931,6 +1048,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -964,6 +1085,10 @@
         {
           "apiId": "otuai",
           "cost": 24.35
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 890,
@@ -996,6 +1121,10 @@
         {
           "apiId": "otuai",
           "cost": 10.5
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1037,
@@ -1028,6 +1157,10 @@
         {
           "apiId": "otuai",
           "cost": 5.7
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 705,
@@ -1060,6 +1193,10 @@
         {
           "apiId": "otuai",
           "cost": 38.45
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1130,
@@ -1092,6 +1229,10 @@
         {
           "apiId": "otuai",
           "cost": 20.9
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1262,
@@ -1123,6 +1264,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1156,6 +1301,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1118,
@@ -1187,6 +1336,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1220,6 +1373,10 @@
         {
           "apiId": "otuai",
           "cost": 3.55
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 525,
@@ -1252,6 +1409,10 @@
         {
           "apiId": "otuai",
           "cost": 11.25
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1030,
@@ -1284,6 +1445,10 @@
         {
           "apiId": "otuai",
           "cost": 7.15
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1235,
@@ -1315,6 +1480,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1348,6 +1517,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 900,
@@ -1379,6 +1552,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1412,6 +1589,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1053,
@@ -1443,6 +1624,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1476,6 +1661,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 723,
@@ -1507,6 +1696,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1540,6 +1733,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 892,
@@ -1571,6 +1768,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1604,6 +1805,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 842,
@@ -1635,6 +1840,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1668,6 +1877,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 404,
@@ -1699,6 +1912,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1732,6 +1949,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 716,
@@ -1763,6 +1984,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1796,6 +2021,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 770,
@@ -1827,6 +2056,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1860,6 +2093,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 426,
@@ -1891,6 +2128,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1924,6 +2165,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 202,
@@ -1955,6 +2200,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -1988,6 +2237,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 346,
@@ -2019,6 +2272,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2052,6 +2309,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 691,
@@ -2083,6 +2344,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2116,6 +2381,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 480,
@@ -2147,6 +2416,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2180,6 +2453,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 843,
@@ -2211,6 +2488,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2244,6 +2525,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 505,
@@ -2275,6 +2560,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2308,6 +2597,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 596,
@@ -2339,6 +2632,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2372,6 +2669,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 8,
@@ -2403,6 +2704,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2436,6 +2741,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1614,
@@ -2467,6 +2776,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2500,6 +2813,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 271,
@@ -2531,6 +2848,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2564,6 +2885,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 346,
@@ -2595,6 +2920,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2628,6 +2957,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 495,
@@ -2659,6 +2992,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2692,6 +3029,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 655,
@@ -2723,6 +3064,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2756,6 +3101,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 281,
@@ -2787,6 +3136,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2820,6 +3173,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 101,
@@ -2851,6 +3208,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2884,6 +3245,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 400,
@@ -2915,6 +3280,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -2948,6 +3317,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1118,
@@ -2979,6 +3352,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3012,6 +3389,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 197,
@@ -3043,6 +3424,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3076,6 +3461,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 266,
@@ -3107,6 +3496,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3140,6 +3533,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 391,
@@ -3171,6 +3568,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3204,6 +3605,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 820,
@@ -3235,6 +3640,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3268,6 +3677,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 864,
@@ -3299,6 +3712,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3332,6 +3749,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 658,
@@ -3363,6 +3784,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3396,6 +3821,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 636,
@@ -3427,6 +3856,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3460,6 +3893,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 609,
@@ -3491,6 +3928,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3524,6 +3965,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 662,
@@ -3555,6 +4000,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3588,6 +4037,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 368,
@@ -3619,6 +4072,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3652,6 +4109,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 465,
@@ -3683,6 +4144,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3716,6 +4181,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 567,
@@ -3747,6 +4216,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3780,6 +4253,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 96,
@@ -3811,6 +4288,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3844,6 +4325,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 24,
@@ -3875,6 +4360,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3908,6 +4397,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 195,
@@ -3939,6 +4432,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -3972,6 +4469,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 96,
@@ -4003,6 +4504,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4036,6 +4541,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 5,
@@ -4067,6 +4576,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4100,6 +4613,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4131,6 +4648,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4164,6 +4685,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4195,6 +4720,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4228,6 +4757,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4259,6 +4792,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4292,6 +4829,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4323,6 +4864,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4356,6 +4901,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4387,6 +4936,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4420,6 +4973,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4451,6 +5008,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4484,6 +5045,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 1,
@@ -4515,6 +5080,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4548,6 +5117,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4579,6 +5152,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4612,6 +5189,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 20,
@@ -4643,6 +5224,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4676,6 +5261,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 3,
@@ -4707,6 +5296,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4740,6 +5333,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4771,6 +5368,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4804,6 +5405,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 0,
@@ -4835,6 +5440,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4868,6 +5477,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 78,
@@ -4899,6 +5512,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4932,6 +5549,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 266,
@@ -4963,6 +5584,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -4996,6 +5621,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 113,
@@ -5027,6 +5656,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -5060,6 +5693,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 292,
@@ -5091,6 +5728,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],
@@ -5124,6 +5765,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 422,
@@ -5156,6 +5801,10 @@
         {
           "apiId": "otuai",
           "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
         }
       ],
       "imageCount": 392,
@@ -5187,6 +5836,10 @@
         },
         {
           "apiId": "otuai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
           "cost": 0
         }
       ],

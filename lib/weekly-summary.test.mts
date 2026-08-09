@@ -14,8 +14,8 @@ import { getWeeklyHeroStats } from "./weekly-summary-hero.ts";
 import type { ApiConfig, DailyRecord } from "./types.ts";
 
 const apis: ApiConfig[] = [
-  { id: "volcengine", name: "火山引擎", color: "#1d4ed8" },
-  { id: "yunwu", name: "云雾API", color: "#16a34a" },
+  { id: "volcengine", name: "向量引擎", color: "#1d4ed8" },
+  { id: "zikl", name: "ZIKL", color: "#16a34a" },
   { id: "tangguo", name: "糖果姐姐API", color: "#db2777" },
 ];
 
@@ -25,7 +25,7 @@ const records: DailyRecord[] = [
     date: "2026-03-23",
     apiCosts: [
       { apiId: "volcengine", cost: 5 },
-      { apiId: "yunwu", cost: 20 },
+      { apiId: "zikl", cost: 20 },
     ],
     imageCount: 100,
     totalCost: 25,
@@ -34,7 +34,7 @@ const records: DailyRecord[] = [
     id: "2026-03-24-1",
     date: "2026-03-24",
     apiCosts: [
-      { apiId: "yunwu", cost: 12 },
+      { apiId: "zikl", cost: 12 },
       { apiId: "tangguo", cost: 8 },
     ],
     imageCount: 60,
@@ -69,8 +69,8 @@ test("should group daily records into natural weeks and compute weekly totals", 
     averageDailyImages: 40,
     maxDailyCost: 10,
     apiBreakdown: [
-      { apiId: "volcengine", apiName: "火山引擎", totalCost: 7.5, color: "#1d4ed8" },
-      { apiId: "yunwu", apiName: "云雾API", totalCost: 0, color: "#16a34a" },
+      { apiId: "volcengine", apiName: "向量引擎", totalCost: 7.5, color: "#1d4ed8" },
+      { apiId: "zikl", apiName: "ZIKL", totalCost: 0, color: "#16a34a" },
       { apiId: "tangguo", apiName: "糖果姐姐API", totalCost: 2.5, color: "#db2777" },
     ],
   });
@@ -87,8 +87,8 @@ test("should group daily records into natural weeks and compute weekly totals", 
     averageDailyImages: 80,
     maxDailyCost: 25,
     apiBreakdown: [
-      { apiId: "volcengine", apiName: "火山引擎", totalCost: 5, color: "#1d4ed8" },
-      { apiId: "yunwu", apiName: "云雾API", totalCost: 32, color: "#16a34a" },
+      { apiId: "volcengine", apiName: "向量引擎", totalCost: 5, color: "#1d4ed8" },
+      { apiId: "zikl", apiName: "ZIKL", totalCost: 32, color: "#16a34a" },
       { apiId: "tangguo", apiName: "糖果姐姐API", totalCost: 8, color: "#db2777" },
     ],
   });
@@ -153,8 +153,8 @@ test("should combine selected weeks into one hero summary for multi-week view", 
     averageDailyImages: 66.67,
     maxDailyCost: 25,
     apiBreakdown: [
-      { apiId: "volcengine", apiName: "火山引擎", totalCost: 12.5, color: "#1d4ed8" },
-      { apiId: "yunwu", apiName: "云雾API", totalCost: 32, color: "#16a34a" },
+      { apiId: "volcengine", apiName: "向量引擎", totalCost: 12.5, color: "#1d4ed8" },
+      { apiId: "zikl", apiName: "ZIKL", totalCost: 32, color: "#16a34a" },
       { apiId: "tangguo", apiName: "糖果姐姐API", totalCost: 10.5, color: "#db2777" },
     ],
   });
@@ -174,8 +174,8 @@ test("should build the previous comparison range using the same selected week co
       averageDailyImages: 100,
       maxDailyCost: 16,
       apiBreakdown: [
-        { apiId: "volcengine", apiName: "火山引擎", totalCost: 12, color: "#1d4ed8" },
-        { apiId: "yunwu", apiName: "云雾API", totalCost: 18, color: "#16a34a" },
+        { apiId: "volcengine", apiName: "向量引擎", totalCost: 12, color: "#1d4ed8" },
+        { apiId: "zikl", apiName: "ZIKL", totalCost: 18, color: "#16a34a" },
       ],
     },
     {
@@ -190,8 +190,8 @@ test("should build the previous comparison range using the same selected week co
       averageDailyImages: 100,
       maxDailyCost: 12,
       apiBreakdown: [
-        { apiId: "volcengine", apiName: "火山引擎", totalCost: 8, color: "#1d4ed8" },
-        { apiId: "yunwu", apiName: "云雾API", totalCost: 12, color: "#16a34a" },
+        { apiId: "volcengine", apiName: "向量引擎", totalCost: 8, color: "#1d4ed8" },
+        { apiId: "zikl", apiName: "ZIKL", totalCost: 12, color: "#16a34a" },
       ],
     },
     {
@@ -206,8 +206,8 @@ test("should build the previous comparison range using the same selected week co
       averageDailyImages: 75,
       maxDailyCost: 9,
       apiBreakdown: [
-        { apiId: "volcengine", apiName: "火山引擎", totalCost: 6, color: "#1d4ed8" },
-        { apiId: "yunwu", apiName: "云雾API", totalCost: 9, color: "#16a34a" },
+        { apiId: "volcengine", apiName: "向量引擎", totalCost: 6, color: "#1d4ed8" },
+        { apiId: "zikl", apiName: "ZIKL", totalCost: 9, color: "#16a34a" },
       ],
     },
     {
@@ -222,8 +222,8 @@ test("should build the previous comparison range using the same selected week co
       averageDailyImages: 60,
       maxDailyCost: 8,
       apiBreakdown: [
-        { apiId: "volcengine", apiName: "火山引擎", totalCost: 4, color: "#1d4ed8" },
-        { apiId: "yunwu", apiName: "云雾API", totalCost: 6, color: "#16a34a" },
+        { apiId: "volcengine", apiName: "向量引擎", totalCost: 4, color: "#1d4ed8" },
+        { apiId: "zikl", apiName: "ZIKL", totalCost: 6, color: "#16a34a" },
       ],
     },
   ];
@@ -242,8 +242,8 @@ test("should build the previous comparison range using the same selected week co
     averageDailyImages: 67.5,
     maxDailyCost: 9,
     apiBreakdown: [
-      { apiId: "volcengine", apiName: "火山引擎", totalCost: 10, color: "#1d4ed8" },
-      { apiId: "yunwu", apiName: "云雾API", totalCost: 15, color: "#16a34a" },
+      { apiId: "volcengine", apiName: "向量引擎", totalCost: 10, color: "#1d4ed8" },
+      { apiId: "zikl", apiName: "ZIKL", totalCost: 15, color: "#16a34a" },
     ],
   });
 });

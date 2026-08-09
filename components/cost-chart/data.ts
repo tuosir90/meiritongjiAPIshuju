@@ -1,6 +1,6 @@
-import { ApiConfig, DailyRecord } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
-import { ChartDataPoint } from "./types";
+import type { ApiConfig, DailyRecord } from "../../lib/types.ts";
+import { formatDate } from "../../lib/utils.ts";
+import type { ChartDataPoint } from "./types.ts";
 
 function formatMonth(monthStr: string) {
   const [year, month] = monthStr.split("-");
@@ -64,6 +64,10 @@ export function buildDailyChartData(records: DailyRecord[], apis: ApiConfig[]): 
         总费用: record.totalCost,
         图片数: record.imageCount,
       };
+
+      apis.forEach((api) => {
+        dataPoint[api.name] = 0;
+      });
 
       record.apiCosts.forEach((apiCost) => {
         const api = apis.find((item) => item.id === apiCost.apiId);

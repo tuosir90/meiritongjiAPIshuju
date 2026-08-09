@@ -22,8 +22,8 @@ git add .
 # 提交
 git commit -m "Initial commit: API费用统计系统"
 
-# 添加远程仓库（替换为你的仓库地址）
-git remote add origin https://github.com/your-username/api-cost-tracker.git
+# 添加远程仓库
+git remote add origin https://github.com/tuosir90/meiritongjiAPIshuju.git
 
 # 推送到main分支
 git push -u origin main
@@ -51,17 +51,14 @@ git push -u origin main
 ### 5. 访问网站
 
 部署成功后，可以通过以下URL访问：
-- `https://your-username.github.io/api-cost-tracker/`
-
-如果仓库名就是 `your-username.github.io`，则直接访问：
-- `https://your-username.github.io/`
+- `https://tuosir90.github.io/meiritongjiAPIshuju/`
 
 ### 6. 自定义域名（可选）
 
 1. 在仓库 **Settings** > **Pages** 中
 2. 找到 **Custom domain** 部分
-3. 输入你的域名，如 `api-tracker.yourdomain.com`
-4. 在域名DNS设置中添加CNAME记录，指向 `your-username.github.io`
+3. 输入你的域名，如 `api-tracker.example.com`
+4. 在域名DNS设置中添加CNAME记录，指向 `tuosir90.github.io`
 
 ## 其他部署选项
 

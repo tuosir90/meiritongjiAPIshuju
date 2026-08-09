@@ -43,20 +43,9 @@ function getLatestDateFromExcel() {
 }
 
 /**
- * 获取目标日期（直接使用Excel最新日期，由云雾脚本先写入）
+ * 格式化日期为查询所需的格式
  */
-function getTargetDate() {
-  const latestDate = getLatestDateFromExcel();
-
-  let targetDate;
-  if (latestDate) {
-    targetDate = new Date(latestDate);
-  } else {
-    targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() - 1);
-  }
-  targetDate.setHours(0, 0, 0, 0);
-
+function formatDateInfo(targetDate) {
   const endDate = new Date(targetDate);
   endDate.setDate(endDate.getDate() + 1);
 
@@ -72,6 +61,74 @@ function getTargetDate() {
     startTime: formatDateTime(targetDate),
     endTime: formatDateTime(endDate),
   };
+}
+
+/**
+ * 解析 Excel 日期单元格
+ */
+function parseCellDate(cellDate) {
+  if (!cellDate) return null;
+  if (cellDate instanceof Date) return new Date(cellDate.getTime());
+  if (typeof cellDate === 'number') {
+    return new Date((cellDate - 25569) * 86400 * 1000);
+  }
+  const parts = String(cellDate).split('/');
+  if (parts.length === 3) {
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+  return null;
+}
+
+/**
+ * 获取所有需要补采的日期（已存在行且目标列为空）
+ */
+function getMissingDates() {
+  if (!fs.existsSync(CONFIG.outputFile)) return [];
+
+  const workbook = XLSX.readFile(CONFIG.outputFile);
+  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+  if (data.length <= 1) return [];
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const missingDates = [];
+  const seen = new Set();
+
+  for (let i = 1; i < data.length; i++) {
+    const cellDate = data[i][0];
+    const dateObj = parseCellDate(cellDate);
+    if (!dateObj) continue;
+
+    dateObj.setHours(0, 0, 0, 0);
+    if (dateObj > yesterday) continue;
+
+    const value = data[i][1];
+    if (value !== undefined && value !== null && String(value).trim() !== '') {
+      continue;
+    }
+
+    const dateInfo = formatDateInfo(dateObj);
+    if (!seen.has(dateInfo.formatted)) {
+      missingDates.push(dateInfo);
+      seen.add(dateInfo.formatted);
+    }
+  }
+
+  return missingDates;
+}
+
+/**
+ * 获取目标日期（保留兼容性）
+ */
+function getTargetDate() {
+  const dates = getMissingDates();
+  return dates.length > 0 ? dates[0] : null;
 }
 
 /**
@@ -111,7 +168,7 @@ function writeToExcel(date, amount) {
   }
 
   if (rowIndex === -1) {
-    console.log(`错误: 未找到日期 ${date} 的行，请先运行云雾脚本`);
+    console.log(`错误: 未找到日期 ${date} 的行，请先运行ZIKL脚本`);
     return;
   }
 
@@ -126,4 +183,4 @@ function writeToExcel(date, amount) {
   console.log(`  日期: ${date}, 向量引擎消费: ${amount}`);
 }
 
-module.exports = { CONFIG, getTargetDate, hasStoredAuth, writeToExcel };
+module.exports = { CONFIG, getTargetDate, getMissingDates, hasStoredAuth, writeToExcel };

@@ -116,7 +116,7 @@ function writeToExcel(date, amount) {
   }
 
   if (rowIndex === -1) {
-    console.log(`错误: 未找到日期 ${date} 的行，请先运行云雾脚本`);
+    console.log(`错误: 未找到日期 ${date} 的行，请先运行ZIKL脚本`);
     return;
   }
 

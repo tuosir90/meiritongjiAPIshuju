@@ -1,14 +1,14 @@
 /**
- * 章鱼哥AI 数据抓取入口
+ * 新世界API 数据抓取入口
  *
- * 倍率：1:1（页面显示即真实消费）
+ * 规则：只采集昨天一天，历史日期在同步/展示时按 0 处理。
  */
 
-const { CONFIG, getMissingDates, hasStoredAuth, writeToExcel } = require('./otuai-crawler');
+const { CONFIG, getMissingDates, hasStoredAuth, writeToExcel } = require('./xinshijie-crawler');
 const { runConsoleCostCrawler } = require('../scripts/console-cost-runner');
 
 runConsoleCostCrawler({
-  title: '章鱼哥AI 数据抓取脚本',
+  title: '新世界API 数据抓取脚本',
   config: CONFIG,
   getMissingDates,
   hasStoredAuth,
@@ -24,9 +24,6 @@ runConsoleCostCrawler({
   ],
   requireModal: true,
   formatAmount(amount) {
-    return amount !== null ? parseFloat(amount).toFixed(2) : '0';
-  },
-  describeAmount(amount, finalAmount) {
-    return `原始金额: ${amount}（1:1 倍率，最终: ${finalAmount}）`;
+    return amount ?? '0';
   },
 });

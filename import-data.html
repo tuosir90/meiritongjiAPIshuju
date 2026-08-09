@@ -157,8 +157,8 @@
             <div class="record-item">
                 <div class="record-date">📅 2025-11-13</div>
                 <div class="record-details">
-                    • 火山引擎：0元<br>
-                    • 云雾API：0元<br>
+                    • 向量引擎：0元<br>
+                    • ZIKL：0元<br>
                     • 糖果姐姐API：28.56元<br>
                     • 总费用：<strong>28.56元</strong><br>
                     • 生图数：<strong>654张</strong>
@@ -168,8 +168,8 @@
             <div class="record-item">
                 <div class="record-date">📅 2025-11-14</div>
                 <div class="record-details">
-                    • 火山引擎：3.6元<br>
-                    • 云雾API：10元<br>
+                    • 向量引擎：3.6元<br>
+                    • ZIKL：10元<br>
                     • 糖果姐姐API：25元<br>
                     • 总费用：<strong>38.6元</strong><br>
                     • 生图数：<strong>978张</strong>
@@ -179,8 +179,8 @@
             <div class="record-item">
                 <div class="record-date">📅 2025-11-15</div>
                 <div class="record-details">
-                    • 火山引擎：3.6元<br>
-                    • 云雾API：10元<br>
+                    • 向量引擎：3.6元<br>
+                    • ZIKL：10元<br>
                     • 糖果姐姐API：25元<br>
                     • 总费用：<strong>38.6元</strong><br>
                     • 生图数：<strong>978张</strong>
@@ -215,7 +215,7 @@
                         date: '2025-11-13',
                         apiCosts: [
                             { apiId: 'volcengine', cost: 0 },
-                            { apiId: 'yunwu', cost: 0 },
+                            { apiId: 'zikl', cost: 0 },
                             { apiId: 'tangguo', cost: 28.56 }
                         ],
                         imageCount: 654,
@@ -226,7 +226,7 @@
                         date: '2025-11-14',
                         apiCosts: [
                             { apiId: 'volcengine', cost: 3.6 },
-                            { apiId: 'yunwu', cost: 10 },
+                            { apiId: 'zikl', cost: 10 },
                             { apiId: 'tangguo', cost: 25 }
                         ],
                         imageCount: 978,
@@ -237,7 +237,7 @@
                         date: '2025-11-15',
                         apiCosts: [
                             { apiId: 'volcengine', cost: 3.6 },
-                            { apiId: 'yunwu', cost: 10 },
+                            { apiId: 'zikl', cost: 10 },
                             { apiId: 'tangguo', cost: 25 }
                         ],
                         imageCount: 978,
@@ -246,7 +246,7 @@
                 ];
 
                 // 从 localStorage 加载现有数据
-                const STORAGE_KEY = 'api-cost-tracker-data-v2';
+                const STORAGE_KEY = 'api-cost-tracker-data-v4';
                 let existingData = null;
 
                 try {
@@ -262,8 +262,8 @@
                 if (!existingData) {
                     existingData = {
                         apis: [
-                            { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
-                            { id: "yunwu", name: "云雾API", color: "#00b96b" },
+                            { id: "volcengine", name: "向量引擎", color: "#0052D9" },
+                            { id: "zikl", name: "ZIKL", color: "#00b96b" },
                             { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" }
                         ],
                         records: []

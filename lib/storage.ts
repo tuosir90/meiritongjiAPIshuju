@@ -2,19 +2,22 @@
 
 import { AppData, ApiConfig, DailyRecord } from "./types";
 
-const STORAGE_KEY = "api-cost-tracker-data-v2"; // 更新版本，使用新的API配置
+const STORAGE_KEY = "api-cost-tracker-data-v4"; // ZIKL命名迁移，章鱼哥AI仅保留历史数据不再展示
+const LEGACY_STORAGE_KEYS = ["api-cost-tracker-data-v3", "api-cost-tracker-data-v2"];
 const VERSION_KEY = "api-cost-tracker-version"; // 存储当前数据版本号
+const LEGACY_ZIKL_ID = "yunwu";
+const ZIKL_ID = "zikl";
 
 /**
  * 默认API配置
  */
 const DEFAULT_APIS: ApiConfig[] = [
-  { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
-  { id: "yunwu", name: "云雾API", color: "#00b96b" },
+  { id: "volcengine", name: "向量引擎", color: "#0052D9" },
+  { id: ZIKL_ID, name: "ZIKL", color: "#00b96b" },
   { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" },
   { id: "123api", name: "APIMart", color: "#f59e0b" },
   { id: "manxiaobai", name: "馒小白", color: "#8b5cf6" },
-  { id: "otuai", name: "章鱼哥AI", color: "#06b6d4" },
+  { id: "xinshijie", name: "新世界API", color: "#14b8a6" },
 ];
 
 /**
@@ -27,6 +30,41 @@ function getDefaultData(): AppData {
   };
 }
 
+function migrateZiklData(data: AppData): AppData {
+  const apis = Array.isArray(data.apis) ? data.apis : DEFAULT_APIS;
+  const records = Array.isArray(data.records) ? data.records : [];
+
+  return {
+    ...data,
+    apis: apis.map((api) => {
+      if (api.id === LEGACY_ZIKL_ID || api.id === ZIKL_ID) {
+        return { ...api, id: ZIKL_ID, name: "ZIKL" };
+      }
+      return api;
+    }),
+    records: records.map((record) => ({
+      ...record,
+      apiCosts: Array.isArray(record.apiCosts)
+        ? record.apiCosts.map((cost) => (
+          cost.apiId === LEGACY_ZIKL_ID
+            ? { ...cost, apiId: ZIKL_ID }
+            : cost
+        ))
+        : [],
+    })),
+  };
+}
+
+function sanitizeVisibleApis(data: AppData): AppData {
+  const migrated = migrateZiklData(data);
+  return {
+    ...migrated,
+    apis: (migrated.apis && Array.isArray(migrated.apis) ? migrated.apis : DEFAULT_APIS)
+      .filter((api) => api.id !== "otuai"),
+    records: Array.isArray(migrated.records) ? migrated.records : [],
+  };
+}
+
 /**
  * 从localStorage加载数据
  */
@@ -36,9 +74,14 @@ export function loadData(): AppData {
   }
 
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const data = JSON.parse(stored) as AppData;
+    const storageEntry = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS]
+      .map((key) => ({ key, value: localStorage.getItem(key) }))
+      .find((entry) => entry.value);
+    if (storageEntry) {
+      const data = sanitizeVisibleApis(JSON.parse(storageEntry.value as string) as AppData);
+      if (storageEntry.key !== STORAGE_KEY) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
       // 确保数据结构完整
       if (!data.apis || !Array.isArray(data.apis)) {
         data.apis = DEFAULT_APIS;
@@ -52,7 +95,7 @@ export function loadData(): AppData {
     console.error("加载数据失败:", error);
   }
 
-  return getDefaultData();
+  return sanitizeVisibleApis(getDefaultData());
 }
 
 /**
@@ -64,7 +107,7 @@ export function saveData(data: AppData): void {
   }
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeVisibleApis(data)));
   } catch (error) {
     console.error("保存数据失败:", error);
   }

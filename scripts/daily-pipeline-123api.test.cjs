@@ -34,25 +34,13 @@ function copyScript(source, targetDir) {
   return target;
 }
 
-test('api123-crawler should convert quota amount to daily cost by dividing by 6.6', () => {
-  const { convertQuotaToDailyCost } = require(path.join(
-    repoRoot,
-    'api123-crawler',
-    'api123-crawler.js'
-  ));
-
-  assert.equal(convertQuotaToDailyCost('6.6'), '1.00');
-  assert.equal(convertQuotaToDailyCost('5'), '0.76');
-  assert.equal(convertQuotaToDailyCost('0'), '0.00');
-});
-
-test('sync-daily-data should parse 6-column rows and include 123api in total cost', () => {
+test('sync-daily-data should parse APIMart column and include it in total cost', () => {
   const tempDir = makeTempDir('sync-123api');
   fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });
   copyScript('sync-daily-data.js', tempDir);
 
   writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', '123api', '总生图数'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '总生图数'],
     ['2026/4/14', '2.92', '12.46', '31.33', '5', '271'],
   ]);
 
@@ -75,48 +63,58 @@ test('sync-daily-data should parse 6-column rows and include 123api in total cos
   );
 
   assert.equal(json.records.length, 1);
+  assert.deepEqual(json.apis.find((api) => api.id === '123api'), {
+    id: '123api',
+    name: 'APIMart',
+    color: '#f59e0b',
+  });
   assert.deepEqual(json.records[0], {
     id: '2026-04-14-1',
     date: '2026-04-14',
     apiCosts: [
       { apiId: 'volcengine', cost: 2.92 },
-      { apiId: 'yunwu', cost: 12.46 },
+      { apiId: 'zikl', cost: 12.46 },
       { apiId: 'tangguo', cost: 31.33 },
       { apiId: '123api', cost: 5 },
+      { apiId: 'manxiaobai', cost: 0 },
+      { apiId: 'xinshijie', cost: 0 },
     ],
     imageCount: 271,
     totalCost: 51.71,
   });
 });
 
-test('sync-daily-data should update existing dates when Excel adds 123api values', () => {
+test('sync-daily-data should preserve existing historical otuai dates by default', () => {
   const tempDir = makeTempDir('sync-update-123api');
   fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });
   copyScript('sync-daily-data.js', tempDir);
 
   writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', '123api', '总生图数'],
-    ['2026/4/14', '2.92', '12.46', '31.33', '5', '271'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '章鱼哥AI', '总生图数'],
+    ['2026/5/22', '2.92', '12.46', '31.33', '5', '1.1', '7.15', '271'],
   ]);
+
+  const existingRecord = {
+    id: '2026-05-22-1',
+    date: '2026-05-22',
+    apiCosts: [
+      { apiId: 'volcengine', cost: 2.92 },
+      { apiId: 'zikl', cost: 12.46 },
+      { apiId: 'tangguo', cost: 31.33 },
+      { apiId: '123api', cost: 5 },
+      { apiId: 'manxiaobai', cost: 1.1 },
+      { apiId: 'otuai', cost: 7.15 },
+    ],
+    imageCount: 271,
+    totalCost: 59.96,
+  };
 
   fs.writeFileSync(
     path.join(tempDir, 'public', 'initial-data.json'),
     JSON.stringify({
       version: '1.0.0',
-      apis: [],
-      records: [
-        {
-          id: '2026-04-14-1',
-          date: '2026-04-14',
-          apiCosts: [
-            { apiId: 'volcengine', cost: 2.92 },
-            { apiId: 'yunwu', cost: 12.46 },
-            { apiId: 'tangguo', cost: 31.33 },
-          ],
-          imageCount: 271,
-          totalCost: 46.71,
-        },
-      ],
+      apis: [{ id: 'otuai', name: '章鱼哥AI', color: '#06b6d4' }],
+      records: [existingRecord],
     }, null, 2),
     'utf8'
   );
@@ -134,39 +132,163 @@ test('sync-daily-data should update existing dates when Excel adds 123api values
   );
 
   assert.equal(json.version, '1.0.1');
-  assert.deepEqual(json.records[0].apiCosts, [
-    { apiId: 'volcengine', cost: 2.92 },
-    { apiId: 'yunwu', cost: 12.46 },
-    { apiId: 'tangguo', cost: 31.33 },
-    { apiId: '123api', cost: 5 },
-  ]);
-  assert.equal(json.records[0].totalCost, 51.71);
+  assert.equal(json.apis.some((api) => api.id === 'otuai'), false);
+  assert.equal(json.records[0].totalCost, existingRecord.totalCost);
+  assert.equal(json.records[0].apiCosts.find((cost) => cost.apiId === 'otuai').cost, 7.15);
+  assert.equal(json.records[0].apiCosts.find((cost) => cost.apiId === 'xinshijie').cost, 0);
 });
 
-test('yunwu-crawler should create 6 columns when appending a new date row', () => {
-  const tempDir = makeTempDir('yunwu-123api');
-  const scriptDir = path.join(tempDir, 'scripts');
-  copyScript('scripts/yunwu-crawler.js', scriptDir);
+test('sync-daily-data should add zero xinshijie to protected otuai history without recalculating total', () => {
+  const tempDir = makeTempDir('sync-protected-xinshijie');
+  fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });
+  copyScript('sync-daily-data.js', tempDir);
 
   writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', '123api', '总生图数'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '新世界API', '章鱼哥AI', '总生图数'],
+    ['2026/5/22', '2.92', '12.46', '31.33', '5', '1.1', '', '7.15', '271'],
   ]);
 
-  const { writeToExcel } = require(path.join(scriptDir, 'yunwu-crawler.js'));
+  const existingRecord = {
+    id: '2026-05-22-1',
+    date: '2026-05-22',
+    apiCosts: [
+      { apiId: 'volcengine', cost: 2.92 },
+      { apiId: 'zikl', cost: 12.46 },
+      { apiId: 'tangguo', cost: 31.33 },
+      { apiId: '123api', cost: 5 },
+      { apiId: 'manxiaobai', cost: 1.1 },
+      { apiId: 'otuai', cost: 7.15 },
+    ],
+    imageCount: 271,
+    totalCost: 59.96,
+  };
+
+  fs.writeFileSync(
+    path.join(tempDir, 'public', 'initial-data.json'),
+    JSON.stringify({
+      version: '1.0.0',
+      apis: [{ id: 'otuai', name: '章鱼哥AI', color: '#06b6d4' }],
+      records: [existingRecord],
+    }, null, 2),
+    'utf8'
+  );
+
+  execFileSync('node', ['sync-daily-data.js', '--skip-git'], {
+    cwd: tempDir,
+    env: {
+      ...process.env,
+      NODE_PATH: path.join(repoRoot, 'node_modules'),
+    },
+  });
+
+  const json = JSON.parse(
+    fs.readFileSync(path.join(tempDir, 'public', 'initial-data.json'), 'utf8')
+  );
+  const syncedRecord = json.records[0];
+
+  assert.equal(syncedRecord.totalCost, 59.96);
+  assert.equal(syncedRecord.apiCosts.find((cost) => cost.apiId === 'otuai').cost, 7.15);
+  assert.equal(syncedRecord.apiCosts.find((cost) => cost.apiId === 'xinshijie').cost, 0);
+});
+
+test('sync-daily-data should ignore otuai column for new future records', () => {
+  const tempDir = makeTempDir('sync-ignore-otuai');
+  fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });
+  copyScript('sync-daily-data.js', tempDir);
+
+  writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '章鱼哥AI', '总生图数'],
+    ['2026/6/26', '2.92', '12.46', '31.33', '5', '1.1', '99', '271'],
+  ]);
+
+  fs.writeFileSync(
+    path.join(tempDir, 'public', 'initial-data.json'),
+    JSON.stringify({ version: '1.0.0', apis: [], records: [] }, null, 2),
+    'utf8'
+  );
+
+  execFileSync('node', ['sync-daily-data.js', '--skip-git'], {
+    cwd: tempDir,
+    env: {
+      ...process.env,
+      NODE_PATH: path.join(repoRoot, 'node_modules'),
+    },
+  });
+
+  const json = JSON.parse(
+    fs.readFileSync(path.join(tempDir, 'public', 'initial-data.json'), 'utf8')
+  );
+
+  assert.equal(json.records[0].apiCosts.some((cost) => cost.apiId === 'otuai'), false);
+  assert.equal(json.records[0].totalCost, 52.81);
+});
+
+test('sync-daily-data should include xinshijie and default older dates to zero', () => {
+  const tempDir = makeTempDir('sync-xinshijie');
+  fs.mkdirSync(path.join(tempDir, 'public'), { recursive: true });
+  copyScript('sync-daily-data.js', tempDir);
+
+  writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '新世界API', '章鱼哥AI', '总生图数'],
+    ['2026/6/29', '1', '2', '3', '4', '5', '', '', '10'],
+    ['2026/6/30', '1', '2', '3', '4', '5', '6.78', '', '10'],
+  ]);
+
+  fs.writeFileSync(
+    path.join(tempDir, 'public', 'initial-data.json'),
+    JSON.stringify({ version: '1.0.0', apis: [], records: [] }, null, 2),
+    'utf8'
+  );
+
+  execFileSync('node', ['sync-daily-data.js', '--skip-git'], {
+    cwd: tempDir,
+    env: {
+      ...process.env,
+      NODE_PATH: path.join(repoRoot, 'node_modules'),
+    },
+  });
+
+  const json = JSON.parse(
+    fs.readFileSync(path.join(tempDir, 'public', 'initial-data.json'), 'utf8')
+  );
+  const olderRecord = json.records.find((record) => record.date === '2026-06-29');
+  const yesterdayRecord = json.records.find((record) => record.date === '2026-06-30');
+
+  assert.deepEqual(json.apis.find((api) => api.id === 'xinshijie'), {
+    id: 'xinshijie',
+    name: '新世界API',
+    color: '#14b8a6',
+  });
+  assert.equal(olderRecord.apiCosts.find((cost) => cost.apiId === 'xinshijie').cost, 0);
+  assert.equal(olderRecord.totalCost, 15);
+  assert.equal(yesterdayRecord.apiCosts.find((cost) => cost.apiId === 'xinshijie').cost, 6.78);
+  assert.equal(yesterdayRecord.totalCost, 21.78);
+});
+
+test('zikl-crawler should create current API columns when appending a new date row', () => {
+  const tempDir = makeTempDir('zikl-123api');
+  const scriptDir = path.join(tempDir, 'scripts');
+  copyScript('scripts/zikl-crawler.js', scriptDir);
+
+  writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '总生图数'],
+  ]);
+
+  const { writeToExcel } = require(path.join(scriptDir, 'zikl-crawler.js'));
   writeToExcel('2026/4/15', '12.34');
 
   const rows = readWorkbook(path.join(tempDir, '每日数据整理.xlsx'));
-  assert.equal(rows[1].length, 6);
-  assert.deepEqual(rows[1], ['2026/4/15', '', '12.34', '', '', '']);
+  assert.equal(rows[1].length, 9);
+  assert.deepEqual(rows[1], ['2026/4/15', '', '12.34', '', '', '', '', '', '']);
 });
 
-test('oss-crawler should treat image count as column 6 after inserting 123api', () => {
+test('oss-crawler should treat image count as column 6 after inserting APIMart', () => {
   const tempDir = makeTempDir('oss-123api');
   const scriptDir = path.join(tempDir, 'aliyun-oss-crawler');
   copyScript('aliyun-oss-crawler/oss-crawler.js', scriptDir);
 
   writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', '123api', '总生图数'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '总生图数'],
     ['2025/12/1', '1', '2', '3', '', '456'],
   ]);
 

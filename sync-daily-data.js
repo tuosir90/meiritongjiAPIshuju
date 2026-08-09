@@ -17,13 +17,14 @@ const PUSH_BRANCH = 'main';
 const args = process.argv.slice(2);
 const SKIP_GIT = args.includes('--skip-git');
 const SKIP_PUSH = args.includes('--skip-push');
+const ALLOW_HISTORY_OVERWRITE = args.includes('--allow-history-overwrite');
 const DEFAULT_APIS = [
-  { id: 'volcengine', name: '火山引擎（字节跳动）', color: '#0052D9' },
-  { id: 'yunwu', name: '云雾API', color: '#00b96b' },
+  { id: 'volcengine', name: '向量引擎', color: '#0052D9' },
+  { id: 'zikl', name: 'ZIKL', color: '#00b96b' },
   { id: 'tangguo', name: '糖果姐姐API', color: '#ff5c93' },
   { id: '123api', name: 'APIMart', color: '#f59e0b' },
   { id: 'manxiaobai', name: '馒小白', color: '#8b5cf6' },
-  { id: 'otuai', name: '章鱼哥AI', color: '#06b6d4' },
+  { id: 'xinshijie', name: '新世界API', color: '#14b8a6' },
 ];
 
 function convertDateToIso(dateValue) {
@@ -56,16 +57,52 @@ function incrementVersion(version) {
   return parts.join('.');
 }
 
-function normalizeRow(row) {
+function findHeaderIndex(header, names) {
+  return header.findIndex((cell) => names.includes(String(cell || '').trim()));
+}
+
+function pickByHeader(row, header, names) {
+  const index = findHeaderIndex(header, names);
+  return index >= 0 ? row[index] : undefined;
+}
+
+function normalizeRow(row, header = []) {
+  if (findHeaderIndex(header, ['日期']) >= 0) {
+    return {
+      dateVal: pickByHeader(row, header, ['日期']),
+      volcVal: pickByHeader(row, header, ['向量引擎消费', '向量引擎', '火山引擎消费', '火山引擎']),
+      ziklVal: pickByHeader(row, header, ['ZIKL', 'ZIKL消费', '云雾api消费', '云雾API消费', '云雾API']),
+      tangguoVal: pickByHeader(row, header, ['糖果姐姐api', '糖果姐姐API']),
+      api123Val: pickByHeader(row, header, ['APIMart']),
+      manxiaobaiVal: pickByHeader(row, header, ['馒小白']),
+      xinshijieVal: pickByHeader(row, header, ['新世界API']),
+      legacyOtuaiVal: pickByHeader(row, header, ['章鱼哥AI']),
+      countVal: pickByHeader(row, header, ['总生图数']),
+    };
+  }
+  if (row.length >= 9) {
+    return {
+      dateVal: row[0],
+      volcVal: row[1],
+      ziklVal: row[2],
+      tangguoVal: row[3],
+      api123Val: row[4],
+      manxiaobaiVal: row[5],
+      xinshijieVal: row[6],
+      legacyOtuaiVal: row[7],
+      countVal: row[8],
+    };
+  }
   if (row.length >= 8) {
     return {
       dateVal: row[0],
       volcVal: row[1],
-      yunwuVal: row[2],
+      ziklVal: row[2],
       tangguoVal: row[3],
       api123Val: row[4],
       manxiaobaiVal: row[5],
-      otuaiVal: row[6],
+      xinshijieVal: null,
+      legacyOtuaiVal: row[6],
       countVal: row[7],
     };
   }
@@ -73,11 +110,12 @@ function normalizeRow(row) {
     return {
       dateVal: row[0],
       volcVal: row[1],
-      yunwuVal: row[2],
+      ziklVal: row[2],
       tangguoVal: row[3],
       api123Val: row[4],
       manxiaobaiVal: row[5],
-      otuaiVal: null,
+      xinshijieVal: null,
+      legacyOtuaiVal: null,
       countVal: row[6],
     };
   }
@@ -85,56 +123,58 @@ function normalizeRow(row) {
     return {
       dateVal: row[0],
       volcVal: row[1],
-      yunwuVal: row[2],
+      ziklVal: row[2],
       tangguoVal: row[3],
       api123Val: row[4],
       manxiaobaiVal: null,
-      otuaiVal: null,
+      xinshijieVal: null,
+      legacyOtuaiVal: null,
       countVal: row[5],
     };
   }
   return {
     dateVal: row[0],
     volcVal: row[1],
-    yunwuVal: row[2],
+    ziklVal: row[2],
     tangguoVal: row[3],
     api123Val: null,
     manxiaobaiVal: null,
-    otuaiVal: null,
+    xinshijieVal: null,
+    legacyOtuaiVal: null,
     countVal: row[4],
   };
 }
 
-function buildRecord(row, rowNumber) {
-  const { dateVal, volcVal, yunwuVal, tangguoVal, api123Val, manxiaobaiVal, otuaiVal, countVal } = normalizeRow(row);
+function buildRecord(row, rowNumber, header = []) {
+  const { dateVal, volcVal, ziklVal, tangguoVal, api123Val, manxiaobaiVal, xinshijieVal, countVal } = normalizeRow(row, header);
   const date = convertDateToIso(dateVal);
   if (!date) {
     return { warning: `行 ${rowNumber}: 日期格式无效，已跳过` };
   }
 
   const volc = parseNumber(volcVal);
-  const yunwu = parseNumber(yunwuVal);
+  const zikl = parseNumber(ziklVal);
   const tangguo = parseNumber(tangguoVal);
   const count = parseNumber(countVal);
   const api123 = parseNumber(api123Val) ?? 0;
   const manxiaobai = parseNumber(manxiaobaiVal) ?? 0;
-  const otuai = parseNumber(otuaiVal) ?? 0;
-  if ([volc, yunwu, tangguo, count].some((value) => value === null)) {
+  const xinshijie = parseNumber(xinshijieVal) ?? 0;
+  if ([volc, zikl, tangguo, count].some((value) => value === null)) {
     return { warning: `日期 ${date} 数据不完整，已跳过` };
   }
 
-  const totalCost = Math.round((volc + yunwu + tangguo + api123 + manxiaobai + otuai) * 100) / 100;
+  const totalCost = Math.round((volc + zikl + tangguo + api123 + manxiaobai + xinshijie) * 100) / 100;
   return {
     record: {
       id: `${date}-1`,
       date,
       apiCosts: [
         { apiId: 'volcengine', cost: volc },
-        { apiId: 'yunwu', cost: yunwu },
+        { apiId: 'zikl', cost: zikl },
         { apiId: 'tangguo', cost: tangguo },
         { apiId: '123api', cost: api123 },
         { apiId: 'manxiaobai', cost: manxiaobai },
-        { apiId: 'otuai', cost: otuai },
+        { apiId: 'xinshijie', cost: xinshijie },
       ],
       imageCount: Math.floor(count),
       totalCost,
@@ -144,6 +184,61 @@ function buildRecord(row, rowNumber) {
 
 function isSameRecord(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function hasLegacyOtuaiCost(record) {
+  return Boolean(record?.apiCosts?.some((cost) => cost.apiId === 'otuai'));
+}
+
+function ensureXinshijieZeroCost(record) {
+  if (!record || record.apiCosts?.some((cost) => cost.apiId === 'xinshijie')) {
+    return { record, changed: false };
+  }
+
+  return {
+    record: {
+      ...record,
+      apiCosts: [
+        ...(Array.isArray(record.apiCosts) ? record.apiCosts : []),
+        { apiId: 'xinshijie', cost: 0 },
+      ],
+    },
+    changed: true,
+  };
+}
+
+function migrateLegacyZiklData(data) {
+  return {
+    ...data,
+    apis: Array.isArray(data.apis)
+      ? data.apis.map((api) => (
+        api.id === 'yunwu' || api.id === 'zikl'
+          ? { ...api, id: 'zikl', name: 'ZIKL' }
+          : api
+      ))
+      : data.apis,
+    records: Array.isArray(data.records)
+      ? data.records.map((record) => ({
+        ...record,
+        apiCosts: Array.isArray(record.apiCosts)
+          ? record.apiCosts.map((cost) => (
+            cost.apiId === 'yunwu'
+              ? { ...cost, apiId: 'zikl' }
+              : cost
+          ))
+          : [],
+      }))
+      : [],
+  };
+}
+
+function summarizeProtectedHistoryDates(dates) {
+  if (dates.length === 0) return null;
+  const sortedDates = [...dates].sort();
+  const preview = sortedDates.length <= 6
+    ? sortedDates.join(', ')
+    : `${sortedDates.slice(0, 3).join(', ')} ... ${sortedDates.slice(-3).join(', ')}`;
+  return `${dates.length} 个历史章鱼哥AI日期已保留未覆盖：${preview}。如需重写历史，请显式使用 --allow-history-overwrite`;
 }
 
 function syncRecords() {
@@ -157,13 +252,14 @@ function syncRecords() {
   const workbook = XLSX.readFile(EXCEL_FILE);
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  const header = rows[0] || [];
   const parsedByDate = new Map();
   const warnings = [];
 
   for (let i = 1; i < rows.length; i++) {
     const row = rows[i];
     if (!row || row.length === 0) continue;
-    const { record, warning } = buildRecord(row, i + 1);
+    const { record, warning } = buildRecord(row, i + 1, header);
     if (warning) {
       warnings.push(warning);
       continue;
@@ -175,18 +271,32 @@ function syncRecords() {
   }
 
   console.log(`[信息] 从 Excel 解析到 ${parsedByDate.size} 条记录`);
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+  const data = migrateLegacyZiklData(JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')));
   const recordsByDate = new Map(data.records.map((record) => [record.date, record]));
   const changedDates = [];
   const apiConfigChanged = JSON.stringify(data.apis) !== JSON.stringify(DEFAULT_APIS);
+  const protectedHistoryDates = [];
 
   data.apis = DEFAULT_APIS;
   for (const [date, record] of parsedByDate.entries()) {
     const existing = recordsByDate.get(date);
+    if (existing && hasLegacyOtuaiCost(existing) && !ALLOW_HISTORY_OVERWRITE) {
+      const { record: protectedRecord, changed } = ensureXinshijieZeroCost(existing);
+      if (changed) {
+        recordsByDate.set(date, protectedRecord);
+        changedDates.push(date);
+      }
+      protectedHistoryDates.push(date);
+      continue;
+    }
     if (!existing || !isSameRecord(existing, record)) {
       recordsByDate.set(date, record);
       changedDates.push(date);
     }
+  }
+  const protectedHistoryWarning = summarizeProtectedHistoryDates(protectedHistoryDates);
+  if (protectedHistoryWarning) {
+    warnings.push(protectedHistoryWarning);
   }
 
   if (changedDates.length === 0 && !apiConfigChanged) {
@@ -207,9 +317,11 @@ function syncRecords() {
 function runGitSync(data, missing) {
   console.log('\n[信息] 执行 Git 操作...');
   execSync('git add public/initial-data.json', { cwd: REPO_ROOT, stdio: 'inherit' });
-  const commitTitle = missing.length === 1
-    ? `chore: 更新数据到 v${data.version} - 添加${missing[0].date}记录`
-    : `chore: 更新数据到 v${data.version} - 添加${missing[0].date}等${missing.length}条记录`;
+  const commitTitle = missing.length === 0
+    ? `chore: 更新数据到 v${data.version} - 更新API配置`
+    : missing.length === 1
+      ? `chore: 更新数据到 v${data.version} - 添加${missing[0].date}记录`
+      : `chore: 更新数据到 v${data.version} - 添加${missing[0].date}等${missing.length}条记录`;
   const commitBody = '🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>';
   execSync(`git commit -m "${commitTitle}" -m "${commitBody}"`, { cwd: REPO_ROOT, stdio: 'inherit' });
   if (!SKIP_PUSH) {
@@ -228,7 +340,7 @@ function main() {
   try {
     const { data, changedDates, warnings } = syncRecords();
     printWarnings(warnings);
-    if (!changedDates || changedDates.length === 0) return;
+    if (!data) return;
     if (!SKIP_GIT) {
       const changedRecords = data.records.filter((record) => changedDates.includes(record.date));
       runGitSync(data, changedRecords);

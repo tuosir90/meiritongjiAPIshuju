@@ -43,7 +43,7 @@ test('oss-crawler writes image count to column 7 without filling manxiaobai colu
 
   const workbookPath = path.join(tempDir, '每日数据整理.xlsx');
   writeWorkbook(workbookPath, [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', 'APIMart', '馒小白', '总生图数'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '总生图数'],
     ['2026/5/19', '3.60', '27.23', '53.90', '1.51', '', ''],
   ]);
 
@@ -65,7 +65,7 @@ test('oss-crawler writes image count to total image column when legacy otuai col
 
   const workbookPath = path.join(tempDir, '每日数据整理.xlsx');
   writeWorkbook(workbookPath, [
-    ['日期', '火山引擎消费', '云雾api消费', '糖果姐姐api', 'APIMart', '馒小白', '章鱼哥AI', '总生图数'],
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '章鱼哥AI', '总生图数'],
     ['2026/5/23', '4.01', '8.58', '10.85', '7.69', '3.33', '', ''],
   ]);
 

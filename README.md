@@ -223,12 +223,14 @@ npx serve out
       "date": "2025-11-16",    // ISO格式日期
       "apiCosts": [
         { "apiId": "volcengine", "cost": 3.6 },
-        { "apiId": "yunwu", "cost": 10 },
+        { "apiId": "zikl", "cost": 10 },
         { "apiId": "tangguo", "cost": 25 },
-        { "apiId": "123api", "cost": 5 }
+        { "apiId": "123api", "cost": 5 },
+        { "apiId": "manxiaobai", "cost": 1.2 },
+        { "apiId": "xinshijie", "cost": 0 }
       ],
       "imageCount": 978,       // 生图数量
-      "totalCost": 43.6       // 总费用（必须等于所有apiCosts之和）
+      "totalCost": 44.8       // 新增记录总费用=当前六个可见API费用之和
     }
   ]
 }
@@ -274,6 +276,9 @@ git push
 
 ### 📋 数据格式详解
 
+> 章鱼哥AI/OtuAI 不再纳入未来流程。历史记录中如存在 `apiId: "otuai"` 和历史 `totalCost`，保持原值用于历史口径；新增记录不再包含 `otuai`。新世界API接入后，历史记录缺少 `xinshijie` 时按 0 显示，不重算历史总费用。
+
+
 #### 记录字段说明
 
 | 字段 | 类型 | 必填 | 说明 | 示例 |
@@ -302,12 +307,14 @@ git push
   "date": "2025-11-16",
   "apiCosts": [
     { "apiId": "volcengine", "cost": 3.6 },
-    { "apiId": "yunwu", "cost": 10 },
+    { "apiId": "zikl", "cost": 10 },
     { "apiId": "tangguo", "cost": 25 },
-    { "apiId": "123api", "cost": 5 }
+    { "apiId": "123api", "cost": 5 },
+    { "apiId": "manxiaobai", "cost": 1.2 },
+    { "apiId": "xinshijie", "cost": 0 }
   ],
   "imageCount": 978,
-  "totalCost": 43.6,
+  "totalCost": 44.8,
   "notes": "正常运营数据"
 }
 ```
@@ -321,7 +328,7 @@ git push
 - [ ] **版本号已更新**（比当前版本大）
 - [ ] **日期格式正确**（YYYY-MM-DD）
 - [ ] **记录ID唯一**（格式：日期-序号）
-- [ ] **totalCost正确**（等于所有apiCosts之和）
+- [ ] **totalCost正确**（新增记录等于当前六个可见API费用之和；历史记录保留原值）
 - [ ] **apiId存在**（在apis列表中）
 - [ ] **费用为数字**（不能有引号）
 - [ ] **JSON格式有效**（无语法错误）
@@ -399,7 +406,7 @@ git push
 // ❌ 错误：总费用不等于各API之和
 "apiCosts": [
   { "apiId": "volcengine", "cost": 3.6 },
-  { "apiId": "yunwu", "cost": 10 }
+  { "apiId": "zikl", "cost": 10 }
 ],
 "totalCost": 20  // 错误！应该是 13.6
 
@@ -459,7 +466,7 @@ git push
       "date": "2025-11-16",
       "apiCosts": [
         { "apiId": "volcengine", "cost": 4.2 },
-        { "apiId": "yunwu", "cost": 12 },
+        { "apiId": "zikl", "cost": 12 },
         { "apiId": "tangguo", "cost": 28 }
       ],
       "imageCount": 1050,
@@ -546,10 +553,12 @@ git push
 
 ```typescript
 const DEFAULT_APIS: ApiConfig[] = [
-  { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
-  { id: "yunwu", name: "云雾API", color: "#00b96b" },
+  { id: "volcengine", name: "向量引擎", color: "#0052D9" },
+  { id: "zikl", name: "ZIKL", color: "#00b96b" },
   { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" },
-  { id: "123api", name: "123api", color: "#f59e0b" },
+  { id: "123api", name: "APIMart", color: "#f59e0b" },
+  { id: "manxiaobai", name: "馒小白", color: "#8b5cf6" },
+  { id: "xinshijie", name: "新世界API", color: "#14b8a6" },
   { id: "your-api", name: "Your API", color: "#your-color" },
 ];
 ```
@@ -577,7 +586,7 @@ for (let i = 29; i >= 0; i--) { // 30天
 
 数据使用浏览器的 `localStorage` 存储，仅保存在本地，不会上传到服务器。
 
-- **存储键**: `api-cost-tracker-data-v2`
+- **存储键**: `api-cost-tracker-data-v3`
 - **优点**: 简单、快速、隐私保护
 - **注意**: 清除浏览器数据会丢失记录
 - **建议**: 定期使用导出功能备份数据
@@ -613,7 +622,7 @@ A: 尝试调整浏览器窗口大小，或在按日/按月视图之间切换，�
 - 📅 生成天数：30天
 - 💰 每日费用：50-60元
 - 🖼️ 每日图片：1000-1500张
-- 📈 API数量：4个（可扩展）
+- 📈 API数量：6个可见API（历史章鱼哥AI数据保留但不再展示/新增）
 
 ## 🔄 更新日志
 
@@ -638,7 +647,7 @@ A: 尝试调整浏览器窗口大小，或在按日/按月视图之间切换，�
 
 欢迎提交Issue和Pull Request！
 
-如需新增功能或报告问题，请访问 [GitHub Issues](https://github.com/your-username/meiritongjiAPIshuju/issues)
+如需新增功能或报告问题，请访问 [GitHub Issues](https://github.com/tuosir90/meiritongjiAPIshuju/issues)
 
 ## 📝 许可证
 

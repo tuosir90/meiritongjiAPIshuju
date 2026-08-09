@@ -1,5 +1,5 @@
 /**
- * 123api 数据抓取脚本 - 工具函数
+ * APIMart 数据抓取脚本 - 工具函数
  */
 
 const fs = require('fs');
@@ -7,19 +7,21 @@ const path = require('path');
 const XLSX = require('xlsx');
 
 const CONFIG = {
-  url: 'https://128api.cn/console',
+  url: 'https://apimart.ai/zh/overview',
+  loginUrl: 'https://apimart.ai/zh/login',
   storageFile: path.join(__dirname, 'api123-auth.json'),
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
-  usernameEnv: 'API123_USERNAME',
-  passwordEnv: 'API123_PASSWORD',
-  quotaDivisor: 6.6,
+  exchangeRate: 7,
   headless: false,
   timeout: 30000,
 };
 
 function formatDateInfo(targetDate) {
+  const startDate = new Date(targetDate);
+  startDate.setHours(0, 0, 0, 0);
   const endDate = new Date(targetDate);
   endDate.setDate(endDate.getDate() + 1);
+  endDate.setHours(0, 0, 0, 0);
   const formatDateTime = (date) => {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -29,8 +31,10 @@ function formatDateInfo(targetDate) {
 
   return {
     formatted: `${targetDate.getFullYear()}/${targetDate.getMonth() + 1}/${targetDate.getDate()}`,
-    startTime: formatDateTime(targetDate),
+    startTime: formatDateTime(startDate),
     endTime: formatDateTime(endDate),
+    startTimestamp: Math.floor(startDate.getTime() / 1000),
+    endTimestamp: Math.floor(endDate.getTime() / 1000) - 1,
   };
 }
 
@@ -40,6 +44,11 @@ function parseCellDate(cellDate) {
   if (typeof cellDate === 'number') return new Date((cellDate - 25569) * 86400 * 1000);
   const parts = String(cellDate).split('/');
   return parts.length === 3 ? new Date(parts[0], parts[1] - 1, parts[2]) : null;
+}
+
+function isZeroAmount(value) {
+  const amount = Number(String(value).replaceAll(',', ''));
+  return Number.isFinite(amount) && amount === 0;
 }
 
 function getMissingDates() {
@@ -62,7 +71,10 @@ function getMissingDates() {
     if (!dateObj) continue;
     dateObj.setHours(0, 0, 0, 0);
     if (dateObj > yesterday) continue;
-    if (data[i][4] !== undefined && data[i][4] !== null && String(data[i][4]).trim() !== '') {
+    const value = data[i][4];
+    const hasValue = value !== undefined && value !== null && String(value).trim() !== '';
+    const shouldRefreshZero = dateObj.getTime() === yesterday.getTime() && isZeroAmount(value);
+    if (hasValue && !shouldRefreshZero) {
       continue;
     }
     const dateInfo = formatDateInfo(dateObj);
@@ -86,12 +98,12 @@ function formatExcelDate(serial) {
 }
 
 function convertQuotaToDailyCost(amount) {
-  const numericAmount = Number(amount);
+  const numericAmount = Number(String(amount).replaceAll(',', ''));
   if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
     return '0.00';
   }
 
-  return (numericAmount / CONFIG.quotaDivisor).toFixed(2);
+  return (numericAmount * CONFIG.exchangeRate).toFixed(2);
 }
 
 function writeToExcel(date, amount) {
@@ -110,7 +122,7 @@ function writeToExcel(date, amount) {
   }
 
   if (rowIndex === -1) {
-    console.log(`错误: 未找到日期 ${date} 的行，请先运行云雾脚本`);
+    console.log(`错误: 未找到日期 ${date} 的行，请先运行ZIKL脚本`);
     return;
   }
 
@@ -119,7 +131,14 @@ function writeToExcel(date, amount) {
   workbook.Sheets[sheetName] = newWorksheet;
   XLSX.writeFile(workbook, CONFIG.outputFile);
   console.log(`数据已写入: ${CONFIG.outputFile}`);
-  console.log(`  日期: ${date}, 123api: ${amount}`);
+  console.log(`  日期: ${date}, APIMart: ${amount}`);
 }
 
-module.exports = { CONFIG, convertQuotaToDailyCost, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = {
+  CONFIG,
+  convertQuotaToDailyCost,
+  formatDateInfo,
+  getMissingDates,
+  hasStoredAuth,
+  writeToExcel,
+};

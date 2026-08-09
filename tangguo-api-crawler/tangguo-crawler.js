@@ -1,24 +1,50 @@
 /**
- * 章鱼哥AI 数据抓取脚本 - 工具函数
- *
- * 页面结构与向量引擎一致（同款 console 模板），写入 Excel 第 7 列（索引 6，章鱼哥AI）。
- * 倍率：1:1（页面显示即真实消费，无需换算）
+ * 糖果姐姐API 数据抓取脚本 - 工具函数
  */
 
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
 
-const TARGET_COL = 6; // 章鱼哥AI 列索引（第7列）
-
+// 配置
 const CONFIG = {
-  url: 'https://otuapi.com/console',
-  storageFile: path.join(__dirname, 'otuai-auth.json'),
+  url: 'https://newapi.pockgo.com/console',
+  storageFile: path.join(__dirname, 'tangguo-auth.json'),
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   headless: false,
   timeout: 30000,
 };
 
+/**
+ * 从Excel读取最新日期
+ */
+function getLatestDateFromExcel() {
+  if (!fs.existsSync(CONFIG.outputFile)) return null;
+
+  const workbook = XLSX.readFile(CONFIG.outputFile);
+  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+  if (data.length <= 1) return null;
+
+  for (let i = data.length - 1; i >= 1; i--) {
+    const cellDate = data[i][0];
+    if (cellDate) {
+      if (typeof cellDate === 'number') {
+        return new Date((cellDate - 25569) * 86400 * 1000);
+      }
+      const parts = String(cellDate).split('/');
+      if (parts.length === 3) {
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * 格式化日期为查询所需的格式
+ */
 function formatDateInfo(targetDate) {
   const endDate = new Date(targetDate);
   endDate.setDate(endDate.getDate() + 1);
@@ -37,6 +63,9 @@ function formatDateInfo(targetDate) {
   };
 }
 
+/**
+ * 解析 Excel 日期单元格
+ */
 function parseCellDate(cellDate) {
   if (!cellDate) return null;
   if (cellDate instanceof Date) return new Date(cellDate.getTime());
@@ -50,6 +79,9 @@ function parseCellDate(cellDate) {
   return null;
 }
 
+/**
+ * 获取所有需要补采的日期（已存在行且目标列为空）
+ */
 function getMissingDates() {
   if (!fs.existsSync(CONFIG.outputFile)) return [];
 
@@ -61,6 +93,7 @@ function getMissingDates() {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
@@ -75,7 +108,7 @@ function getMissingDates() {
     dateObj.setHours(0, 0, 0, 0);
     if (dateObj > yesterday) continue;
 
-    const value = data[i][TARGET_COL];
+    const value = data[i][3];
     if (value !== undefined && value !== null && String(value).trim() !== '') {
       continue;
     }
@@ -90,22 +123,42 @@ function getMissingDates() {
   return missingDates;
 }
 
+/**
+ * 获取目标日期（保留兼容性）
+ */
+function getTargetDate() {
+  const dates = getMissingDates();
+  return dates.length > 0 ? dates[0] : null;
+}
+
+/**
+ * 检查是否有保存的登录状态
+ */
 function hasStoredAuth() {
   return fs.existsSync(CONFIG.storageFile);
 }
 
+/**
+ * 格式化 Excel 日期序列号
+ */
 function formatExcelDate(serial) {
   if (typeof serial !== 'number') return serial;
   const date = new Date((serial - 25569) * 86400 * 1000);
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 }
 
+/**
+ * 将数据写入 Excel 第四列（糖果姐姐api）
+ * 只写入对应日期行的数据，不新增行
+ */
 function writeToExcel(date, amount) {
   const workbook = XLSX.readFile(CONFIG.outputFile);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
+
   const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
+  // 查找该日期的行
   let rowIndex = -1;
   for (let i = 1; i < data.length; i++) {
     const cellDate = data[i][0];
@@ -116,18 +169,19 @@ function writeToExcel(date, amount) {
   }
 
   if (rowIndex === -1) {
-    console.log(`错误: 未找到日期 ${date} 的行，请先运行云雾脚本`);
+    console.log(`错误: 未找到日期 ${date} 的行，请先运行ZIKL脚本`);
     return;
   }
 
-  data[rowIndex][TARGET_COL] = amount;
+  // 只写入第四列（索引3），不修改日期列
+  data[rowIndex][3] = amount;
 
   const newWorksheet = XLSX.utils.aoa_to_sheet(data);
   workbook.Sheets[sheetName] = newWorksheet;
 
   XLSX.writeFile(workbook, CONFIG.outputFile);
   console.log(`数据已写入: ${CONFIG.outputFile}`);
-  console.log(`  日期: ${date}, 章鱼哥AI消费: ${amount}`);
+  console.log(`  日期: ${date}, 糖果姐姐api: ${amount}`);
 }
 
-module.exports = { CONFIG, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = { CONFIG, getTargetDate, getMissingDates, hasStoredAuth, writeToExcel };

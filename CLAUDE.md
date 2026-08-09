@@ -9,6 +9,7 @@ API费用统计系统 - 用于统计每日API接口费用和图片生成数量�
 **关键特性：**
 - 数据存储：浏览器localStorage（主要）+ 服务器JSON文件（初始化/更新）
 - 版本控制：自动检测 `public/initial-data.json` 版本并同步更新
+- 章鱼哥AI/OtuAI：历史数据保留，未来新增记录不再生成或展示 `otuai`
 - 静态部署：GitHub Pages自动部署，无服务端依赖
 
 ## 核心架构
@@ -128,7 +129,7 @@ npx serve out        # 本地预览构建结果
 - **费用计算**:
   - 单日总费用：表单提交时计算并存储在 `totalCost` 字段
   - 累计统计：`calculateTotalCost()` / `calculateTotalImages()` 遍历所有记录
-  - **关键约束**: totalCost 必须等于 apiCosts 数组的总和
+  - **关键约束**: 新增记录 totalCost 必须等于当前六个可见API费用之和；历史记录保留原 totalCost，不因 OtuAI 停用而重算
 
 ### 导出功能 (`lib/export.ts`)
 - **Excel**: 使用xlsx库，包含列宽设置和UTF-8 BOM编码
@@ -141,10 +142,15 @@ npx serve out        # 本地预览构建结果
 ## 修改API配置
 
 ### 方法1：修改默认配置（需重新部署）
-编辑 `lib/storage.ts:11-15` 中的 `DEFAULT_APIS`：
+编辑 `lib/storage.ts` 中的 `DEFAULT_APIS`：
 ```typescript
 const DEFAULT_APIS: ApiConfig[] = [
-  { id: "volcengine", name: "火山引擎（字节跳动）", color: "#0052D9" },
+  { id: "volcengine", name: "向量引擎", color: "#0052D9" },
+  { id: "zikl", name: "ZIKL", color: "#00b96b" },
+  { id: "tangguo", name: "糖果姐姐API", color: "#ff5c93" },
+  { id: "123api", name: "APIMart", color: "#f59e0b" },
+  { id: "manxiaobai", name: "馒小白", color: "#8b5cf6" },
+  { id: "xinshijie", name: "新世界API", color: "#14b8a6" },
   { id: "new-api", name: "新API名称", color: "#hex-color" },
 ];
 ```
@@ -168,3 +174,9 @@ const DEFAULT_APIS: ApiConfig[] = [
 - 使用 `react-responsive` 检测屏幕尺寸
 - 表格在小屏幕横向滚动（`overflow-x-auto`）
 - 对话框限高: `max-h-[90vh] overflow-y-auto` 防止内容溢出
+
+### OTuAI 历史兼容规则
+- 顶层 `apis` 不再包含 `otuai`，因此页面不展示章鱼哥AI。
+- 历史 `records[].apiCosts` 中如存在 `apiId: "otuai"`，保留原值。
+- 前端加载数据时只过滤可见 API，不删除历史 record 的 `otuai`，也不重算历史 `totalCost`。
+- `sync-daily-data.js` 默认不覆盖带历史 `otuai` 的既有日期；如确需覆盖，必须显式使用 `--allow-history-overwrite`。

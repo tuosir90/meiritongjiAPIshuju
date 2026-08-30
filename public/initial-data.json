@@ -1,6 +1,6 @@
 {
-  "version": "1.0.270",
-  "lastUpdated": "2026-08-29T00:35:10Z",
+  "version": "1.0.271",
+  "lastUpdated": "2026-08-30T02:57:37Z",
   "apis": [
     {
       "id": "volcengine",
@@ -34,6 +34,38 @@
     }
   ],
   "records": [
+    {
+      "id": "2026-08-29-1",
+      "date": "2026-08-29",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.12
+        },
+        {
+          "apiId": "zikl",
+          "cost": 1.55
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 6.82
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 8.44
+        }
+      ],
+      "imageCount": 669,
+      "totalCost": 16.93
+    },
     {
       "id": "2026-08-28-1",
       "date": "2026-08-28",

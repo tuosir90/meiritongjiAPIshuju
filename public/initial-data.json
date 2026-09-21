@@ -1,6 +1,6 @@
 {
-  "version": "1.0.292",
-  "lastUpdated": "2026-09-21T01:16:04Z",
+  "version": "1.0.293",
+  "lastUpdated": "2026-09-21T03:01:15Z",
   "apis": [
     {
       "id": "volcengine",
@@ -120,15 +120,15 @@
         },
         {
           "apiId": "manxiaobai",
-          "cost": 0
+          "cost": 22.11
         },
         {
           "apiId": "xinshijie",
-          "cost": 0
+          "cost": 15.12
         }
       ],
       "imageCount": 2032,
-      "totalCost": 6.28
+      "totalCost": 43.51
     },
     {
       "id": "2026-09-17-1",

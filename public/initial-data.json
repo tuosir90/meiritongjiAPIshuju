@@ -1,6 +1,6 @@
 {
-  "version": "1.0.304",
-  "lastUpdated": "2026-10-03T01:24:45Z",
+  "version": "1.0.305",
+  "lastUpdated": "2026-10-06T00:48:07Z",
   "apis": [
     {
       "id": "volcengine",
@@ -34,6 +34,102 @@
     }
   ],
   "records": [
+    {
+      "id": "2026-10-05-1",
+      "date": "2026-10-05",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.34
+        },
+        {
+          "apiId": "zikl",
+          "cost": 4.6
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 3.22
+        }
+      ],
+      "imageCount": 350,
+      "totalCost": 8.16
+    },
+    {
+      "id": "2026-10-04-1",
+      "date": "2026-10-04",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.06
+        },
+        {
+          "apiId": "zikl",
+          "cost": 0.5
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 5.71
+        }
+      ],
+      "imageCount": 341,
+      "totalCost": 6.27
+    },
+    {
+      "id": "2026-10-03-1",
+      "date": "2026-10-03",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.08
+        },
+        {
+          "apiId": "zikl",
+          "cost": 2.57
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 2.2
+        }
+      ],
+      "imageCount": 331,
+      "totalCost": 4.85
+    },
     {
       "id": "2026-10-02-1",
       "date": "2026-10-02",

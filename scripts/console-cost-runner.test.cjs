@@ -1,7 +1,11 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
-const { clickConfirmButton, clickSearchButton } = require('./console-cost-runner.js');
+const {
+  clickConfirmButton,
+  clickSearchButton,
+  dismissBlockingNoticeModals,
+} = require('./console-cost-runner.js');
 
 test('clickSearchButton waits for a delayed visible search button', async () => {
   let checks = 0;
@@ -59,4 +63,71 @@ test('clickConfirmButton supports Chinese button text', async () => {
   ]);
 
   assert.equal(clickedSelector, 'button:has-text("确定")');
+});
+
+test('dismissBlockingNoticeModals closes system announcement modal', async () => {
+  let clicked = false;
+  let waited = false;
+
+  const invisibleButton = {
+    async isVisible() {
+      return false;
+    },
+    async click() {},
+  };
+
+  const closeButton = {
+    async isVisible() {
+      return true;
+    },
+    async click(options) {
+      clicked = options.force === true;
+    },
+  };
+
+  const modal = {
+    async innerText() {
+      return '系统公告 最近价格波动较大';
+    },
+    locator(selector) {
+      return {
+        first() {
+          return selector === 'button:has-text("关闭公告")' ? closeButton : invisibleButton;
+        },
+      };
+    },
+  };
+
+  const page = {
+    locator(selector) {
+      if (selector === '.semi-modal-wrap:visible') {
+        return {
+          async count() {
+            return 1;
+          },
+          nth() {
+            return modal;
+          },
+        };
+      }
+
+      return {
+        async count() {
+          return 0;
+        },
+        nth() {
+          throw new Error('unexpected modal lookup');
+        },
+      };
+    },
+    async waitForTimeout() {
+      waited = true;
+    },
+  };
+
+  const closed = await dismissBlockingNoticeModals(page);
+
+  assert.equal(closed, true);
+  assert.equal(clicked, true);
+  assert.equal(waited, true);
 });

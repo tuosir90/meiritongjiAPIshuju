@@ -44,6 +44,57 @@ const CONFIRM_SELECTORS = [
   '.el-button--primary',
 ];
 
+const BLOCKING_NOTICE_DIALOG_SELECTORS = [
+  '[role="dialog"]:visible',
+  '[role="alertdialog"]:visible',
+];
+
+const BLOCKING_NOTICE_TEXT_PATTERN = /(公告|提醒|通知|Notice|Announcement)/i;
+
+// 只点确认/关闭类按钮；禁止点击“前往 API Key 管理”等会跳转页面的按钮
+const BLOCKING_NOTICE_DISMISS_SELECTORS = [
+  'button:has-text("我已知晓")',
+  'button:has-text("知道了")',
+  'button:has-text("关闭公告")',
+  'button[aria-label="Close"]',
+  'button[aria-label="close"]',
+];
+
+async function dismissBlockingNoticeDialogs(page) {
+  let closedAny = false;
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    let closedThisPass = false;
+
+    for (const dialogSelector of BLOCKING_NOTICE_DIALOG_SELECTORS) {
+      const dialogs = page.locator(dialogSelector);
+      const count = await dialogs.count().catch(() => 0);
+
+      for (let index = count - 1; index >= 0; index -= 1) {
+        const dialog = dialogs.nth(index);
+        const text = await dialog.innerText().catch(() => '');
+        if (!BLOCKING_NOTICE_TEXT_PATTERN.test(text)) continue;
+
+        for (const dismissSelector of BLOCKING_NOTICE_DISMISS_SELECTORS) {
+          const button = dialog.locator(dismissSelector).first();
+          if (!(await button.isVisible().catch(() => false))) continue;
+          const title = String(text).trim().split('\n')[0].slice(0, 40);
+          console.log(`关闭 APIMart 阻塞公告弹窗「${title}」: ${dismissSelector}`);
+          await button.click();
+          await page.waitForTimeout(500);
+          closedAny = true;
+          closedThisPass = true;
+          break;
+        }
+      }
+    }
+
+    if (!closedThisPass) break;
+  }
+
+  return closedAny;
+}
+
 function buildDateRangeInputValues(dateInfo) {
   if (!dateInfo || !dateInfo.startTime || !dateInfo.endTime) {
     throw new Error('APIMart 自定义日期缺少起止时间');
@@ -153,6 +204,7 @@ async function confirmDateRange(page, scope, responsePromise) {
 }
 
 async function applyCustomDateRange(page, dateInfo) {
+  await dismissBlockingNoticeDialogs(page);
   console.log('打开 APIMart 自定义日期筛选...');
   const clickedSelector = await clickFirstVisible(page, CUSTOM_DATE_FILTER_SELECTORS, '自定义日期筛选');
   console.log(`找到自定义日期入口: ${clickedSelector}`);
@@ -174,5 +226,6 @@ module.exports = {
   applyCustomDateRange,
   buildCalendarTarget,
   buildDateRangeInputValues,
+  dismissBlockingNoticeDialogs,
   getCalendarMonthDelta,
 };

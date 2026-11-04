@@ -5,11 +5,21 @@
  */
 
 const { chromium } = require('playwright');
+const { launchChromium } = require('./browser-launcher');
 
 const DEFAULT_QUOTA_PER_UNIT = 500000;
+const DEFAULT_DASHBOARD_PATH = '/dashboard/models';
 const REFRESH_PATH = '/api/user/auth/refresh';
 const STATUS_PATH = '/api/status';
 const DATA_PATH = '/api/data/self';
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeDashboardPath(dashboardPath = DEFAULT_DASHBOARD_PATH) {
+  return dashboardPath.startsWith('/') ? dashboardPath : `/${dashboardPath}`;
+}
 
 function buildDataPath(dateInfo) {
   const params = new URLSearchParams({
@@ -37,39 +47,75 @@ function calculateRawAmount(records, quotaPerUnit) {
   return sumQuota(records) / normalizedQuotaPerUnit;
 }
 
-async function isDashboardReady(page) {
-  return page.locator('a[href="/dashboard/models"]').first().isVisible().catch(() => false);
+async function isDashboardReady(page, dashboardPath = DEFAULT_DASHBOARD_PATH) {
+  const normalizedPath = normalizeDashboardPath(dashboardPath);
+  return page.locator(`a[href="${normalizedPath}"]`).first().isVisible().catch(() => false);
 }
 
-async function waitForLogin(page, context, storageFile) {
-  if (await isDashboardReady(page)) {
+async function probeRefreshSession(page) {
+  return page.evaluate(async ({ refreshPath }) => {
+    try {
+      const response = await fetch(refreshPath, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const payload = await response.json().catch(() => null);
+
+      return {
+        ok: response.ok && Boolean(payload?.data?.access_token),
+        status: response.status,
+        message: payload?.message || '',
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        status: 0,
+        message: error?.message || 'refresh request failed',
+      };
+    }
+  }, { refreshPath: REFRESH_PATH });
+}
+
+async function waitForLogin(page, context, storageFile, options = {}) {
+  const dashboardPath = normalizeDashboardPath(options.dashboardPath);
+  if (await isDashboardReady(page, dashboardPath)) {
     console.log('已登录状态');
     await context.storageState({ path: storageFile });
     console.log('登录状态已保存到:', storageFile);
-    return;
+    return 'ui';
+  }
+
+  const refreshProbe = await probeRefreshSession(page);
+  if (refreshProbe.ok) {
+    console.log('已通过保存的 refresh cookie 恢复登录态');
+    await context.storageState({ path: storageFile });
+    console.log('登录状态已保存到:', storageFile);
+    return 'api';
   }
 
   console.log('等待手动登录...(登录成功后会自动继续)');
   for (let attempt = 0; attempt < 120; attempt += 1) {
     await page.waitForTimeout(2000);
-    if (await isDashboardReady(page)) {
+    if (await isDashboardReady(page, dashboardPath)) {
       console.log('检测到登录成功！');
       await context.storageState({ path: storageFile });
       console.log('登录状态已保存到:', storageFile);
-      return;
+      return 'ui';
     }
   }
 
-  throw new Error('登录超时（4分钟）');
+  throw new Error(`登录超时（4分钟）；保存态 refresh 校验失败 (HTTP ${refreshProbe.status})${refreshProbe.message ? `: ${refreshProbe.message}` : ''}`);
 }
 
-async function openDataDashboard(page) {
-  const dataDashboardLink = page.locator('a[href="/dashboard/models"]').first();
+async function openDataDashboard(page, dashboardPath = DEFAULT_DASHBOARD_PATH) {
+  const normalizedPath = normalizeDashboardPath(dashboardPath);
+  const dashboardUrlPattern = new RegExp(`${escapeRegExp(normalizedPath)}(?:[/?#]|$)`);
+  const dataDashboardLink = page.locator(`a[href="${normalizedPath}"]`).first();
   await dataDashboardLink.waitFor({ state: 'visible', timeout: 30000 });
 
-  if (!/\/dashboard\/models(?:[/?#]|$)/.test(page.url())) {
+  if (!dashboardUrlPattern.test(page.url())) {
     await Promise.all([
-      page.waitForURL(/\/dashboard\/models(?:[/?#]|$)/, { timeout: 30000 }),
+      page.waitForURL(dashboardUrlPattern, { timeout: 30000 }),
       dataDashboardLink.click(),
     ]);
   }
@@ -123,7 +169,7 @@ async function fetchConsumptionData(page, dateInfo) {
   });
 
   if (!result.success) {
-    throw new Error(`ZIKL 接口${result.stage}失败 (HTTP ${result.status}): ${result.message || '未知错误'}`);
+    throw new Error(`数据看板接口${result.stage}失败 (HTTP ${result.status}): ${result.message || '未知错误'}`);
   }
 
   const records = result.records.filter((record) => {
@@ -144,6 +190,8 @@ async function fetchConsumptionData(page, dateInfo) {
 }
 
 async function runZiklDashboardCrawler(options) {
+  const serviceName = options.serviceName || 'ZIKL';
+  const dashboardPath = normalizeDashboardPath(options.dashboardPath);
   console.log(`=== ${options.title} ===\n`);
 
   const dates = options.getDatesToCollect();
@@ -156,7 +204,7 @@ async function runZiklDashboardCrawler(options) {
   dates.forEach((dateInfo) => console.log(`  - ${dateInfo.formatted}`));
   console.log('');
 
-  const browser = await chromium.launch({ headless: options.config.headless });
+  const browser = await launchChromium(chromium, { headless: options.config.headless });
   const storageFile = options.getStorageFile
     ? options.getStorageFile()
     : options.config.storageFile;
@@ -167,12 +215,16 @@ async function runZiklDashboardCrawler(options) {
 
   try {
     console.log(options.hasStoredAuth() ? '检测到已保存的登录状态，正在加载...' : '首次运行，请在浏览器中手动登录...');
+    // Allow a platform-specific navigation milestone when a deployment does
+    // not emit DOMContentLoaded, while preserving the existing default.
     await page.goto(options.config.url, {
-      waitUntil: 'domcontentloaded',
+      waitUntil: options.config.waitUntil || 'domcontentloaded',
       timeout: options.config.timeout,
     });
-    await waitForLogin(page, context, storageFile);
-    await openDataDashboard(page);
+    const loginMode = await waitForLogin(page, context, storageFile, { dashboardPath });
+    if (loginMode !== 'api') {
+      await openDataDashboard(page, dashboardPath);
+    }
 
     const results = [];
     for (let index = 0; index < dates.length; index += 1) {
@@ -190,7 +242,7 @@ async function runZiklDashboardCrawler(options) {
       console.log(options.describeAmount(consumption.rawAmount, finalAmount));
 
       if (options.dryRun) {
-        console.log(`试运行：未写入 Excel（日期: ${dateInfo.formatted}, ZIKL: ${finalAmount}）`);
+        console.log(`试运行：未写入 Excel（日期: ${dateInfo.formatted}, ${serviceName}: ${finalAmount}）`);
       } else {
         options.writeToExcel(dateInfo.formatted, finalAmount);
       }
@@ -202,7 +254,7 @@ async function runZiklDashboardCrawler(options) {
     console.log('登录状态已更新:', storageFile);
     return results;
   } catch (error) {
-    await page.screenshot({ path: 'zikl-error-screenshot.png' }).catch(() => {});
+    await page.screenshot({ path: options.errorScreenshotPath || 'zikl-error-screenshot.png' }).catch(() => {});
     throw error;
   } finally {
     await browser.close();
@@ -211,9 +263,12 @@ async function runZiklDashboardCrawler(options) {
 
 module.exports = {
   DEFAULT_QUOTA_PER_UNIT,
+  DEFAULT_DASHBOARD_PATH,
   buildDataPath,
   sumQuota,
   calculateRawAmount,
   fetchConsumptionData,
+  probeRefreshSession,
+  normalizeDashboardPath,
   runZiklDashboardCrawler,
 };

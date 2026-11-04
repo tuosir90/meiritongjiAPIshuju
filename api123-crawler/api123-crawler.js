@@ -51,6 +51,41 @@ function isZeroAmount(value) {
   return Number.isFinite(amount) && amount === 0;
 }
 
+function hasAmountValue(value) {
+  return value !== undefined && value !== null && String(value).trim() !== '';
+}
+
+function backfillHistoricalBlanksWithZero() {
+  if (!fs.existsSync(CONFIG.outputFile)) return { dates: [] };
+
+  const workbook = XLSX.readFile(CONFIG.outputFile);
+  const sheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[sheetName];
+  const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const dates = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const dateObj = parseCellDate(data[i][0]);
+    if (!dateObj) continue;
+    dateObj.setHours(0, 0, 0, 0);
+    if (dateObj >= yesterday || hasAmountValue(data[i][4])) continue;
+
+    data[i][4] = '0.00';
+    dates.push(formatDateInfo(dateObj).formatted);
+  }
+
+  if (dates.length > 0) {
+    workbook.Sheets[sheetName] = XLSX.utils.aoa_to_sheet(data);
+    XLSX.writeFile(workbook, CONFIG.outputFile);
+  }
+
+  return { dates };
+}
+
 function getMissingDates() {
   if (!fs.existsSync(CONFIG.outputFile)) return [];
 
@@ -70,9 +105,9 @@ function getMissingDates() {
     const dateObj = parseCellDate(data[i][0]);
     if (!dateObj) continue;
     dateObj.setHours(0, 0, 0, 0);
-    if (dateObj > yesterday) continue;
+    if (dateObj.getTime() !== yesterday.getTime()) continue;
     const value = data[i][4];
-    const hasValue = value !== undefined && value !== null && String(value).trim() !== '';
+    const hasValue = hasAmountValue(value);
     const shouldRefreshZero = dateObj.getTime() === yesterday.getTime() && isZeroAmount(value);
     if (hasValue && !shouldRefreshZero) {
       continue;
@@ -136,6 +171,7 @@ function writeToExcel(date, amount) {
 
 module.exports = {
   CONFIG,
+  backfillHistoricalBlanksWithZero,
   convertQuotaToDailyCost,
   formatDateInfo,
   getMissingDates,

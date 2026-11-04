@@ -13,7 +13,7 @@ const LEGACY_AUTH_FILE = path.join(__dirname, 'yunwu-auth.json');
 
 // 配置
 const CONFIG = {
-  url: 'https://img.mzfe.de/dashboard/overview',
+  url: 'https://img.zikl.dev/dashboard/overview',
   storageFile: CANONICAL_AUTH_FILE,
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   headless: false,

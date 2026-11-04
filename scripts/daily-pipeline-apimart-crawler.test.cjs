@@ -42,6 +42,23 @@ test('api123-crawler should use apimart overview page and convert USD quota to C
   assert.equal(convertQuotaToDailyCost('0'), '0.00');
 });
 
+test('apimart network helper should add an opt-in Chromium host resolver rule', () => {
+  const { buildChromiumLaunchOptions } = require(path.join(
+    repoRoot,
+    'api123-crawler',
+    'apimart-network.js'
+  ));
+
+  assert.deepEqual(buildChromiumLaunchOptions({}), {});
+  assert.deepEqual(buildChromiumLaunchOptions({ APIMART_HOST_RESOLVER_IP: '172.67.70.35' }), {
+    args: ['--host-resolver-rules=MAP apimart.ai 172.67.70.35,EXCLUDE localhost'],
+  });
+  assert.throws(
+    () => buildChromiumLaunchOptions({ APIMART_HOST_RESOLVER_IP: 'not-an-ip' }),
+    /valid IPv4 address/
+  );
+});
+
 test('api123-crawler should provide timestamp range for one local day', () => {
   const { formatDateInfo } = require(path.join(repoRoot, 'api123-crawler', 'api123-crawler.js'));
 
@@ -169,4 +186,138 @@ test('api123-crawler should refresh yesterday when existing value is zero', () =
   const { getMissingDates } = require(path.join(scriptDir, 'api123-crawler.js'));
 
   assert.deepEqual(getMissingDates().map((dateInfo) => dateInfo.formatted), [format(yesterday)]);
+});
+
+test('api123-crawler should only collect yesterday when older APIMart rows are blank', () => {
+  const tempDir = makeTempDir('api123-yesterday-only');
+  const scriptDir = path.join(tempDir, 'api123-crawler');
+  copyScript('api123-crawler/api123-crawler.js', scriptDir);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const gapDate = new Date(today);
+  gapDate.setDate(gapDate.getDate() - 2);
+  const trackingStart = new Date(today);
+  trackingStart.setDate(trackingStart.getDate() - 3);
+  const historicalDate = new Date(today);
+  historicalDate.setDate(historicalDate.getDate() - 4);
+  const format = (date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+
+  writeWorkbook(path.join(tempDir, '每日数据整理.xlsx'), [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '总生图数'],
+    [format(historicalDate), '1', '2', '3', '', '10'],
+    [format(trackingStart), '1', '2', '3', '1.00', '10'],
+    [format(gapDate), '1', '2', '3', '', '10'],
+    [format(yesterday), '1', '2', '3', '', '10'],
+  ]);
+
+  const { getMissingDates } = require(path.join(scriptDir, 'api123-crawler.js'));
+
+  assert.deepEqual(
+    getMissingDates().map((dateInfo) => dateInfo.formatted),
+    [format(yesterday)]
+  );
+});
+
+test('api123-crawler should backfill older blank APIMart rows with zero', () => {
+  const tempDir = makeTempDir('api123-backfill-zero');
+  const scriptDir = path.join(tempDir, 'api123-crawler');
+  copyScript('api123-crawler/api123-crawler.js', scriptDir);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const historicalDate = new Date(today);
+  historicalDate.setDate(historicalDate.getDate() - 2);
+  const format = (date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+  const workbookPath = path.join(tempDir, '每日数据整理.xlsx');
+
+  writeWorkbook(workbookPath, [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '总生图数'],
+    [format(historicalDate), '1', '2', '3', '', '10'],
+    [format(yesterday), '1', '2', '3', '', '10'],
+  ]);
+
+  const { backfillHistoricalBlanksWithZero } = require(path.join(
+    scriptDir,
+    'api123-crawler.js'
+  ));
+  const result = backfillHistoricalBlanksWithZero();
+  const workbook = XLSX.readFile(workbookPath);
+  const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+
+  assert.deepEqual(result.dates, [format(historicalDate)]);
+  assert.equal(rows[1][4], '0.00');
+  assert.equal(String(rows[2][4] ?? ''), '');
+});
+
+function makeNoticeDialogPage(dialogText, visibleDismissSelector) {
+  const state = { open: true, clicked: [], queried: [] };
+  const dialog = {
+    async innerText() {
+      return dialogText;
+    },
+    locator(selector) {
+      state.queried.push(selector);
+      return {
+        first() {
+          return {
+            async isVisible() {
+              return state.open && selector === visibleDismissSelector;
+            },
+            async click() {
+              state.clicked.push(selector);
+              state.open = false;
+            },
+          };
+        },
+      };
+    },
+  };
+  const page = {
+    locator(selector) {
+      return {
+        async count() {
+          return state.open && selector === '[role="dialog"]:visible' ? 1 : 0;
+        },
+        nth() {
+          return dialog;
+        },
+      };
+    },
+    async waitForTimeout() {},
+  };
+
+  return { page, state };
+}
+
+test('apimart date filter should acknowledge blocking notice dialog before custom range', async () => {
+  const { dismissBlockingNoticeDialogs } = require(path.join(
+    repoRoot,
+    'api123-crawler',
+    'apimart-date-filter.js'
+  ));
+  const { page, state } = makeNoticeDialogPage(
+    'API Key 安全更新提醒\n尊敬的 APIMart 用户：\n我已知晓\n前往 API Key 管理',
+    'button:has-text("我已知晓")'
+  );
+
+  assert.equal(await dismissBlockingNoticeDialogs(page), true);
+  assert.deepEqual(state.clicked, ['button:has-text("我已知晓")']);
+  assert.equal(state.queried.some((selector) => selector.includes('前往')), false);
+});
+
+test('apimart date filter should leave non-notice dialogs untouched', async () => {
+  const { dismissBlockingNoticeDialogs } = require(path.join(
+    repoRoot,
+    'api123-crawler',
+    'apimart-date-filter.js'
+  ));
+  const { page, state } = makeNoticeDialogPage('选择日期\n确定', 'button:has-text("我已知晓")');
+
+  assert.equal(await dismissBlockingNoticeDialogs(page), false);
+  assert.deepEqual(state.clicked, []);
 });

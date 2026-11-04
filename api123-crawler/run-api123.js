@@ -4,9 +4,12 @@
  */
 
 const { chromium } = require('playwright');
+const { launchChromium } = require('../scripts/browser-launcher');
 const {
   CONFIG,
+  backfillHistoricalBlanksWithZero,
   convertQuotaToDailyCost,
+  formatDateInfo,
   getMissingDates,
   hasStoredAuth,
   writeToExcel,
@@ -19,6 +22,7 @@ const {
   isLoginPageUrl,
 } = require('./apimart-dashboard');
 const { applyCustomDateRange } = require('./apimart-date-filter');
+const { buildChromiumLaunchOptions } = require('./apimart-network');
 
 async function hasUserSession(page) {
   const rawUser = await getStoredRawUser(page);
@@ -29,7 +33,9 @@ async function hasUserSession(page) {
 }
 
 async function gotoOverview(page) {
-  await page.goto(CONFIG.url, { waitUntil: 'domcontentloaded', timeout: CONFIG.timeout });
+  // APIMart can keep document requests open without emitting DOMContentLoaded;
+  // response commit is sufficient before explicit session/API checks.
+  await page.goto(CONFIG.url, { waitUntil: 'commit', timeout: CONFIG.timeout });
   await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => null);
 }
 
@@ -87,9 +93,46 @@ async function extractQuotaAmount(page, dateInfo) {
   return amount;
 }
 
+function parseTargetDate(rawDate) {
+  if (!rawDate) return null;
+  const match = String(rawDate).trim().match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/);
+  if (!match) {
+    throw new Error(`日期格式无效：${rawDate}，请使用 YYYY-MM-DD 或 YYYY/M/D`);
+  }
+
+  const parsedDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  if (
+    parsedDate.getFullYear() !== Number(match[1])
+    || parsedDate.getMonth() !== Number(match[2]) - 1
+    || parsedDate.getDate() !== Number(match[3])
+  ) {
+    throw new Error(`日期格式无效：${rawDate}，请使用实际存在的日期`);
+  }
+
+  return parsedDate;
+}
+
+function getForcedDateArg() {
+  const dateArg = process.argv.find((arg) => arg.startsWith('--date='));
+  return dateArg ? dateArg.slice('--date='.length) : process.env.APIMART_FORCE_DATE;
+}
+
+function getDatesToCollect() {
+  const forcedDate = parseTargetDate(getForcedDateArg());
+  return forcedDate ? [formatDateInfo(forcedDate)] : getMissingDates();
+}
+
 async function main() {
   console.log('=== APIMart 数据抓取脚本 ===\n');
-  const missingDates = getMissingDates();
+  if (getForcedDateArg()) {
+    console.log('指定日期采集，跳过历史空白补 0');
+  } else {
+    const backfillResult = backfillHistoricalBlanksWithZero();
+    if (backfillResult.dates.length > 0) {
+      console.log(`历史空白日期已补 0: ${backfillResult.dates.length} 个`);
+    }
+  }
+  const missingDates = getDatesToCollect();
   if (missingDates.length === 0) {
     console.log('没有需要采集的日期，数据已是最新！');
     return;
@@ -99,7 +142,14 @@ async function main() {
   missingDates.forEach((dateInfo) => console.log(`  - ${dateInfo.formatted}`));
   console.log('');
 
-  const browser = await chromium.launch({ headless: CONFIG.headless });
+  const networkLaunchOptions = buildChromiumLaunchOptions();
+  if (networkLaunchOptions.args) {
+    console.log('已为 APIMart 启用本轮 Chromium DNS 解析兜底');
+  }
+  const browser = await launchChromium(chromium, {
+    headless: CONFIG.headless,
+    ...networkLaunchOptions,
+  });
   const context = hasStoredAuth()
     ? await browser.newContext({ storageState: CONFIG.storageFile })
     : await browser.newContext();
@@ -133,6 +183,7 @@ async function main() {
   } catch (error) {
     console.error('\n出错:', error.message);
     await page.screenshot({ path: 'error-screenshot.png' });
+    process.exitCode = 1;
   } finally {
     await browser.close();
     console.log('\n全部完成');
@@ -140,3 +191,5 @@ async function main() {
 }
 
 main();
+
+module.exports = { getDatesToCollect, parseTargetDate };

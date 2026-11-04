@@ -4,6 +4,7 @@ const test = require('node:test');
 const {
   buildDataPath,
   calculateRawAmount,
+  probeRefreshSession,
   sumQuota,
 } = require('./zikl-dashboard-runner.js');
 
@@ -23,4 +24,24 @@ test('calculateRawAmount converts API quota using quota_per_unit', () => {
 
 test('calculateRawAmount rejects an invalid quota_per_unit', () => {
   assert.throws(() => calculateRawAmount([], 0), /quota_per_unit/);
+});
+
+test('probeRefreshSession reports validity without returning access token', async () => {
+  const page = {
+    evaluate: async (fn, arg) => fn(arg),
+  };
+  const originalFetch = global.fetch;
+  global.fetch = async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ data: { access_token: 'secret-token' }, message: 'ok' }),
+  });
+
+  try {
+    const result = await probeRefreshSession(page);
+    assert.deepEqual(result, { ok: true, status: 200, message: 'ok' });
+    assert.equal(Object.hasOwn(result, 'accessToken'), false);
+  } finally {
+    global.fetch = originalFetch;
+  }
 });

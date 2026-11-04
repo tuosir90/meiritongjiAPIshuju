@@ -4,6 +4,23 @@
 
 const { chromium } = require('playwright');
 const { pickAmountFromCandidates } = require('./cost-amount-extractor');
+const { launchChromium } = require('./browser-launcher');
+
+const DEFAULT_BLOCKING_MODAL_SELECTORS = [
+  '.semi-modal-wrap:visible',
+  '.ant-modal:visible',
+  '.el-dialog:visible',
+];
+
+const DEFAULT_BLOCKING_MODAL_CLOSE_SELECTORS = [
+  'button:has-text("关闭公告")',
+  'button:has-text("今日关闭")',
+  'button[aria-label="Close"]',
+  'button[aria-label="close"]',
+  '.semi-modal-close',
+  '.ant-modal-close',
+  '.el-dialog__headerbtn',
+];
 
 async function checkLogin(page) {
   const url = page.url();
@@ -52,6 +69,43 @@ async function clickSearchButton(page, searchSelectors) {
   }
 
   throw new Error('未找到搜索按钮');
+}
+
+async function dismissBlockingNoticeModals(page, options = {}) {
+  const modalSelectors = options.blockingModalSelectors ?? DEFAULT_BLOCKING_MODAL_SELECTORS;
+  const closeSelectors = options.blockingModalCloseSelectors ?? DEFAULT_BLOCKING_MODAL_CLOSE_SELECTORS;
+  let closedAny = false;
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    let closedThisPass = false;
+
+    for (const modalSelector of modalSelectors) {
+      const modals = page.locator(modalSelector);
+      const count = await modals.count().catch(() => 0);
+
+      for (let index = count - 1; index >= 0; index -= 1) {
+        const modal = modals.nth(index);
+        const text = await modal.innerText().catch(() => '');
+        if (!/(系统公告|公告|通知|Notice|Announcement)/i.test(text)) continue;
+
+        for (const closeSelector of closeSelectors) {
+          const closeButton = modal.locator(closeSelector).first();
+          if (await closeButton.isVisible().catch(() => false)) {
+            console.log(`关闭阻塞弹窗: ${closeSelector}`);
+            await closeButton.click({ force: true });
+            await page.waitForTimeout(500);
+            closedAny = true;
+            closedThisPass = true;
+            break;
+          }
+        }
+      }
+    }
+
+    if (!closedThisPass) break;
+  }
+
+  return closedAny;
 }
 
 async function clickConfirmButton(scope, confirmSelectors) {
@@ -107,6 +161,8 @@ async function searchAndExtract(page, dateInfo, options) {
   await page.screenshot({ path: 'debug-page.png' });
   console.log('已保存调试截图: debug-page.png');
   await page.waitForTimeout(3000);
+
+  await dismissBlockingNoticeModals(page, options);
 
   await clickSearchButton(page, options.searchSelectors);
   await page.waitForTimeout(1000);
@@ -169,7 +225,7 @@ async function runConsoleCostCrawler(options) {
   missingDates.forEach((dateInfo) => console.log(`  - ${dateInfo.formatted}`));
   console.log('');
 
-  const browser = await chromium.launch({ headless: options.config.headless });
+  const browser = await launchChromium(chromium, { headless: options.config.headless });
   const context = options.hasStoredAuth()
     ? await browser.newContext({ storageState: options.config.storageFile })
     : await browser.newContext();
@@ -219,4 +275,9 @@ async function runConsoleCostCrawler(options) {
   }
 }
 
-module.exports = { runConsoleCostCrawler, clickSearchButton, clickConfirmButton };
+module.exports = {
+  runConsoleCostCrawler,
+  clickSearchButton,
+  clickConfirmButton,
+  dismissBlockingNoticeModals,
+};

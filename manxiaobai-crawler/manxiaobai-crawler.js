@@ -1,7 +1,7 @@
 /**
  * 馒小白API 数据抓取脚本 - 工具函数
  *
- * 页面结构与向量引擎一致（同款 console 模板），写入 Excel 第 6 列（索引 5，馒小白）。
+ * 页面结构与 ZIKL 新看板一致，通过 /api/data/self 查询，写入 Excel 第 6 列（索引 5，馒小白）。
  * 金额换算：充值 11 元到账 10 元 → 实际花费 = 显示额度 × 1.1
  */
 
@@ -12,7 +12,7 @@ const XLSX = require('xlsx');
 const TARGET_COL = 5; // 馒小白列索引（第6列）
 
 const CONFIG = {
-  url: 'https://api.manxiaobai.online/console',
+  url: 'https://api.manxiaobai.online/dashboard/overview',
   storageFile: path.join(__dirname, 'manxiaobai-auth.json'),
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   headless: false,
@@ -20,7 +20,8 @@ const CONFIG = {
 };
 
 function formatDateInfo(targetDate) {
-  const endDate = new Date(targetDate);
+  const startDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  const endDate = new Date(startDate);
   endDate.setDate(endDate.getDate() + 1);
 
   const formatDateTime = (date) => {
@@ -31,9 +32,11 @@ function formatDateInfo(targetDate) {
   };
 
   return {
-    formatted: `${targetDate.getFullYear()}/${targetDate.getMonth() + 1}/${targetDate.getDate()}`,
-    startTime: formatDateTime(targetDate),
+    formatted: `${startDate.getFullYear()}/${startDate.getMonth() + 1}/${startDate.getDate()}`,
+    startTime: formatDateTime(startDate),
     endTime: formatDateTime(endDate),
+    startTimestamp: Math.floor(startDate.getTime() / 1000),
+    endTimestamp: Math.floor(endDate.getTime() / 1000),
   };
 }
 
@@ -48,6 +51,41 @@ function parseCellDate(cellDate) {
     return new Date(parts[0], parts[1] - 1, parts[2]);
   }
   return null;
+}
+
+function hasAmountValue(value) {
+  return value !== undefined && value !== null && String(value).trim() !== '';
+}
+
+function backfillHistoricalBlanksWithZero() {
+  if (!fs.existsSync(CONFIG.outputFile)) return { dates: [] };
+
+  const workbook = XLSX.readFile(CONFIG.outputFile);
+  const sheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[sheetName];
+  const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const dates = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const dateObj = parseCellDate(data[i][0]);
+    if (!dateObj) continue;
+    dateObj.setHours(0, 0, 0, 0);
+    if (dateObj >= yesterday || hasAmountValue(data[i][TARGET_COL])) continue;
+
+    data[i][TARGET_COL] = '0.00';
+    dates.push(formatDateInfo(dateObj).formatted);
+  }
+
+  if (dates.length > 0) {
+    workbook.Sheets[sheetName] = XLSX.utils.aoa_to_sheet(data);
+    XLSX.writeFile(workbook, CONFIG.outputFile);
+  }
+
+  return { dates };
 }
 
 function getMissingDates() {
@@ -73,10 +111,10 @@ function getMissingDates() {
     if (!dateObj) continue;
 
     dateObj.setHours(0, 0, 0, 0);
-    if (dateObj > yesterday) continue;
+    if (dateObj.getTime() !== yesterday.getTime()) continue;
 
     const value = data[i][TARGET_COL];
-    if (value !== undefined && value !== null && String(value).trim() !== '') {
+    if (hasAmountValue(value)) {
       continue;
     }
 
@@ -130,4 +168,11 @@ function writeToExcel(date, amount) {
   console.log(`  日期: ${date}, 馒小白消费: ${amount}`);
 }
 
-module.exports = { CONFIG, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = {
+  CONFIG,
+  backfillHistoricalBlanksWithZero,
+  formatDateInfo,
+  getMissingDates,
+  hasStoredAuth,
+  writeToExcel,
+};

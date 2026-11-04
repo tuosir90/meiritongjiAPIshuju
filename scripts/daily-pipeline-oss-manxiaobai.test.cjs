@@ -139,3 +139,37 @@ test('oss-crawler knows current OSS statistics refresh button selector', () => {
   assert.ok(STATS_BUTTON_SELECTORS.includes('button.statistics-balloon__refresh'));
   assert.ok(STATS_BUTTON_SELECTORS.includes('button[spm="未统计"]'));
 });
+
+test('manxiaobai crawler backfills older blanks with zero and only collects yesterday', () => {
+  const tempDir = makeTempDir('manxiaobai-yesterday-only');
+  const scriptDir = path.join(tempDir, 'manxiaobai-crawler');
+  copyScript('manxiaobai-crawler/manxiaobai-crawler.js', scriptDir);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const historicalDate = new Date(today);
+  historicalDate.setDate(historicalDate.getDate() - 2);
+  const format = (date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+  const workbookPath = path.join(tempDir, '每日数据整理.xlsx');
+
+  writeWorkbook(workbookPath, [
+    ['日期', '向量引擎消费', 'ZIKL', '糖果姐姐api', 'APIMart', '馒小白', '总生图数'],
+    [format(historicalDate), '1', '2', '3', '4', '', '10'],
+    [format(yesterday), '1', '2', '3', '4', '', '10'],
+  ]);
+
+  const {
+    backfillHistoricalBlanksWithZero,
+    getMissingDates,
+  } = require(path.join(scriptDir, 'manxiaobai-crawler.js'));
+
+  assert.deepEqual(getMissingDates().map((dateInfo) => dateInfo.formatted), [format(yesterday)]);
+  const result = backfillHistoricalBlanksWithZero();
+  const rows = readWorkbook(workbookPath);
+
+  assert.deepEqual(result.dates, [format(historicalDate)]);
+  assert.equal(rows[1][5], '0.00');
+  assert.equal(rows[2][5], '');
+});

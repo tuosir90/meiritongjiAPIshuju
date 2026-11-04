@@ -7,13 +7,14 @@
 
 const { chromium } = require('playwright');
 const { CONFIG } = require('./manxiaobai-crawler');
+const { launchChromium } = require('../scripts/browser-launcher');
 
 (async () => {
   console.log('=== 馒小白登录态引导 ===\n');
   console.log('即将打开:', CONFIG.url);
   console.log('请在浏览器中登录（tuosir / 94312smo），登录成功后脚本自动保存登录态。\n');
 
-  const browser = await chromium.launch({ headless: false });
+  const browser = await launchChromium(chromium, { headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
 

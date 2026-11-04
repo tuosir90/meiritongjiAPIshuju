@@ -8,11 +8,12 @@ const XLSX = require('xlsx');
 
 // 配置
 const CONFIG = {
-  url: 'https://newapi.pockgo.com/console',
+  url: 'https://newapi.pockgo.com/dashboard/overview',
   storageFile: path.join(__dirname, 'tangguo-auth.json'),
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   headless: false,
   timeout: 30000,
+  waitUntil: 'commit',
 };
 
 /**
@@ -46,7 +47,8 @@ function getLatestDateFromExcel() {
  * 格式化日期为查询所需的格式
  */
 function formatDateInfo(targetDate) {
-  const endDate = new Date(targetDate);
+  const startDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  const endDate = new Date(startDate);
   endDate.setDate(endDate.getDate() + 1);
 
   const formatDateTime = (date) => {
@@ -57,9 +59,11 @@ function formatDateInfo(targetDate) {
   };
 
   return {
-    formatted: `${targetDate.getFullYear()}/${targetDate.getMonth() + 1}/${targetDate.getDate()}`,
-    startTime: formatDateTime(targetDate),
+    formatted: `${startDate.getFullYear()}/${startDate.getMonth() + 1}/${startDate.getDate()}`,
+    startTime: formatDateTime(startDate),
     endTime: formatDateTime(endDate),
+    startTimestamp: Math.floor(startDate.getTime() / 1000),
+    endTimestamp: Math.floor(endDate.getTime() / 1000),
   };
 }
 
@@ -135,7 +139,33 @@ function getTargetDate() {
  * 检查是否有保存的登录状态
  */
 function hasStoredAuth() {
-  return fs.existsSync(CONFIG.storageFile);
+  if (!fs.existsSync(CONFIG.storageFile)) return false;
+
+  try {
+    const state = JSON.parse(fs.readFileSync(CONFIG.storageFile, 'utf8'));
+    const expectedHost = new URL(CONFIG.url).hostname;
+    const matchesHost = (host) => {
+      const normalized = String(host || '').replace(/^\./, '').toLowerCase();
+      return normalized === expectedHost || expectedHost.endsWith(`.${normalized}`);
+    };
+
+    const hasCookie = (state.cookies || []).some((cookie) => matchesHost(cookie.domain));
+    const hasOrigin = (state.origins || []).some((origin) => {
+      try {
+        return matchesHost(new URL(origin.origin).hostname);
+      } catch {
+        return false;
+      }
+    });
+
+    return hasCookie || hasOrigin;
+  } catch {
+    return false;
+  }
+}
+
+function getStorageFile() {
+  return CONFIG.storageFile;
 }
 
 /**
@@ -184,4 +214,12 @@ function writeToExcel(date, amount) {
   console.log(`  日期: ${date}, 糖果姐姐api: ${amount}`);
 }
 
-module.exports = { CONFIG, getTargetDate, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = {
+  CONFIG,
+  formatDateInfo,
+  getTargetDate,
+  getMissingDates,
+  getStorageFile,
+  hasStoredAuth,
+  writeToExcel,
+};

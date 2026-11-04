@@ -8,7 +8,7 @@ const XLSX = require('xlsx');
 
 // 配置
 const CONFIG = {
-  url: 'https://api.vectorengine.ai/console',
+  url: 'https://www.openlux.ai/login?redirect=%2Fconsole',
   storageFile: path.join(__dirname, 'vectorengine-auth.json'),
   outputFile: path.join(__dirname, '..', '每日数据整理.xlsx'),
   headless: false,

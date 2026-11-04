@@ -3,14 +3,17 @@
  */
 
 const { chromium } = require('playwright');
+const { launchChromium } = require('../scripts/browser-launcher');
 const {
   CONFIG,
   getMissingDates,
+  getRecordedCounts,
   hasStoredAuth,
   shouldAutoWriteZeroForMissingFolder,
   STATS_BUTTON_SELECTORS,
   writeToExcel,
 } = require('./oss-crawler');
+const { collectWithReadonlyApi, describeError, getReadonlyCredentials } = require('./oss-api-counter');
 
 /**
  * 等待用户登录成功
@@ -36,7 +39,7 @@ async function waitForLogin(page, context) {
     // 如果不在目标页面，跳转到目标页面
     if (!isOnTargetPage()) {
       console.log('跳转到目标OSS bucket页面...');
-      await page.goto(CONFIG.url, { waitUntil: 'networkidle', timeout: CONFIG.timeout });
+      await page.goto(CONFIG.url, { waitUntil: 'domcontentloaded', timeout: CONFIG.timeout });
       await page.waitForTimeout(2000);
     }
     return;
@@ -53,7 +56,7 @@ async function waitForLogin(page, context) {
 
       // 登录成功后跳转到目标页面
       console.log('跳转到目标OSS bucket页面...');
-      await page.goto(CONFIG.url, { waitUntil: 'networkidle', timeout: CONFIG.timeout });
+      await page.goto(CONFIG.url, { waitUntil: 'domcontentloaded', timeout: CONFIG.timeout });
       await page.waitForTimeout(2000);
       return;
     }
@@ -67,7 +70,18 @@ async function waitForLogin(page, context) {
  */
 async function navigateToFolder(page) {
   console.log('\n等待页面加载...');
-  await page.waitForTimeout(3000);
+  const prefixSelector = 'input[placeholder*="请输入文件名前缀匹配"]';
+  try {
+    await page.waitForSelector(prefixSelector, { state: 'visible', timeout: 120000 });
+    await page.waitForTimeout(1500);
+    console.log('OSS 文件列表已加载，前缀匹配输入框可见');
+  } catch (error) {
+    const bodyText = await page.locator('body').innerText().catch(() => '');
+    console.log('OSS 列表加载超时，当前URL: ' + page.url());
+    console.log('OSS 页面摘要长度: ' + bodyText.length + '，包含generated/: ' + bodyText.includes('generated/'));
+    await page.screenshot({ path: 'debug-page-timeout.png' });
+    throw error;
+  }
   await page.screenshot({ path: 'debug-page.png' });
   console.log('已保存调试截图: debug-page.png');
 }
@@ -248,7 +262,20 @@ async function main() {
   missingDates.forEach(d => console.log(`  - ${d.formatted} (文件夹: ${d.folderName})`));
   console.log('');
 
-  const browser = await chromium.launch({ headless: CONFIG.headless });
+  // 配置了只读 AccessKey 且阳性对照通过时，用 API 统计，不打开浏览器；否则继续下面的浏览器流程
+  try {
+    if (await collectWithReadonlyApi({ missingDates, credentials: getReadonlyCredentials(), getRecordedCounts, writeToExcel })) {
+      console.log('\n全部完成');
+      return;
+    }
+  } catch (error) {
+    console.error('\n出错:', describeError(error));
+    process.exitCode = 1;
+    console.log('\n采集失败');
+    return;
+  }
+
+  const browser = await launchChromium(chromium, { headless: CONFIG.headless });
 
   let context;
   if (hasStoredAuth()) {
@@ -262,7 +289,7 @@ async function main() {
   const page = await context.newPage();
 
   try {
-    await page.goto(CONFIG.url, { waitUntil: 'networkidle', timeout: CONFIG.timeout });
+    await page.goto(CONFIG.url, { waitUntil: 'domcontentloaded', timeout: CONFIG.timeout });
     await page.waitForTimeout(2000);
 
     await waitForLogin(page, context);

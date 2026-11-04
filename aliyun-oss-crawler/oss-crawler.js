@@ -132,6 +132,31 @@ function getTargetColumnIndex(data) {
   return headerIndex >= 0 ? headerIndex : FALLBACK_TARGET_COL;
 }
 
+/**
+ * 读取昨天及以前已入库的总生图数（只读），供 OSS 只读 API 做阳性对照
+ */
+function getRecordedCounts() {
+  if (!fs.existsSync(CONFIG.outputFile)) return [];
+
+  const workbook = XLSX.readFile(CONFIG.outputFile);
+  const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+  const targetCol = getTargetColumnIndex(data);
+  const yesterday = new Date();
+  yesterday.setHours(0, 0, 0, 0);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const records = [];
+  for (let i = 1; i < data.length; i++) {
+    const dateObj = parseCellDate(data[i][0]);
+    const raw = data[i][targetCol];
+    if (!dateObj || raw === undefined || raw === null || String(raw).trim() === '') continue;
+    dateObj.setHours(0, 0, 0, 0);
+    if (dateObj > yesterday) continue;
+    records.push({ dateInfo: formatDateInfo(dateObj), time: dateObj.getTime(), value: Number(raw) });
+  }
+  return records;
+}
+
 function shouldAutoWriteZeroForMissingFolder(pageText, folderName, options = {}) {
   const text = String(pageText || '');
   const hasLoadedObjectList = text.includes('generated/');
@@ -206,6 +231,7 @@ module.exports = {
   CONFIG,
   getTargetDate,
   getMissingDates,
+  getRecordedCounts,
   hasStoredAuth,
   writeToExcel,
   shouldAutoWriteZeroForMissingFolder,

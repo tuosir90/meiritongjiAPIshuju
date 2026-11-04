@@ -150,7 +150,7 @@ function hasStoredAuth() {
   return fs.existsSync(CONFIG.storageFile);
 }
 
-function writeToExcel(date, amount) {
+function writeToExcel(date, amount, options = {}) {
   const workbook = XLSX.readFile(CONFIG.outputFile);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
@@ -158,7 +158,9 @@ function writeToExcel(date, amount) {
 
   const targetCol = ensureTargetHeader(data);
   const yesterday = getYesterday();
-  backfillOlderDatesWithZero(data, targetCol, yesterday);
+  if (options.backfillOlder !== false) {
+    backfillOlderDatesWithZero(data, targetCol, yesterday);
+  }
   let rowIndex = -1;
   for (let i = 1; i < data.length; i++) {
     const cellDate = data[i][0];
@@ -182,4 +184,4 @@ function writeToExcel(date, amount) {
   console.log(`  日期: ${date}, 新世界API: ${amount}`);
 }
 
-module.exports = { CONFIG, getMissingDates, hasStoredAuth, writeToExcel };
+module.exports = { CONFIG, formatDateInfo, getMissingDates, hasStoredAuth, writeToExcel };

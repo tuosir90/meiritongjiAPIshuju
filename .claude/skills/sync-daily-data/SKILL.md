@@ -138,3 +138,4 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 - 如果 `git status` 显示 ahead，但显式 URL push 已有 `main -> main` 输出，不得仅凭 ahead 判定推送失败；以本次 push 输出为准
 - 当前 `node sync-daily-data.js` 会在脚本内部执行 `git add/commit/push`。每日全流程包装脚本如果随后再次执行 `git add public/initial-data.json && git commit`，可能因为没有新的 `public/initial-data.json` 变更而退出码为 `1`；只要同步脚本输出了本次 commit、显式 URL push 成功，且 `git ls-remote "https://tuosir90@github.com/tuosir90/meiritongjiAPIshuju.git" refs/heads/main` 等于本次 `HEAD`，不得把后续“nothing to commit/no changes added”判为失败。
 - 复核 `public/initial-data.json` 中指定日期记录时，实际顶层数据字段为 `records`，不是 `data`；使用 `const rec = d.records.find(x => x.date === 'YYYY-MM-DD')` 验证版本号、API费用、`imageCount` 和 `totalCost`
+- 内联 Node 复核若需保存证据，使用任务专用环境变量传递输出目录并用 `path.join` 构造路径，避免 Windows 反斜杠被 JavaScript 解析为转义字符。证据输出 `ENOENT` 时，只重跑只读复核，不重复同步、提交或推送。

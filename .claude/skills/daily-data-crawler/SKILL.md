@@ -68,13 +68,13 @@ powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\a
 
 ### 步骤4：阿里云OSS
 ```bash
-powershell -NoProfile -Command 'foreach ($n in "OSS_READONLY_ACCESS_KEY_ID","OSS_READONLY_ACCESS_KEY_SECRET") { $v = [Environment]::GetEnvironmentVariable($n, "User"); if ($v) { Set-Item -Path "env:$n" -Value $v } }; Set-Location "F:\tuosir90-claude-code\meiritongjiAPIshuju\aliyun-oss-crawler"; node run-oss.js'
+powershell -Command "Set-Location 'F:\tuosir90-claude-code\meiritongjiAPIshuju\aliyun-oss-crawler'; node run-oss.js"
 ```
-命令开头先把两个用户级变量载入本次进程（不回显值），因为在设置变量之前就已启动的会话看不到新变量。外层用单引号，避免 bash 展开 `$n` / `$v`。
+进程里没有只读 Key 时，`oss-api-counter.js` 会直接读取 Windows 用户级环境变量（`HKCU\Environment`），所以命令里不用先载入变量。在设置变量之前就已打开的会话，以及 bash、cmd、PowerShell 5.1/7、Codex，用这条普通命令都可以。2026-11-04 实测：PowerShell 5.1 进程里没有变量时仍读到 Key，11-02 统计为 1469，一致。不要在命令里套嵌套双引号，因为 PowerShell 5.1 调用外部程序时不转义内层双引号，参数会被拆坏。
 
 **只读 API 模式（2026-11-03 实现，2026-11-04 启用）**：配置专用只读 AccessKey 后，`run-oss.js` 在打开浏览器前先尝试 API 统计，不需要登录。
 - Key 来源：用户级环境变量 `OSS_READONLY_ACCESS_KEY_ID` / `OSS_READONLY_ACCESS_KEY_SECRET`（RAM 子账号，只授予 bucket `meigong-design-system-v2` 前缀 `generated/*` 的 `oss:ListObjects`）。只读这两个专用变量，不使用本机其他项目的 `OSS_ACCESS_KEY_ID` 等变量。
-- 运行前把两个用户级变量刷新进当前进程，不回显值：`foreach ($n in 'OSS_READONLY_ACCESS_KEY_ID','OSS_READONLY_ACCESS_KEY_SECRET') { $v = [Environment]::GetEnvironmentVariable($n, 'User'); if ($v) { Set-Item -Path "env:$n" -Value $v } }`。
+- 读取顺序：先读进程环境变量，没有再读用户级环境变量（`reg query HKCU\Environment`），全程不回显值。测试里必须注入空读取器，不能读到本机真实 Key（断言失败时会打印实际值）。
 - 逻辑在 `aliyun-oss-crawler\oss-api-counter.js`（官方 SDK `ali-oss`，V4 签名）：先拿 Excel 最近一个已入库正数做阳性对照，ListObjectsV2 分页统计结果一致才用 API 写入待补日期，不一致或接口报错就退回下面的浏览器流程；统计不计入与前缀同名的目录占位对象。
 - 成功证据：`阳性对照通过：...`、`[API] YYYY/M/D 前缀 generated/YYYY-MM-DD/ 对象总数: N`、"数据已写入"。只读核对：`node oss-api-counter.js --date=YYYY-MM-DD[,YYYY-MM-DD]`，输出 `excel=… api=… match=…`。测试：`node --test scripts/oss-api-counter.test.cjs`。
 - 2026-11-04 已启用：

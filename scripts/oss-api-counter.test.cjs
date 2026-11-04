@@ -15,8 +15,12 @@ const {
   countPrefixObjects,
   describeError,
   getReadonlyCredentials,
+  parseRegQueryValue,
   pickPositiveControl,
 } = require(path.join(repoRoot, 'aliyun-oss-crawler/oss-api-counter.js'));
+
+// 测试里一律注入空的用户级变量读取器，绝不读取本机真实 Key（断言失败时会打印实际值）
+const noUserEnv = () => '';
 
 function fakeClient(pagesByPrefix, calls = []) {
   return {
@@ -40,12 +44,28 @@ const record = (folderName, value) => ({
 });
 
 test('只读取专用只读变量，两个都有才算配置', () => {
-  assert.equal(getReadonlyCredentials({ OSS_ACCESS_KEY_ID: 'other', OSS_ACCESS_KEY_SECRET: 'other' }), null);
-  assert.equal(getReadonlyCredentials({ OSS_READONLY_ACCESS_KEY_ID: 'id' }), null);
+  assert.equal(getReadonlyCredentials({ OSS_ACCESS_KEY_ID: 'other', OSS_ACCESS_KEY_SECRET: 'other' }, noUserEnv), null);
+  assert.equal(getReadonlyCredentials({ OSS_READONLY_ACCESS_KEY_ID: 'id' }, noUserEnv), null);
   assert.deepEqual(
-    getReadonlyCredentials({ OSS_READONLY_ACCESS_KEY_ID: ' id ', OSS_READONLY_ACCESS_KEY_SECRET: ' secret ' }),
+    getReadonlyCredentials({ OSS_READONLY_ACCESS_KEY_ID: ' id ', OSS_READONLY_ACCESS_KEY_SECRET: ' secret ' }, noUserEnv),
     { accessKeyId: 'id', accessKeySecret: 'secret' },
   );
+});
+
+test('进程里没有变量时回退读取用户级环境变量，进程变量优先', () => {
+  const fake = { OSS_READONLY_ACCESS_KEY_ID: 'user-id', OSS_READONLY_ACCESS_KEY_SECRET: 'user-secret' };
+  const reader = (name) => fake[name] || '';
+  assert.deepEqual(getReadonlyCredentials({}, reader), { accessKeyId: 'user-id', accessKeySecret: 'user-secret' });
+  assert.deepEqual(getReadonlyCredentials({ OSS_READONLY_ACCESS_KEY_ID: 'proc-id' }, reader), { accessKeyId: 'proc-id', accessKeySecret: 'user-secret' });
+  assert.equal(getReadonlyCredentials({}, () => ''), null);
+});
+
+test('parseRegQueryValue 解析 reg query 输出', () => {
+  const output = '\r\nHKEY_CURRENT_USER\\Environment\r\n    OSS_READONLY_ACCESS_KEY_ID    REG_SZ    FAKEID123\r\n\r\n';
+  assert.equal(parseRegQueryValue(output, 'OSS_READONLY_ACCESS_KEY_ID'), 'FAKEID123');
+  assert.equal(parseRegQueryValue('    X    REG_EXPAND_SZ    abc', 'X'), 'abc');
+  assert.equal(parseRegQueryValue('ERROR: not found', 'OSS_READONLY_ACCESS_KEY_ID'), '');
+  assert.equal(parseRegQueryValue('    OSS_READONLY_ACCESS_KEY_ID_OLD    REG_SZ    nope', 'OSS_READONLY_ACCESS_KEY_ID'), '');
 });
 
 test('countPrefixObjects 逐页累加并排除目录占位对象', async () => {

@@ -9,15 +9,41 @@
  * 手工核对（只读，不写 Excel）：node oss-api-counter.js --date=2026-11-02[,2026-11-01]
  */
 
+const { execFileSync } = require('node:child_process');
+
 const BUCKET = 'meigong-design-system-v2';
 const REGION = 'oss-cn-hangzhou';
 const READONLY_ID_ENV = 'OSS_READONLY_ACCESS_KEY_ID';
 const READONLY_SECRET_ENV = 'OSS_READONLY_ACCESS_KEY_SECRET';
 const MAX_PAGES = 1000;
 
-function getReadonlyCredentials(env = process.env) {
-  const accessKeyId = String(env[READONLY_ID_ENV] || '').trim();
-  const accessKeySecret = String(env[READONLY_SECRET_ENV] || '').trim();
+/** 解析 `reg query HKCU\Environment /v <name>` 的输出，取出值；取不到返回空串。 */
+function parseRegQueryValue(output, name) {
+  const line = String(output || '').split(/\r?\n/).find((l) => l.trim().startsWith(`${name} `) || l.trim().startsWith(`${name}\t`));
+  const match = line && line.match(/REG_(?:EXPAND_)?SZ\s+(.*)$/);
+  return match ? match[1].trim() : '';
+}
+
+/**
+ * 进程里没有变量时，直接读 Windows 用户级环境变量（HKCU\Environment）。
+ * 这样在设置变量之前就已打开的会话、以及任何调用 shell（bash / cmd / PowerShell 5.1 / 7 / Codex）都能用，命令里不必先载入。
+ */
+function readWindowsUserEnv(name) {
+  if (process.platform !== 'win32') return '';
+  try {
+    const output = execFileSync('reg', ['query', 'HKCU\\Environment', '/v', name], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true,
+    });
+    return parseRegQueryValue(output, name);
+  } catch {
+    return '';
+  }
+}
+
+function getReadonlyCredentials(env = process.env, readUserEnv = readWindowsUserEnv) {
+  const pick = (name) => String(env[name] || '').trim() || String(readUserEnv(name) || '').trim();
+  const accessKeyId = pick(READONLY_ID_ENV);
+  const accessKeySecret = pick(READONLY_SECRET_ENV);
   return accessKeyId && accessKeySecret ? { accessKeyId, accessKeySecret } : null;
 }
 
@@ -136,5 +162,6 @@ module.exports = {
   datePrefix,
   describeError,
   getReadonlyCredentials,
+  parseRegQueryValue,
   pickPositiveControl,
 };

@@ -1,6 +1,6 @@
 {
-  "version": "1.0.334",
-  "lastUpdated": "2026-11-10T00:52:10Z",
+  "version": "1.0.335",
+  "lastUpdated": "2026-11-11T02:45:07Z",
   "apis": [
     {
       "id": "volcengine",
@@ -34,6 +34,38 @@
     }
   ],
   "records": [
+    {
+      "id": "2026-11-10-1",
+      "date": "2026-11-10",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.92
+        },
+        {
+          "apiId": "zikl",
+          "cost": 2.84
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 10.43
+        }
+      ],
+      "imageCount": 1355,
+      "totalCost": 14.19
+    },
     {
       "id": "2026-11-09-1",
       "date": "2026-11-09",
@@ -97,6 +129,70 @@
       ],
       "imageCount": 347,
       "totalCost": 3.85
+    },
+    {
+      "id": "2026-11-07-1",
+      "date": "2026-11-07",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 0.08
+        },
+        {
+          "apiId": "zikl",
+          "cost": 1.52
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 2.22
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0.39
+        }
+      ],
+      "imageCount": 428,
+      "totalCost": 4.21
+    },
+    {
+      "id": "2026-11-06-1",
+      "date": "2026-11-06",
+      "apiCosts": [
+        {
+          "apiId": "volcengine",
+          "cost": 13.24
+        },
+        {
+          "apiId": "zikl",
+          "cost": 3.5
+        },
+        {
+          "apiId": "tangguo",
+          "cost": 0
+        },
+        {
+          "apiId": "123api",
+          "cost": 0
+        },
+        {
+          "apiId": "manxiaobai",
+          "cost": 0
+        },
+        {
+          "apiId": "xinshijie",
+          "cost": 0
+        }
+      ],
+      "imageCount": 1164,
+      "totalCost": 16.74
     },
     {
       "id": "2026-11-05-1",
